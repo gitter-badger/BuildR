@@ -1,6 +1,8 @@
 <?php namespace buildr\Startup;
 
 use buildr\Config\Config;
+use buildr\ServiceProvider\ServiceProvider;
+use buildr\Logger\Facade\Logger;
 
 /**
  * BuildR - PHP based continuous integration server
@@ -26,6 +28,9 @@ class buildrStartup {
         self::$startupTime = microtime(true);
 
         $serviceProviders = Config::get("container.serviceProviders");
+        ServiceProvider::registerProvidersByArray($serviceProviders);
+
+
 
     }
 

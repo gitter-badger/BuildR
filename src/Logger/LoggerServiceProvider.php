@@ -1,31 +1,40 @@
-<?php namespace buildr\ServiceProvider;
+<?php namespace buildr\Logger;
+
+use buildr\ServiceProvider\ServiceProviderInterface;
 
 /**
  * BuildR - PHP based continuous integration server
  *
- * Interface for ServiceProvider classes
+ * Service Provider for Logger
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
- * @subpackage ServiceProvider
+ * @subpackage Logger
  *
  * @copyright    Copyright 2015, Zoltán Borsos.
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
  */
-interface ServiceProviderInterface {
+class LoggerServiceProvider implements ServiceProviderInterface {
 
     /**
      * Returns an object that be registered to container
      *
      * @return Object
      */
-    public function register();
+    public function register() {
+        $loggerObject = new Logger();
+
+        return $loggerObject;
+    }
+
 
     /**
      * Returns the binding name in the container
      *
      * @return string
      */
-    public function getBindingName();
+    public function getBindingName() {
+        return "logger";
+    }
 }

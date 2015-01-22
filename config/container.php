@@ -3,11 +3,7 @@
 return [
 
     'serviceProviders' => [
-        'buildr\Config\ConfigServiceProvider',
+        'buildr\Logger\LoggerServiceProvider',
     ],
-
-    'Aliases' => [
-        'buildr\Config\Facade\Config',
-    ]
 
 ];
