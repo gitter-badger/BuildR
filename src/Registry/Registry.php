@@ -1,4 +1,6 @@
 <?php namespace buildr\Registry;
+use buildr\Utils\String\StringUtils;
+use buildr\Registry\Exception\ProtectedVariableException;
 
 /**
  * BuildR - PHP based continuous integration server
@@ -55,8 +57,17 @@ class Registry {
      *
      * @param string $variableName
      * @param mixed $value
+     * @throws \buildr\Registry\Exception\ProtectedVariableException
      */
     public static final function setVariable($variableName, $value) {
+        //Check for protected namespace. The variable names is usually sets via dot notated string. If this
+        //ends with .protected we allow to set in first time, but not allow to modify after first set
+        if(StringUtils::endWith($variableName, '.protected')) {
+            if(isset(self::$variables[$variableName])) {
+                throw new ProtectedVariableException("The variable {$variableName} is already set, and its protected!");
+            }
+        }
+
         self::$variables[$variableName] = $value;
     }
 
