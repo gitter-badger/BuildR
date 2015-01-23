@@ -1,0 +1,9 @@
+#IntelliJ IDE project files
+.idea/
+
+#GIT merge origin files
+*.orig
+
+#Composer vendor folder and lock files
+vendor/
+composer.lock
