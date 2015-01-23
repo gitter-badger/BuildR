@@ -22,5 +22,13 @@ $PSR4Loader->registerNamespace('buildr\\', $sourceAbsolute);
 $loader->registerLoader($PSR4Loader);
 $loader->initialize();
 
+//Loading composer's autolaoder, we must to use it, because some package not provide proper autolaoder
+$composerLoaderLocation = ['..', 'vendor', 'autoload.php'];
+$composerLoaderLocation = implode(DIRECTORY_SEPARATOR, $composerLoaderLocation);
+$composerLoaderLocation = realpath($composerLoaderLocation);
+
+//Load classLoader
+require_once $composerLoaderLocation;
+
 //Do startup initialization
 \buildr\Startup\buildrStartup::doStartup();
