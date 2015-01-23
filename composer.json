@@ -1,0 +1,16 @@
+{
+  "name": "zolli/buildr",
+  "author": "Zoltán Borsos",
+  "description": "PHP continuous integration server",
+  "keywords": ["ci", "server", "php", "command-line"],
+  "license": "GPLv3",
+  "require": {
+    "patchwork/utf8": "1.2.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.4.2"
+  },
+  "config": {
+    "preferred-install": "dist"
+  }
+}
