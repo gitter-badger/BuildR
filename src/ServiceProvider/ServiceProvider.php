@@ -1,13 +1,8 @@
 <?php namespace buildr\ServiceProvider;
 
-use buildr\Container\Container;
+use buildr\Registry\Registry;
 
 class ServiceProvider {
-
-    /**
-     * @type \buildr\Container\Container
-     */
-    private static $container;
 
     /**
      * Register service providers by array
@@ -15,15 +10,13 @@ class ServiceProvider {
      * @param array $providersArray
      */
     public static function registerProvidersByArray($providersArray) {
-        self::$container = Container::getInstance();
-
         foreach($providersArray as $providerClassName) {
             self::registerByName($providerClassName);
         }
     }
 
     /**
-     * Register a service in the container be its class name
+     * Register a service in the registry be its class name
      *
      * @param string $providerName
      */
@@ -33,7 +26,7 @@ class ServiceProvider {
         $ObjectToRegister = $providerClass->register();
         $bindingName = $providerClass->getBindingName();
 
-        self::$container->bindClass($bindingName, $ObjectToRegister);
+        Registry::bindClass($bindingName, $ObjectToRegister);
     }
 
     /**

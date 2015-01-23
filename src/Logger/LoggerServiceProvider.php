@@ -18,7 +18,7 @@ use buildr\ServiceProvider\ServiceProviderInterface;
 class LoggerServiceProvider implements ServiceProviderInterface {
 
     /**
-     * Returns an object that be registered to container
+     * Returns an object that be registered to registry
      *
      * @return Object
      */
@@ -30,7 +30,7 @@ class LoggerServiceProvider implements ServiceProviderInterface {
 
 
     /**
-     * Returns the binding name in the container
+     * Returns the binding name in the registry
      *
      * @return string
      */

@@ -1,6 +1,6 @@
 <?php namespace buildr\Facade;
 
-use buildr\Container\Container;
+use buildr\Registry\Registry;
 
 /**
  * BuildR - PHP based continuous integration server
@@ -23,7 +23,7 @@ class Facade {
 
     public static function __callStatic($method, $arguments) {
         $bindingName = static::getBindingName();
-        $class = Container::getInstance()->getClass($bindingName);
+        $class = Registry::getClass($bindingName);
 
         call_user_func_array([$class, $method], $arguments);
     }

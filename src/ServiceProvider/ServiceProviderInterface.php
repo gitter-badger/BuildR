@@ -16,14 +16,14 @@
 interface ServiceProviderInterface {
 
     /**
-     * Returns an object that be registered to container
+     * Returns an object that be registered to registry
      *
      * @return Object
      */
     public function register();
 
     /**
-     * Returns the binding name in the container
+     * Returns the binding name in the registry
      *
      * @return string
      */

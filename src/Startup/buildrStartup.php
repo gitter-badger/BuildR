@@ -11,7 +11,7 @@ use buildr\Logger\Facade\Logger;
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
- * @subpackage Container
+ * @subpackage Registry
  *
  * @copyright    Copyright 2015, Zoltán Borsos.
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
@@ -27,10 +27,10 @@ class buildrStartup {
     public static function doStartup() {
         self::$startupTime = microtime(true);
 
-        $serviceProviders = Config::get("container.serviceProviders");
+        $serviceProviders = Config::get("registry.serviceProviders");
         ServiceProvider::registerProvidersByArray($serviceProviders);
 
-
+        Logger::log("Message");
 
     }
 
