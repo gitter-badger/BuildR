@@ -44,4 +44,29 @@ class StringUtils {
         return (substr($haystack, - $needleLength) === $needle);
     }
 
+    /**
+     * Check of the given haystack contains the needle, in any position
+     *
+     * @param string $haystack
+     * @param string $needle
+     * @return bool
+     */
+    public static final function contains($haystack, $needle) {
+        if (strpos($haystack, $needle) !== FALSE) {
+            return TRUE;
+        }
+
+        return FALSE;
+    }
+
+    /**
+     * return the letter at the given index, or NULL if no char at this index
+     *
+     * @param int|null $index
+     * @return bool
+     */
+    public static function charAt($index) {
+
+    }
+
 }
