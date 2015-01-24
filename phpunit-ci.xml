@@ -12,6 +12,6 @@
     </testsuites>
 
     <logging>
-        <log type="junit" target="build/output/logs/junit.xml" logIncompleteSkipped="false"/>
+        <log type="junit" target="build/output/logs/junit.xml" logIncompleteSkipped="true"/>
     </logging>
 </phpunit>
