@@ -3,14 +3,39 @@
 use buildr\Config\Exception\InvalidConfigKeyException;
 use buildr\Config\Selector\ConfigSelector;
 
+/**
+ * BuildR - PHP based continuous integration server
+ *
+ * Configuration class
+ *
+ * @author Zoltán Borsos <zolli07@gmail.com>
+ * @package buildr
+ * @subpackage Config
+ *
+ * @copyright    Copyright 2015, Zoltán Borsos.
+ * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
+ * @link         https://github.com/Zolli/BuildR
+ */
 class Config {
 
+    /**
+     * @type bool
+     */
     private static $isInitialized = FALSE;
 
+    /**
+     * @type string
+     */
     private static $configLocation;
 
+    /**
+     * @type array
+     */
     private static $configCache = [];
 
+    /**
+     * Initialize this class, its set the proper location of the configuration files root folder
+     */
     private static function initialize() {
         if(self::$isInitialized === TRUE) {
             return;
@@ -20,6 +45,12 @@ class Config {
         self::$configLocation = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config');
     }
 
+    /**
+     * Get a config value by key
+     *
+     * @param string $configKey
+     * @return mixed
+     */
     public static function get($configKey) {
         self::initialize();
         $selector = new ConfigSelector($configKey);
@@ -31,6 +62,12 @@ class Config {
         return self::getFromFile($selector);
     }
 
+    /**
+     * Decide a file, its already in cache or not
+     *
+     * @param string $configFile
+     * @return bool
+     */
     private static function isFileAlreadyCached($configFile) {
         if(isset(self::$configCache[$configFile])) {
             return TRUE;
@@ -39,12 +76,27 @@ class Config {
         return FALSE;
     }
 
+    /**
+     * Get the specified value from the cache
+     *
+     * @param \buildr\Config\Selector\ConfigSelector $selector
+     * @return mixed
+     * @throws \buildr\Config\Exception\InvalidConfigKeyException
+     */
     private static function getFromCache(ConfigSelector $selector) {
         $cacheContent = self::$configCache[$selector->getFileName()];
 
         return self::getBySelector($selector->getSelectorArray(), $cacheContent);
     }
 
+    /**
+     * Get the specified value from the file, and caches the file content by default
+     *
+     * @param \buildr\Config\Selector\ConfigSelector $selector
+     * @param bool $needCache
+     * @return mixed
+     * @throws \buildr\Config\Exception\InvalidConfigKeyException
+     */
     private static function getFromFile(ConfigSelector $selector, $needCache = TRUE) {
         $fileLocation = self::$configLocation . $selector->getFilenameForRequire();
         $fileContent = require_once $fileLocation;
@@ -56,6 +108,14 @@ class Config {
         return self::getBySelector($selector->getSelectorArray(), $fileContent);
     }
 
+    /**
+     * Process the selector, and return the proper section of the configuration
+     *
+     * @param $selector
+     * @param $configArray
+     * @return mixed
+     * @throws \buildr\Config\Exception\InvalidConfigKeyException
+     */
     private static function getBySelector($selector, $configArray) {
         if(!is_array($selector)) {
             throw new \InvalidArgumentException("Invalid selector!");
