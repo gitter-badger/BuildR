@@ -19,11 +19,6 @@
             depends="prepare,composer,lint,phpunit"
             description=""/>
 
-    <!-- Target to execute some tools in parallel -->
-    <target name="build-parallel"
-            depends="prepare,composer,lint,phpunit,"
-            description=""/>
-
     <!-- Clean all previous build in workspace -->
     <target name="clean"
             unless="clean.done"
