@@ -15,3 +15,8 @@ require_once $startupLocation;
 
 //Do startup initialization
 \buildr\Startup\buildrStartup::initializeAutoloading($basePath, TRUE);
+
+//Loading base test class
+$testCasePath = realpath("./tests/buildr/Buildr_TestCase.php");
+
+require_once $testCasePath;
