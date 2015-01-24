@@ -41,6 +41,41 @@ class stringUtilsTest extends buildr_TestCase {
         return $return;
     }
 
+    public function containsProvider() {
+        $return = [];
+
+        for($i = 1 ; $i <= 25 ; $i++) {
+            $word = $this->faker->word;
+            $wordLen = strlen($word);
+
+            if($wordLen < 4) {
+                $i--;
+            } else {
+                $containPart = substr($word, 1, -2);
+                $return[] =  [$word, $containPart];
+            }
+
+
+        }
+
+        return $return;
+    }
+
+    public function charAtProvider() {
+        $return = [];
+
+        for($i = 1 ; $i <= 25 ; $i++) {
+            $word = $this->faker->word;
+            $wordLen = strlen($word);
+            $position = rand(1, $wordLen);
+            $char = str_split($word)[$position-1];
+
+            $return[] = [$word, $position, $char];
+        }
+
+        return $return;
+    }
+
     /**
      * @dataProvider startWithProvider
      */
@@ -53,5 +88,20 @@ class stringUtilsTest extends buildr_TestCase {
      */
     public function testEndWith($word, $end) {
         $this->assertTrue(\buildr\Utils\String\StringUtils::endWith($word, $end));
+    }
+
+    /**
+     * @dataProvider containsProvider
+     */
+    public function testContains($word, $part) {
+        $this->assertTrue(\buildr\Utils\String\StringUtils::contains($word, $part));
+    }
+
+    /**
+     * @dataProvider charAtProvider
+     */
+    public function testCharAt($word, $position, $char) {
+        $givenChar = \buildr\Utils\String\StringUtils::charAt($word, $position);
+        $this->assertEquals($char, $givenChar);
     }
 }

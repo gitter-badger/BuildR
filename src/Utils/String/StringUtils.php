@@ -62,11 +62,18 @@ class StringUtils {
     /**
      * return the letter at the given index, or NULL if no char at this index
      *
-     * @param int|null $index
-     * @return bool
+     * @param string, $haystack
+     * @param int $index
+     * @return string|null
      */
-    public static function charAt($index) {
+    public static function charAt($haystack, $index) {
+        $parts = str_split($haystack);
 
+        if(!isset($parts[$index])) {
+            return NULL;
+        }
+
+        return $parts[$index];
     }
 
 }
