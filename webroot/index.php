@@ -15,3 +15,5 @@ require_once $startupLocation;
 
 //Do startup initialization
 \buildr\Startup\buildrStartup::doStartup($basePath);
+
+d(\buildr\Startup\buildrStartup::getTimeSinceStartup());

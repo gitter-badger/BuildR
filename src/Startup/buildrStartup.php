@@ -1,6 +1,7 @@
 <?php namespace buildr\Startup;
 
 use buildr\Config\Config;
+use buildr\Loader\classMapClassLoader;
 use buildr\Logger\Facade\Logger;
 use buildr\Registry\Registry;
 use buildr\ServiceProvider\ServiceProvider;
@@ -27,6 +28,11 @@ class buildrStartup {
      */
     private static $startupTime;
 
+    /**
+     * @type \buildr\Loader\classLoader
+     */
+    private static $loader;
+
     public static function doStartup($basePath) {
         //Set the startup time, to debug processing time
         self::$startupTime = microtime(true);
@@ -37,14 +43,16 @@ class buildrStartup {
         //Initialize Patchwork/utf8 mbstring replacement
         Bootup::initMbstring();
 
+        //Bind installation paths to registry
+        self::bindInstallPath();
+
         //Environment detection and registration
-        $environment = buildrEnvironment::detectEnvironment();
+        $environment = buildrEnvironment::getEnv();
         Registry::setVariable('buildr.environment.protected', $environment);
 
+        //Registering services to registry by configuration
         $serviceProviders = Config::get("registry.serviceProviders");
         ServiceProvider::registerProvidersByArray($serviceProviders);
-
-        Logger::log("my message");
 
     }
 
@@ -62,14 +70,20 @@ class buildrStartup {
 
         //Initialize and set-up autoloading
         \buildr\Loader\classLoader::loadAutoLoader();
-        $loader = new \buildr\Loader\classLoader();
+        self::$loader = new \buildr\Loader\classLoader();
 
+        //PSR4
         $PSR4Loader = new \buildr\Loader\PSR4ClassLoader();
         $sourceAbsolute = realpath($basePath . DIRECTORY_SEPARATOR . 'src') . DIRECTORY_SEPARATOR;
         $PSR4Loader->registerNamespace('buildr\\', $sourceAbsolute);
 
-        $loader->registerLoader($PSR4Loader);
-        $loader->initialize();
+        //ClassMap
+        $classMapLoader = new classMapClassLoader();
+        $classMapLoader->registerFile(realpath($basePath . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Utils' . DIRECTORY_SEPARATOR . 'Debug' . DIRECTORY_SEPARATOR . 'DebugHelper.php'));
+
+        self::$loader->registerLoader($PSR4Loader);
+        self::$loader->registerLoader($classMapLoader);
+        self::$loader->initialize();
 
         //If we need composer autoloader, try to include it
         if($withComposer === TRUE) {
@@ -86,6 +100,19 @@ class buildrStartup {
     }
 
     /**
+     * Returns the main instance of the autoloader
+     *
+     * @return \buildr\Loader\classLoader
+     */
+    public static final function getAutoloader() {
+        return self::$loader;
+    }
+
+    private static function bindInstallPath() {
+
+    }
+
+    /**
      * Return the startup time in microseconds
      *
      * @return float
@@ -99,12 +126,10 @@ class buildrStartup {
      *
      * @return float
      */
-    private static final function getTimeSinceStartup() {
+    public static final function getTimeSinceStartup() {
         $currentTime = microtime(TRUE);
         return $currentTime - self::getStartupTime();
     }
 
-    private static function bindInstallPath() {
 
-    }
 }
