@@ -1,0 +1,13 @@
+<phpunit
+        bootstrap="./tests/bootstrap.php"
+        backupGlobals="false"
+        backupStaticAttributes="false"
+        strict="true"
+        verbose="true"
+        >
+    <testsuites>
+        <testsuite name="BuildR - Utils">
+            <directory>./tests/buildr/utils</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

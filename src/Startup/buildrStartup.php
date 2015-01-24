@@ -27,12 +27,12 @@ class buildrStartup {
      */
     private static $startupTime;
 
-    public static function doStartup() {
+    public static function doStartup($basePath) {
         //Set the startup time, to debug processing time
         self::$startupTime = microtime(true);
 
         //Initialize autoloading
-        self::initializeAutoloading();
+        self::initializeAutoloading($basePath);
 
         //Initialize Patchwork/utf8 mbstring replacement
         Bootup::initMbstring();
@@ -51,9 +51,9 @@ class buildrStartup {
     /**
      * @param bool $withComposer
      */
-    public static final function initializeAutoloading($withComposer = TRUE) {
+    public static final function initializeAutoloading($basePath, $withComposer = TRUE) {
         //System-safe absolute path generation
-        $classLoaderLocation = ['..', 'src', 'Loader', 'classLoader.php'];
+        $classLoaderLocation = [$basePath, 'src', 'Loader', 'classLoader.php'];
         $classLoaderLocation = implode(DIRECTORY_SEPARATOR, $classLoaderLocation);
         $classLoaderLocation = realpath($classLoaderLocation);
 
@@ -65,7 +65,7 @@ class buildrStartup {
         $loader = new \buildr\Loader\classLoader();
 
         $PSR4Loader = new \buildr\Loader\PSR4ClassLoader();
-        $sourceAbsolute = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR;
+        $sourceAbsolute = realpath($basePath . DIRECTORY_SEPARATOR . 'src') . DIRECTORY_SEPARATOR;
         $PSR4Loader->registerNamespace('buildr\\', $sourceAbsolute);
 
         $loader->registerLoader($PSR4Loader);
@@ -74,7 +74,7 @@ class buildrStartup {
         //If we need composer autoloader, try to include it
         if($withComposer === TRUE) {
             //Loading composer's autolaoder, we must to use it, because some package not provide proper autolaoder
-            $composerLoaderLocation = ['..', 'vendor', 'autoload.php'];
+            $composerLoaderLocation = [$basePath, 'vendor', 'autoload.php'];
             $composerLoaderLocation = implode(DIRECTORY_SEPARATOR, $composerLoaderLocation);
             $composerLoaderLocation = realpath($composerLoaderLocation);
 
