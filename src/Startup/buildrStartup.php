@@ -1,8 +1,10 @@
 <?php namespace buildr\Startup;
 
 use buildr\Config\Config;
+use buildr\Registry\Registry;
 use buildr\ServiceProvider\ServiceProvider;
 use buildr\Logger\Facade\Logger;
+use Patchwork\Utf8\Bootup;
 
 /**
  * BuildR - PHP based continuous integration server
@@ -25,20 +27,40 @@ class buildrStartup {
     private static $startupTime;
 
     public static function doStartup() {
+        //Set the startup time, to debug processing time
         self::$startupTime = microtime(true);
+
+        //Initialize Patchwork/utf8 mbstring replacement
+        Bootup::initMbstring();
+
+        //Environment detection and registration
+        $environment = buildrEnvironment::detetcEnvironment();
+        Registry::setVariable('buildr.environment.protected', $environment);
 
         $serviceProviders = Config::get("registry.serviceProviders");
         ServiceProvider::registerProvidersByArray($serviceProviders);
 
-        Logger::log("Message");
+        
 
     }
 
     /**
+     * Return the startup time in microseconds
+     *
      * @return float
      */
     public static function getStartupTime() {
         return self::$startupTime;
+    }
+
+    /**
+     * Get time since startup in microseconds
+     *
+     * @return float
+     */
+    private static final function getTimeSinceStartup() {
+        $currentTime = microtime(TRUE);
+        return $currentTime - self::getStartupTime();
     }
 
     private static function bindInstallPath() {
