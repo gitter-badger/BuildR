@@ -68,12 +68,12 @@ class StringUtils {
      */
     public static function charAt($haystack, $index) {
         $parts = str_split($haystack);
-
-        if(!isset($parts[$index])) {
+        
+        if(!isset($parts[$index-1])) {
             return NULL;
         }
 
-        return $parts[$index];
+        return $parts[$index-1];
     }
 
 }
