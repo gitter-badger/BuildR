@@ -15,6 +15,43 @@
  */
 class stringUtilsTest extends buildr_TestCase {
 
+    /**
+     * @dataProvider startWithProvider
+     */
+    public function testStartWith($word, $start) {
+        $this->assertTrue(\buildr\Utils\String\StringUtils::startWith($word, $start));
+    }
+
+    /**
+     * @dataProvider endWithProvider
+     */
+    public function testEndWith($word, $end) {
+        $this->assertTrue(\buildr\Utils\String\StringUtils::endWith($word, $end));
+    }
+
+    /**
+     * @dataProvider containsProvider
+     */
+    public function testContains($word, $part) {
+        $this->assertTrue(\buildr\Utils\String\StringUtils::contains($word, $part));
+    }
+
+    /**
+     * @dataProvider charAtProvider
+     */
+    public function testCharAt($word, $position, $char) {
+        $givenChar = \buildr\Utils\String\StringUtils::charAt($word, $position);
+        $this->assertEquals($char, $givenChar);
+    }
+
+    /**
+     * @dataProvider patternProvider
+     */
+    public function testPattern($word, $pattern) {
+        $res = \buildr\Utils\String\StringUtils::match($word, $pattern);
+        $this->assertTrue($res);
+    }
+
     public function startWithProvider() {
         $return = [];
 
@@ -76,32 +113,16 @@ class stringUtilsTest extends buildr_TestCase {
         return $return;
     }
 
-    /**
-     * @dataProvider startWithProvider
-     */
-    public function testStartWith($word, $start) {
-        $this->assertTrue(\buildr\Utils\String\StringUtils::startWith($word, $start));
+    public function patternProvider() {
+        $return = [];
+
+        $return[] = ["Lorem", "Lo.em"];
+        $return[] = ["Lorem", "Lo*m"];
+        $return[] = ["Lorem", ".orem"];
+        $return[] = ["Lorem", "L.r.m"];
+        $return[] = ["Lorem", "*r.m"];
+
+        return $return;
     }
 
-    /**
-     * @dataProvider endWithProvider
-     */
-    public function testEndWith($word, $end) {
-        $this->assertTrue(\buildr\Utils\String\StringUtils::endWith($word, $end));
-    }
-
-    /**
-     * @dataProvider containsProvider
-     */
-    public function testContains($word, $part) {
-        $this->assertTrue(\buildr\Utils\String\StringUtils::contains($word, $part));
-    }
-
-    /**
-     * @dataProvider charAtProvider
-     */
-    public function testCharAt($word, $position, $char) {
-        $givenChar = \buildr\Utils\String\StringUtils::charAt($word, $position);
-        $this->assertEquals($char, $givenChar);
-    }
 }

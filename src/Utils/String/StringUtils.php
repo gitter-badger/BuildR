@@ -68,12 +68,30 @@ class StringUtils {
      */
     public static function charAt($haystack, $index) {
         $parts = str_split($haystack);
-        
+
         if(!isset($parts[$index-1])) {
             return NULL;
         }
 
         return $parts[$index-1];
+    }
+
+    /**
+     * Match the given string with a pattern. For pattern format, see the documentation
+     *
+     * @param string $string
+     * @param string $patternString
+     * @return bool
+     */
+    public static final function match($string, $patternString) {
+        $pattern = new Pattern($patternString);
+        $regex = $pattern->getRegex();
+
+        if(preg_match($regex, $string) === 1) {
+            return TRUE;
+        }
+
+        return FALSE;
     }
 
 }
