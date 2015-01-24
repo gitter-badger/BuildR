@@ -1,9 +1,10 @@
 <?php namespace buildr\Startup;
 
 use buildr\Config\Config;
+use buildr\Logger\Facade\Logger;
 use buildr\Registry\Registry;
 use buildr\ServiceProvider\ServiceProvider;
-use buildr\Logger\Facade\Logger;
+use buildr\Utils\String\StringUtils;
 use Patchwork\Utf8\Bootup;
 
 /**
@@ -30,18 +31,58 @@ class buildrStartup {
         //Set the startup time, to debug processing time
         self::$startupTime = microtime(true);
 
+        //Initialize autoloading
+        self::initializeAutoloading();
+
         //Initialize Patchwork/utf8 mbstring replacement
         Bootup::initMbstring();
 
         //Environment detection and registration
-        $environment = buildrEnvironment::detetcEnvironment();
+        $environment = buildrEnvironment::detectEnvironment();
         Registry::setVariable('buildr.environment.protected', $environment);
 
         $serviceProviders = Config::get("registry.serviceProviders");
         ServiceProvider::registerProvidersByArray($serviceProviders);
 
-        
+        Logger::log("my message");
 
+    }
+
+    /**
+     * @param bool $withComposer
+     */
+    public static final function initializeAutoloading($withComposer = TRUE) {
+        //System-safe absolute path generation
+        $classLoaderLocation = ['..', 'src', 'Loader', 'classLoader.php'];
+        $classLoaderLocation = implode(DIRECTORY_SEPARATOR, $classLoaderLocation);
+        $classLoaderLocation = realpath($classLoaderLocation);
+
+        //Load classLoader
+        require_once $classLoaderLocation;
+
+        //Initialize and set-up autoloading
+        \buildr\Loader\classLoader::loadAutoLoader();
+        $loader = new \buildr\Loader\classLoader();
+
+        $PSR4Loader = new \buildr\Loader\PSR4ClassLoader();
+        $sourceAbsolute = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..') . DIRECTORY_SEPARATOR;
+        $PSR4Loader->registerNamespace('buildr\\', $sourceAbsolute);
+
+        $loader->registerLoader($PSR4Loader);
+        $loader->initialize();
+
+        //If we need composer autoloader, try to include it
+        if($withComposer === TRUE) {
+            //Loading composer's autolaoder, we must to use it, because some package not provide proper autolaoder
+            $composerLoaderLocation = ['..', 'vendor', 'autoload.php'];
+            $composerLoaderLocation = implode(DIRECTORY_SEPARATOR, $composerLoaderLocation);
+            $composerLoaderLocation = realpath($composerLoaderLocation);
+
+            if(file_exists($composerLoaderLocation)) {
+                //Load classLoader
+                require_once $composerLoaderLocation;
+            }
+        }
     }
 
     /**
@@ -64,14 +105,6 @@ class buildrStartup {
     }
 
     private static function bindInstallPath() {
-
-    }
-
-    public static function initialize() {
-        self::checkBuildrUtilLibrary();
-    }
-
-    private static function checkBuildrUtilLibrary() {
 
     }
 }
