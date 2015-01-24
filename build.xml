@@ -26,6 +26,7 @@
 
         <echo message="Cleaning out build output directories" level="info" />
 
+        <delete dir="${basedir}/composer.lock"/>
         <delete dir="${basedir}/vendor"/>
         <delete dir="${buildOutputPath}/logs"/>
         <property name="clean.done" value="true"/>
