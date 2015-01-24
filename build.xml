@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="buildr-main" default="build">
+
+    <!-- By default, we assume all tools to be on the $PATH -->
+    <property name="toolsdir" value=""/>
+
+    <!-- Uncomment if you use composer for build tool downloading -->
+    <!-- <property name="toolsdir" value="${basedir}/vendor/bin/"/> -->
+
+    <!-- Set buildId passed by phabricator, harbormaster application -->
+    <property name="buildId" value="${harbormaster_build_id}" />
+
+    <property name="buildOutputPath" value="${basedir}/build/output" />
+
+    <echo message="Started building ${ant.project.name}! Build ID on phabricator: ${buildId}" level="info" />
+
+    <!-- Target for default build configuration -->
+    <target name="build"
+            depends="prepare,composer,lint,phpunit"
+            description=""/>
+
+    <!-- Target to execute some tools in parallel -->
+    <target name="build-parallel"
+            depends="prepare,composer,lint,phpunit,"
+            description=""/>
+
+    <!-- Clean all previous build in workspace -->
+    <target name="clean"
+            unless="clean.done"
+            description="Cleanup build artifacts">
+
+        <echo message="Cleaning out build output directories" level="info" />
+
+        <delete dir="${buildOutputPath}/logs"/>
+        <property name="clean.done" value="true"/>
+
+        <echo message="Finished cleaning output directories with result: ${clean.done}" level="info" />
+    </target>
+
+    <!-- Make all output sub directory for tools -->
+    <target name="prepare"
+            unless="prepare.done"
+            depends="clean"
+            description="Prepare for build">
+
+        <echo message="Make sub directories for build" level="info" />
+
+        <mkdir dir="${buildOutputPath}/logs"/>
+        <property name="prepare.done" value="true"/>
+
+        <echo message="Finished making sub directories with result: ${prepare.done}" />
+    </target>
+
+    <!-- Install composer dependencies and generating autoloader -->
+    <target name="composer"
+            description="Installing dependencies and generating autoloader">
+
+        <echo message="Start dependency installing using composer" level="info" />
+
+        <exec executable="${toolsdir}composer">
+            <arg value="install" />
+        </exec>
+
+        <echo message="Finished installing dependencies" level="info" />
+    </target>
+
+    <!-- Linting PHP syntax using PHP build-in parser -->
+    <target name="lint" description="Perform syntax check of sourcecode files">
+
+        <echo message="Run syntax checking on source and tests" level="info" />
+
+        <apply executable="php" failonerror="true">
+            <arg value="-l" />
+
+            <fileset dir="${basedir}/src">
+                <include name="**/*.php" />
+                <modified />
+            </fileset>
+
+            <fileset dir="${basedir}/tests">
+                <include name="**/*.php" />
+                <modified />
+            </fileset>
+        </apply>
+
+        <echo message="Finished PHP syntax checking" level="info" />
+    </target>
+
+    <!-- Unit testing -->
+    <target name="phpunit"
+            depends="prepare"
+            description="Run unit tests with PHPUnit">
+
+        <echo message="Started unit testing using PHPUnit" level="info" />
+
+        <exec executable="${toolsdir}phpunit" failonerror="true">
+            <arg value="--configuration"/>
+            <arg path="${basedir}/phpunit-ci.xml"/>
+        </exec>
+
+        <echo message="Finished unit testing" level="info" />
+    </target>
+
+</project>
