@@ -2,6 +2,7 @@
 
 use buildr\Config\Exception\InvalidConfigKeyException;
 use buildr\Config\Selector\ConfigSelector;
+use buildr\Startup\buildrEnvironment;
 
 /**
  * BuildR - PHP based continuous integration server
@@ -29,6 +30,11 @@ class Config {
     private static $configLocation;
 
     /**
+     * @type string
+     */
+    private static $environmentalConfigLocation;
+
+    /**
      * @type array
      */
     private static $configCache = [];
@@ -41,8 +47,25 @@ class Config {
             return;
         }
 
+        $currentEnvironment = buildrEnvironment::getEnv();
+
         //Begin class initialization
         self::$configLocation = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config');
+        self::$environmentalConfigLocation = realpath(self::$configLocation . DIRECTORY_SEPARATOR . $currentEnvironment);
+    }
+
+    /**
+     * Get config for environment detection. This is specific for initialization. Its not call the
+     * initialize() method on this class. Its basically allow to me to use environmental base
+     * configuration later on initialization
+     *
+     * @return mixed|string
+     */
+    public static final function getEnvDetectionConfig() {
+        $envConfig = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'environment.php');
+        $envConfig = require_once $envConfig;
+
+        return $envConfig;
     }
 
     /**
@@ -98,8 +121,19 @@ class Config {
      * @throws \buildr\Config\Exception\InvalidConfigKeyException
      */
     private static function getFromFile(ConfigSelector $selector, $needCache = TRUE) {
-        $fileLocation = self::$configLocation . $selector->getFilenameForRequire();
-        $fileContent = require_once $fileLocation;
+        $fileLocationBase = self::$configLocation . $selector->getFilenameForRequire();
+        $fileLocationEnvironmental = self::$environmentalConfigLocation . $selector->getFilenameForRequire();
+
+        if(file_exists($fileLocationEnvironmental)) {
+            $fileContentBase = require_once $fileLocationBase;
+            $fileContentEnvironmental = require_once $fileLocationEnvironmental;
+
+            $fileContent = array_merge($fileContentBase, $fileContentEnvironmental);
+        } else {
+            $fileContent = require_once $fileLocationBase;
+        }
+
+
 
         if($needCache === TRUE) {
             self::$configCache[$selector->getFileName()] = $fileContent;
