@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="buildr-main" default="build">
+<project name="buildr" default="build">
+
+    <property name="version" value="0.1.0" />
 
     <!-- By default, we assume all tools to be on the $PATH -->
-    <property name="toolsdir" value=""/>
+    <!-- <property name="toolsdir" value=""/> -->
 
     <!-- Uncomment if you use composer for build tool downloading -->
-    <!-- <property name="toolsdir" value="${basedir}/vendor/bin/"/> -->
+    <property name="toolsdir" value="${basedir}/vendor/bin/"/>
 
     <!-- Set buildId passed by phabricator, harbormaster application -->
     <property name="buildId" value="${harbormaster_build_id}" />
+    <property name="vcsType" value="${harbormaster_vcs_type}" />
 
+    <!-- Where ant and other tools store output files -->
     <property name="buildOutputPath" value="${basedir}/build/output" />
 
     <echo message="Started building ${ant.project.name}! Build ID on phabricator: ${buildId}" level="info" />
 
     <!-- Target for default build configuration -->
     <target name="build"
-            depends="prepare,composer,lint,phpunit"
+            depends="prepare,composer,lint,phpunit,artifact"
             description=""/>
 
     <!-- Clean all previous build in workspace -->
@@ -26,9 +30,9 @@
 
         <echo message="Cleaning out build output directories" level="info" />
 
-        <delete file="${basedir}/composer.lock"/>
-        <delete dir="${basedir}/vendor"/>
-        <delete dir="${buildOutputPath}/logs"/>
+        <delete quiet="true" file="${basedir}/composer.lock"/>
+        <delete quiet="true" dir="${basedir}/vendor"/>
+        <delete quiet="true" dir="${buildOutputPath}"/>
         <property name="clean.done" value="true"/>
 
         <echo message="Finished cleaning output directories with result: ${clean.done}" level="info" />
@@ -43,6 +47,7 @@
         <echo message="Make sub directories for build" level="info" />
 
         <mkdir dir="${buildOutputPath}/logs"/>
+        <mkdir dir="${buildOutputPath}/release"/>
         <property name="prepare.done" value="true"/>
 
         <echo message="Finished making sub directories with result: ${prepare.done}" />
@@ -96,6 +101,17 @@
         </exec>
 
         <echo message="Finished unit testing" level="info" />
+    </target>
+
+    <target name="artifact" description="Archive current build as artifact">
+        <echo message="Started unit testing using PHPUnit" level="info" />
+
+        <zip destfile="${buildOutputPath}/release/${ant.project.name}-${version}.${harbormaster_vcs_type}-${harbormaster_build_id}.zip"
+             excludes="${basedir}/vendor"
+             excludes="${basedir}/build"
+                />
+
+        <echo message="Started unit testing using PHPUnit" level="info" />
     </target>
 
 </project>
