@@ -107,7 +107,7 @@
     <target name="cs-fix" depends="phpunit" description="Optimizing coding standard for PSR-2">
         <echo message="Fixing condig standard to compatible with PSR-2" level="info" />
 
-        <exec executable="php-cs-fixer" failonerror="true">
+        <exec executable="php-cs-fixer" failonerror="false">
             <arg value="fix" />
             <arg path="${basedir}/src/" />
             <arg value="--level=psr2" />
