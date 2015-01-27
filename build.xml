@@ -20,7 +20,7 @@
 
     <!-- Target for default build configuration -->
     <target name="build"
-            depends="prepare,composer,lint,phpunit,cs-fix,artifact"
+            depends="prepare,composer,lint,phpunit,cs-fix,documentation,artifact"
             description=""/>
 
     <!-- Clean all previous build in workspace -->
@@ -48,6 +48,7 @@
 
         <mkdir dir="${buildOutputPath}/logs"/>
         <mkdir dir="${buildOutputPath}/release"/>
+        <mkdir dir="${buildOutputPath}/doc"/>
         <property name="prepare.done" value="true"/>
 
         <echo message="Finished making sub directories with result: ${prepare.done}" />
@@ -116,6 +117,16 @@
         <echo message="Finished CS fixing" level="info" />
     </target>
 
+    <target name="documentation" description="Generate documentation for this build">
+        <exec executable="phpdoc">
+            <arg value="-p" />
+            <arg value="-d" />
+            <arg path="${basedir}/src/" />
+            <arg value="-t" />
+            <arg path="${buildOutputPath}/doc" />
+        </exec>
+    </target>
+
     <!-- Artifact creation -->
     <target name="artifact" depends="cs-fix" description="Archive current build as artifact">
         <echo message="Started archiving current release" level="info" />
@@ -125,7 +136,11 @@
              excludes="**/vendor/**,**/build/**,**/cache.properties"
                 />
 
-        <echo message="Finished release creation!" level="info" />
+        <zip destfile="${buildOutputPath}/release/${ant.project.name}-doc-${version}.${harbormaster_vcs_type}-${harbormaster_build_id}.zip"
+             basedir="${buildOutputPath}/doc"
+                />
+
+        <echo message="Finished release artifact creation!" level="info" />
     </target>
 
 </project>
