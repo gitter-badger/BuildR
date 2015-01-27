@@ -124,6 +124,7 @@
             <arg path="${basedir}/src/" />
             <arg value="-t" />
             <arg path="${buildOutputPath}/doc" />
+            <arg value="--template=clean" />
         </exec>
     </target>
 
