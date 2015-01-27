@@ -104,13 +104,14 @@
     </target>
 
     <target name="artifact" description="Archive current build as artifact">
-        <echo message="Started unit testing using PHPUnit" level="info" />
+        <echo message="Started archiving current release" level="info" />
 
         <zip destfile="${buildOutputPath}/release/${ant.project.name}-${version}.${harbormaster_vcs_type}-${harbormaster_build_id}.zip"
+             basedir="."
              excludes="vendor,build"
                 />
 
-        <echo message="Started unit testing using PHPUnit" level="info" />
+        <echo message="Finished release creation!" level="info" />
     </target>
 
 </project>
