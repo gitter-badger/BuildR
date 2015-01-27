@@ -118,13 +118,15 @@
     </target>
 
     <target name="documentation" description="Generate documentation for this build">
-        <exec executable="phpdoc">
-            <arg value="-p" />
-            <arg value="-d" />
+        <exec executable="apigen">
+            <arg value="--source" />
             <arg path="${basedir}/src/" />
-            <arg value="-t" />
+            <arg value="--destination" />
             <arg path="${buildOutputPath}/doc" />
-            <arg value="--template=responsive" />
+            <arg value="--deprecatede" />
+            <arg value="--todo" />
+            <arg value="--tree" />
+            <arg value="--template-theme=bootstrap" />
         </exec>
     </target>
 
