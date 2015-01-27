@@ -119,11 +119,9 @@
 
     <target name="documentation" description="Generate documentation for this build">
         <exec executable="apigen">
-            <arg value="--source" />
-            <arg path="${basedir}/src/" />
-            <arg value="--destination" />
-            <arg path="${buildOutputPath}/doc" />
-            <arg value="--deprecatede" />
+            <arg value="--source ./src/" />
+            <arg value="--destination ./build/output/doc" />
+            <arg value="--deprecated" />
             <arg value="--todo" />
             <arg value="--tree" />
             <arg value="--template-theme=bootstrap" />
