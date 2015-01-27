@@ -107,8 +107,7 @@
         <echo message="Started unit testing using PHPUnit" level="info" />
 
         <zip destfile="${buildOutputPath}/release/${ant.project.name}-${version}.${harbormaster_vcs_type}-${harbormaster_build_id}.zip"
-             excludes="${basedir}/vendor"
-             excludes="${basedir}/build"
+             excludes="${basedir}/vendor,${basedir}/build"
                 />
 
         <echo message="Started unit testing using PHPUnit" level="info" />
