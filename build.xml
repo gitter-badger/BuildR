@@ -124,7 +124,7 @@
             <arg path="${basedir}/src/" />
             <arg value="--destination" />
             <arg path="${buildOutputPath}/doc" />
-            <arg value="--deprecatede" />
+            <arg value="--deprecated" />
             <arg value="--todo" />
             <arg value="--tree" />
             <arg value="--template-theme=bootstrap" />
