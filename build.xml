@@ -20,7 +20,7 @@
 
     <!-- Target for default build configuration -->
     <target name="build"
-            depends="prepare,composer,lint,phpunit,artifact"
+            depends="prepare,composer,lint,phpunit,cs-fix,artifact"
             description=""/>
 
     <!-- Clean all previous build in workspace -->
@@ -103,12 +103,26 @@
         <echo message="Finished unit testing" level="info" />
     </target>
 
-    <target name="artifact" description="Archive current build as artifact">
+    <!-- PSR-2 coding standart optimalization. Just for release only. We replace it with own coding standard later on -->
+    <target name="cs-fix" depends="phpunit" description="Optimizing coding standard for PSR-2">
+        <echo message="Fixing condig standard to compatible with PSR-2" level="info" />
+
+        <exec executable="php-cs-fixer" failonerror="true">
+            <arg value="fix" />
+            <arg path="${basedir}/src/" />
+            <arg value="--level=psr2" />
+        </exec>
+
+        <echo message="Finished CS fixing" level="info" />
+    </target>
+
+    <!-- Artifact creation -->
+    <target name="artifact" depends="cs-fix" description="Archive current build as artifact">
         <echo message="Started archiving current release" level="info" />
 
         <zip destfile="${buildOutputPath}/release/${ant.project.name}-${version}.${harbormaster_vcs_type}-${harbormaster_build_id}.zip"
              basedir="."
-             excludes="**/vendor/**,**/build/**"
+             excludes="**/vendor/**,**/build/**,**/cache.properties"
                 />
 
         <echo message="Finished release creation!" level="info" />
