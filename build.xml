@@ -108,7 +108,7 @@
 
         <zip destfile="${buildOutputPath}/release/${ant.project.name}-${version}.${harbormaster_vcs_type}-${harbormaster_build_id}.zip"
              basedir="."
-             excludes="vendor,build"
+             excludes="${basedir}/vendor,${buildOutputPath}"
                 />
 
         <echo message="Finished release creation!" level="info" />
