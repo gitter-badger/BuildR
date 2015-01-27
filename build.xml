@@ -59,7 +59,7 @@
 
         <echo message="Start dependency installing using composer" level="info" />
 
-        <exec executable="${toolsdir}composer">
+        <exec executable="composer">
             <arg value="install" />
         </exec>
 
