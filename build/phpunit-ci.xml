@@ -8,6 +8,11 @@
     <testsuites>
         <testsuite name="BuildR - Utils">
             <directory>../tests/buildr/utils</directory>
+            <filter>
+                <blacklist>
+                    <directory>../vendor</directory>
+                </blacklist>
+            </filter>
         </testsuite>
     </testsuites>
 
