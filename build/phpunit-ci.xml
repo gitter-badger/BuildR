@@ -7,12 +7,7 @@
         >
     <testsuites>
         <testsuite name="BuildR - Utils">
-            <directory>../tests/buildr/utils</directory>
-            <filter>
-                <blacklist>
-                    <directory>../vendor</directory>
-                </blacklist>
-            </filter>
+            <directory suffix="Test.php">../tests/buildr/utils</directory>
         </testsuite>
     </testsuites>
 
@@ -22,4 +17,11 @@
         <log type="coverage-crap4j" target="./output/logs/crap4j.xml"/>
         <log type="junit" target="./output/logs/junit.xml" logIncompleteSkipped="false"/>
     </logging>
+
+    <filter>
+        <whitelist>
+            <directory>../src</directory>
+            <directory>../tests</directory>
+        </whitelist>
+    </filter>
 </phpunit>
