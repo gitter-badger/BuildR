@@ -1,0 +1,20 @@
+<phpunit
+        bootstrap="../tests/bootstrap.php"
+        backupGlobals="false"
+        backupStaticAttributes="false"
+        strict="true"
+        verbose="true"
+        >
+    <testsuites>
+        <testsuite name="BuildR - Utils">
+            <directory>../tests/buildr/utils</directory>
+        </testsuite>
+    </testsuites>
+
+    <logging>
+        <log type="coverage-html" target="./output/coverage"/>
+        <log type="coverage-clover" target="./output/logs/clover.xml"/>
+        <log type="coverage-crap4j" target="./output/logs/crap4j.xml"/>
+        <log type="junit" target="./output/logs/junit.xml" logIncompleteSkipped="false"/>
+    </logging>
+</phpunit>
