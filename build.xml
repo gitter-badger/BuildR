@@ -9,18 +9,18 @@
     <!-- Uncomment if you use composer for build tool downloading -->
     <property name="toolsdir" value="${basedir}/vendor/bin/"/>
 
-    <!-- Set buildId passed by phabricator, harbormaster application -->
+    <!-- Set buildId and VCS type passed by phabricator, harbormaster application -->
     <property name="buildId" value="${harbormaster_build_id}" />
     <property name="vcsType" value="${harbormaster_vcs_type}" />
 
-    <!-- Where ant and other tools store output files -->
+    <!-- Where tools store output files -->
     <property name="buildOutputPath" value="${basedir}/build/output" />
 
     <echo message="Started building ${ant.project.name}! Build ID on phabricator: ${buildId}" level="info" />
 
     <!-- Target for default build configuration -->
     <target name="build"
-            depends="prepare,composer,lint,phpunit,phpcpd,phploc,cs-fix,documentation,artifact"
+            depends="clean,prepare,composer,lint,phpunit,phpcpd,phploc,cs-fix,documentation,artifact"
             description=""/>
 
     <!-- Clean all previous build in workspace -->
@@ -41,7 +41,6 @@
     <!-- Make all output sub directory for tools -->
     <target name="prepare"
             unless="prepare.done"
-            depends="clean"
             description="Prepare for build">
 
         <echo message="Make sub directories for build" level="info" />
@@ -64,6 +63,8 @@
         <condition property="composer.command" value="update" else="install">
             <available file="${basedir}/composer.lock"/>
         </condition>
+
+        <echo message="Running the following sub-command: ${composer.command}" level="info" />
 
         <exec executable="composer">
             <arg value="${composer.command}" />
@@ -99,7 +100,7 @@
 
     <!-- Unit testing -->
     <target name="phpunit"
-            depends="prepare"
+            depends="composer"
             description="Run unit tests with PHPUnit">
 
         <echo message="Started unit testing using PHPUnit" level="info" />
@@ -114,19 +115,25 @@
 
     <!-- Duplicated code finding -->
     <target name="phpcpd"
-            depends="prepare"
-            description="Find duplicate code using PHPCPD and log result in XML format. Intended for usage within a continuous integration environment.">
+            depends="composer">
+
+        <echo message="Started duplicated code finding" level="info" />
+
         <exec executable="${toolsdir}phpcpd">
             <arg value="--log-pmd" />
             <arg path="${buildOutputPath}/logs/pmd-cpd.xml" />
             <arg path="${basedir}/src" />
         </exec>
+
+        <echo message="Finished checking for duplicated code" level="info" />
     </target>
 
     <!-- Project size measurement -->
     <target name="phploc"
-            depends="prepare"
-            description="Measure project size using PHPLOC and log result in CSV and XML format. Intended for usage within a continuous integration environment.">
+            depends="composer">
+
+        <echo message="Started project size measurement" level="info" />
+
         <exec executable="${toolsdir}phploc">
             <arg value="--count-tests" />
             <arg value="--log-csv" />
@@ -136,6 +143,8 @@
             <arg path="${basedir}/src" />
             <arg path="${basedir}/tests" />
         </exec>
+
+        <echo message="Finished project size measurement" level="info" />
     </target>
 
     <!-- PSR-2 coding standart optimalization. Just for release only. We replace it with own coding standard later on -->
@@ -181,5 +190,4 @@
 
         <echo message="Finished release artifact creation!" level="info" />
     </target>
-
 </project>
