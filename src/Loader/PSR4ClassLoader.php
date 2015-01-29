@@ -1,5 +1,7 @@
 <?php namespace buildr\Loader;
 
+use buildr\Loader\classLoaderInterface;
+
 /**
  * BuildR - PHP based continuous integration server
  *

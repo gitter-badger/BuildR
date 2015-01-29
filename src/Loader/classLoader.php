@@ -15,7 +15,7 @@ use \buildr\Loader\classLoaderInterface;
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
  */
-class classLoader {
+class ClassLoader {
 
     /**
      * @var \buildr\Loader\classLoaderInterface[]
@@ -27,10 +27,10 @@ class classLoader {
      */
     public static function loadAutoLoader() {
         //Include interface first All class depends on it
-        require_once __DIR__ . DIRECTORY_SEPARATOR . 'classLoaderInterface.php';
+        require_once __DIR__ . DIRECTORY_SEPARATOR . 'ClassLoaderInterface.php';
 
         $files = scandir(__DIR__, SCANDIR_SORT_DESCENDING);
-        $unnedFiles = ['.', '..', 'classLoader.php', 'classLoaderInterface.php'];
+        $unnedFiles = ['.', '..', 'ClassLoader.php', 'ClassLoaderInterface.php'];
 
         foreach($files as $k => $file) {
             if(in_array($file, $unnedFiles)) {
@@ -129,7 +129,7 @@ class classLoader {
      * with spl_autoload_register() method.
      */
     public function initialize() {
-        spl_autoload_register(__NAMESPACE__ . '\classLoader::loadClass');
+        spl_autoload_register(__NAMESPACE__ . '\ClassLoader::loadClass');
     }
 
 }

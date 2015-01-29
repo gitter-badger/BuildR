@@ -27,7 +27,7 @@ class buildrStartup {
     private static $startupTime;
 
     /**
-     * @type \buildr\Loader\classLoader
+     * @type \buildr\Loader\ClassLoader
      */
     private static $loader;
 
@@ -59,7 +59,7 @@ class buildrStartup {
      */
     public static final function initializeAutoloading($basePath, $withComposer = TRUE) {
         //System-safe absolute path generation
-        $classLoaderLocation = [$basePath, 'src', 'Loader', 'classLoader.php'];
+        $classLoaderLocation = [$basePath, 'src', 'Loader', 'ClassLoader.php'];
         $classLoaderLocation = implode(DIRECTORY_SEPARATOR, $classLoaderLocation);
         $classLoaderLocation = realpath($classLoaderLocation);
 
@@ -67,8 +67,8 @@ class buildrStartup {
         require_once $classLoaderLocation;
 
         //Initialize and set-up autoloading
-        \buildr\Loader\classLoader::loadAutoLoader();
-        self::$loader = new \buildr\Loader\classLoader();
+        \buildr\Loader\ClassLoader::loadAutoLoader();
+        self::$loader = new \buildr\Loader\ClassLoader();
 
         //PSR4
         $PSR4Loader = new \buildr\Loader\PSR4ClassLoader();
@@ -100,7 +100,7 @@ class buildrStartup {
     /**
      * Returns the main instance of the autoloader
      *
-     * @return \buildr\Loader\classLoader
+     * @return \buildr\Loader\ClassLoader
      */
     public static final function getAutoloader() {
         return self::$loader;
