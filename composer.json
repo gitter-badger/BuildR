@@ -1,11 +1,13 @@
 {
   "name": "zolli/buildr",
-  "authors": {
-    "name": "Zoltán Borsos",
-    "email": "zolli07@gmail.com",
-    "homepage": "http://zolli.hu",
-    "role": "Developer"
-  },
+  "authors": [
+    {
+      "name": "Zoltán Borsos",
+      "email": "zolli07@gmail.com",
+      "homepage": "http://zolli.hu",
+      "role": "Developer"
+    }
+  ],
   "description": "PHP continuous integration server",
   "keywords": [
     "ci",
