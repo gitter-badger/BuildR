@@ -27,10 +27,10 @@ class ClassLoader {
      */
     public static function loadAutoLoader() {
         //Include interface first All class depends on it
-        require_once __DIR__ . DIRECTORY_SEPARATOR . 'ClassLoaderInterface.php';
+        require_once __DIR__ . DIRECTORY_SEPARATOR . 'classLoaderInterface.php';
 
         $files = scandir(__DIR__, SCANDIR_SORT_DESCENDING);
-        $unnedFiles = ['.', '..', 'ClassLoader.php', 'ClassLoaderInterface.php'];
+        $unnedFiles = ['.', '..', 'ClassLoader.php', 'classLoaderInterface.php'];
 
         foreach($files as $k => $file) {
             if(in_array($file, $unnedFiles)) {
