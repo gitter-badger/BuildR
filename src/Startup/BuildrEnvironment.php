@@ -14,7 +14,7 @@ use buildr\Config\Config;
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
  */
-class buildrEnvironment {
+class BuildrEnvironment {
 
     /**
      * Production environment constant

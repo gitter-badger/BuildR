@@ -6,7 +6,7 @@ ini_set('display_errors', 'On');
 $basePath = realpath('.');
 
 //System-safe absolute path generation
-$startupLocation = [$basePath, 'src', 'Startup', 'buildrStartup.php'];
+$startupLocation = [$basePath, 'src', 'Startup', 'BuildrStartup.php'];
 $startupLocation = implode(DIRECTORY_SEPARATOR, $startupLocation);
 $startupLocation = realpath($startupLocation);
 
@@ -14,7 +14,7 @@ $startupLocation = realpath($startupLocation);
 require_once $startupLocation;
 
 //Do startup initialization
-\buildr\Startup\buildrStartup::initializeAutoloading($basePath, TRUE);
+\buildr\Startup\BuildrStartup::initializeAutoloading($basePath, TRUE);
 
 //Loading base test class
 $testCasePath = realpath("./tests/buildr/Buildr_TestCase.php");

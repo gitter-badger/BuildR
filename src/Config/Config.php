@@ -2,7 +2,7 @@
 
 use buildr\Config\Exception\InvalidConfigKeyException;
 use buildr\Config\Selector\ConfigSelector;
-use buildr\Startup\buildrEnvironment;
+use buildr\Startup\BuildrEnvironment;
 
 /**
  * BuildR - PHP based continuous integration server
@@ -47,7 +47,7 @@ class Config {
             return;
         }
 
-        $currentEnvironment = buildrEnvironment::getEnv();
+        $currentEnvironment = BuildrEnvironment::getEnv();
 
         //Begin class initialization
         self::$configLocation = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config');

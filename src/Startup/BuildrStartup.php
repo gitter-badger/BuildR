@@ -19,7 +19,7 @@ use Patchwork\Utf8\Bootup;
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
  */
-class buildrStartup {
+class BuildrStartup {
 
     /**
      * @type flaot
@@ -45,7 +45,7 @@ class buildrStartup {
         self::bindInstallPath();
 
         //Environment detection and registration
-        $environment = buildrEnvironment::getEnv();
+        $environment = BuildrEnvironment::getEnv();
         Registry::setVariable('buildr.environment.protected', $environment);
 
         //Registering services to registry by configuration

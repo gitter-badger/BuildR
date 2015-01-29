@@ -3,7 +3,7 @@
 //System-safe absolute path generation
 $basePath = realpath('..');
 
-$startupLocation = [$basePath, 'src', 'Startup', 'buildrStartup.php'];
+$startupLocation = [$basePath, 'src', 'Startup', 'BuildrStartup.php'];
 $startupLocation = implode(DIRECTORY_SEPARATOR, $startupLocation);
 $startupLocation = realpath($startupLocation);
 
@@ -11,4 +11,4 @@ $startupLocation = realpath($startupLocation);
 require_once $startupLocation;
 
 //Do startup initialization
-\buildr\Startup\buildrStartup::doStartup($basePath);
+\buildr\Startup\BuildrStartup::doStartup($basePath);
