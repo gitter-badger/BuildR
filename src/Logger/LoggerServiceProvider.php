@@ -37,4 +37,5 @@ class LoggerServiceProvider implements ServiceProviderInterface {
     public function getBindingName() {
         return "logger";
     }
+
 }

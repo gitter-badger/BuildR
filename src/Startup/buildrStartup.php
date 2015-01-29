@@ -2,10 +2,8 @@
 
 use buildr\Config\Config;
 use buildr\Loader\classMapClassLoader;
-use buildr\Logger\Facade\Logger;
 use buildr\Registry\Registry;
 use buildr\ServiceProvider\ServiceProvider;
-use buildr\Utils\String\StringUtils;
 use Patchwork\Utf8\Bootup;
 
 /**
@@ -130,6 +128,5 @@ class buildrStartup {
         $currentTime = microtime(TRUE);
         return $currentTime - self::getStartupTime();
     }
-
 
 }

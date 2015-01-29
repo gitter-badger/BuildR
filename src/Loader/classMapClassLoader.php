@@ -125,4 +125,5 @@ class classMapClassLoader implements classLoaderInterface {
 
         $this->priority = $priority;
     }
+
 }

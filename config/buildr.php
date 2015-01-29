@@ -13,13 +13,10 @@
  */
 return [
 
-    'environment' => [
-        'production' => ['prod.domain'],
-        'development' => ['buildr.zolli.hu'],
+    'debug' => [
+        'enabled' => FALSE,
     ],
 
-    'debug' => [
-        'enabled' => TRUE,
-    ],
+    'asd' => 'asdval',
 
 ];

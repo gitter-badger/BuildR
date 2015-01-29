@@ -16,7 +16,7 @@
 class Logger {
 
     public function log($message) {
-        var_dump("Log my message: " . $message);
+        echo "Log my message: " . $message;
     }
 
 }

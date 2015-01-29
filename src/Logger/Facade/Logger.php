@@ -20,4 +20,5 @@ class Logger extends Facade {
     public static function getBindingName() {
         return "logger";
     }
+
 }

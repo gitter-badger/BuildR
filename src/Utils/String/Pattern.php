@@ -81,4 +81,5 @@ class Pattern {
 
         $this->regex = $regex;
     }
+
 }

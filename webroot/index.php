@@ -1,8 +1,5 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 'On');
-
 //System-safe absolute path generation
 $basePath = realpath('..');
 
@@ -15,5 +12,3 @@ require_once $startupLocation;
 
 //Do startup initialization
 \buildr\Startup\buildrStartup::doStartup($basePath);
-
-d(\buildr\Startup\buildrStartup::getTimeSinceStartup());

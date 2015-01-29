@@ -1,5 +1,7 @@
 <?php namespace buildr\Loader;
 
+use \buildr\Loader\classLoaderInterface;
+
 /**
  * BuildR - PHP based continuous integration server
  *
@@ -94,7 +96,7 @@ class classLoader {
      * This name is hard-coded on all loader class
      *
      * @param string $loaderName
-     * @return classLoaderInterface
+     * @return \buildr\Loader\classLoaderInterface
      * @throws \InvalidArgumentException
      */
     public function getLoaderByName($loaderName) {
@@ -129,4 +131,5 @@ class classLoader {
     public function initialize() {
         spl_autoload_register(__NAMESPACE__ . '\classLoader::loadClass');
     }
+
 }

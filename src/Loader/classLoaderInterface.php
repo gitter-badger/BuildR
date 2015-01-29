@@ -52,4 +52,5 @@ interface classLoaderInterface {
      * @return string
      */
     public function getName();
+
 }

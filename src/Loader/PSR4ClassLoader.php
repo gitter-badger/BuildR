@@ -109,4 +109,5 @@ class PSR4ClassLoader implements classLoaderInterface {
     public function registerNamespace($namespace, $basePath) {
         $this->registeredNamespaces[] = [$namespace, $basePath];
     }
+
 }
