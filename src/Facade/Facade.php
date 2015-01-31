@@ -25,7 +25,7 @@ class Facade {
         $bindingName = static::getBindingName();
         $class = Registry::getClass($bindingName);
 
-        call_user_func_array([$class, $method], $arguments);
+        return call_user_func_array([$class, $method], $arguments);
     }
 
 }

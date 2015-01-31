@@ -94,4 +94,39 @@ class StringUtils {
         return FALSE;
     }
 
+    /**
+     * Trim the given character sequence from the beginning of the given string
+     *
+     * @param string $string
+     * @param string $needle
+     * @return string
+     */
+    public static final function trimFromBeginning($string, $needle) {
+        $needleLength = mb_strlen($needle);
+
+        if(!self::startWith($string, $needle)) {
+            return $string;
+        }
+
+        return mb_substr($string, 0, $needleLength);
+    }
+
+    /**
+     * Trim the given character sequence from the end of the given string
+     *
+     * @param string $string
+     * @param string $needle
+     * @return string
+     */
+    public static final function trimFromEnd($string, $needle) {
+        $needleLength = mb_strlen($string);
+
+        if(!StringUtils::endWith($string, $needle)) {
+            return $string;
+        }
+
+        $needleLength = $needleLength * -1;
+        return mb_substr($string, 0, $needleLength);
+    }
+
 }
