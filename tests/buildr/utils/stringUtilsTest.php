@@ -52,6 +52,50 @@ class stringUtilsTest extends buildr_TestCase {
         $this->assertTrue($res);
     }
 
+    /**
+     * @dataProvider trimBeginningProvider
+     */
+    public function testTrimBeginning($word, $trimWord, $result) {
+        $res = \buildr\Utils\String\StringUtils::trimFromBeginning($word, $trimWord);
+        $this->assertEquals($result, $res);
+    }
+
+    /**
+     * @dataProvider trimEndProvider
+     */
+    public function testTrimEnd($word, $trimWord, $result) {
+        $res = \buildr\Utils\String\StringUtils::trimFromEnd($word, $trimWord);
+        $this->assertEquals($result, $res);
+    }
+
+    public function trimEndProvider() {
+        $return = [];
+
+        for($i = 1 ; $i <= 25 ; $i++) {
+            $word = $this->faker->word;
+            $start = substr($word, -2);
+            $p = substr($word, 0, -2);
+
+            $return[] =  [$word, $start, $p];
+        }
+
+        return $return;
+    }
+
+    public function trimBeginningProvider() {
+        $return = [];
+
+        for($i = 1 ; $i <= 25 ; $i++) {
+            $word = $this->faker->word;
+            $start = substr($word, 0, 2);
+            $p = substr($word, 2);
+
+            $return[] =  [$word, $start, $p];
+        }
+
+        return $return;
+    }
+
     public function startWithProvider() {
         $return = [];
 

@@ -108,7 +108,7 @@ class StringUtils {
             return $string;
         }
 
-        return mb_substr($string, 0, $needleLength);
+        return mb_substr($string, $needleLength);
     }
 
     /**
@@ -119,7 +119,7 @@ class StringUtils {
      * @return string
      */
     public static final function trimFromEnd($string, $needle) {
-        $needleLength = mb_strlen($string);
+        $needleLength = mb_strlen($needle);
 
         if(!StringUtils::endWith($string, $needle)) {
             return $string;

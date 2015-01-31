@@ -1,5 +1,5 @@
 <phpunit
-        bootstrap="./tests/bootstrap.php"
+        bootstrap="../tests/bootstrap.php"
         backupGlobals="false"
         backupStaticAttributes="false"
         strict="true"
@@ -7,7 +7,14 @@
         >
     <testsuites>
         <testsuite name="BuildR - Utils">
-            <directory>./tests/buildr/utils</directory>
+            <directory suffix="Test.php">../tests/buildr/utils</directory>
         </testsuite>
     </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory>../src</directory>
+            <directory>../tests</directory>
+        </whitelist>
+    </filter>
 </phpunit>
