@@ -8,6 +8,7 @@
     <testsuites>
         <testsuite name="BuildR - Utils">
             <directory suffix="Test.php">../tests/buildr/utils</directory>
+            <directory suffix="Test.php">../tests/buildr/registry</directory>
         </testsuite>
     </testsuites>
 

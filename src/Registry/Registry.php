@@ -1,4 +1,5 @@
 <?php namespace buildr\Registry;
+
 use buildr\Utils\String\StringUtils;
 use buildr\Registry\Exception\ProtectedVariableException;
 
