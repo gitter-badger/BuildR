@@ -36,4 +36,21 @@ class configTest extends buildr_TestCase {
         $this->assertArrayHasKey('test', $properties['configCache']);
     }
 
+    public function testConfigKeyGetWithMergeing() {
+        \buildr\Config\Config::get("buildr.debug.enabled");
+    }
+
+    public function testConfigKeyGetWhenNoEnvironmentalFile() {
+        \buildr\Config\Config::get("environment.production");
+    }
+
+    public function testEnvironmentDetectionConfigGet() {
+        $reflector = new ReflectionClass(\buildr\Config\Config::class);
+        $method = $reflector->getMethod("getEnvDetectionConfig");
+        $method->setAccessible(TRUE);
+        $result = $method->invoke($reflector->newInstance());
+
+        $this->assertTrue($result);
+    }
+
 }
