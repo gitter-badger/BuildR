@@ -48,8 +48,8 @@ class ConfigSelector {
     private function process() {
         $this->selectorParts = explode(self::SELECTOR_SEPARATOR, $this->selectorString);
 
-        if((!is_array($this->selectorParts)) && (count($this->selectorParts) < 2)) {
-            throw new \InvalidArgumentException("Tha selector need to be at least 2 parts!");
+        if((!is_array($this->selectorParts)) || (count($this->selectorParts) < 2)) {
+            throw new \InvalidArgumentException("The selector need to be at least 2 parts!");
         }
     }
 
