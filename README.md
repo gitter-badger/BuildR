@@ -50,4 +50,5 @@ BuildR is licensed under GPL v3 ([Read](https://raw.githubusercontent.com/Zolli/
 ### Thanks
 
 All the package or tool author.
+
 This project and the worklfow is highly inspirated by Phabricator team. Thanks to all of us!
