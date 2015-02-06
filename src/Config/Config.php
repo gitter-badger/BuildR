@@ -48,10 +48,10 @@ class Config {
         }
 
         $currentEnvironment = BuildrEnvironment::getEnv();
-
         //Begin class initialization
         self::$configLocation = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config');
         self::$environmentalConfigLocation = realpath(self::$configLocation . DIRECTORY_SEPARATOR . $currentEnvironment);
+        self::$isInitialized = TRUE;
     }
 
     /**
@@ -125,8 +125,15 @@ class Config {
         $fileLocationEnvironmental = self::$environmentalConfigLocation . $selector->getFilenameForRequire();
 
         if(file_exists($fileLocationEnvironmental)) {
-            $fileContentBase = require_once $fileLocationBase;
-            $fileContentEnvironmental = require_once $fileLocationEnvironmental;
+            $fileContentBase = [];
+            if(file_exists($fileLocationBase)) {
+                $fileContentBase = require_once $fileLocationBase;
+            }
+
+            $fileContentEnvironmental = [];
+            if(file_exists($fileLocationEnvironmental)) {
+                $fileContentEnvironmental = require_once $fileLocationEnvironmental;
+            }
 
             $fileContent = array_merge($fileContentBase, $fileContentEnvironmental);
         } else {

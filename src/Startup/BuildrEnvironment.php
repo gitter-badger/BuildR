@@ -32,6 +32,11 @@ class BuildrEnvironment {
     const E_CONSOLE = "console-default";
 
     /**
+     * Environment for unit tests
+     */
+    const E_TESTING = "testing";
+
+    /**
      * @type string
      */
     private static $detectedEnvironment;
@@ -47,10 +52,6 @@ class BuildrEnvironment {
      * @return string
      */
     public static final function getEnv() {
-        if(self::isRunningFromConsole()) {
-            return self::E_CONSOLE;
-        }
-
         if(self::$isInitialized === FALSE) {
             self::detectEnvironment();
             self::$isInitialized = TRUE;
@@ -59,12 +60,18 @@ class BuildrEnvironment {
         return self::$detectedEnvironment;
     }
 
+    /**
+     * Modify the detected environment variable on-the-fly
+     *
+     * @param string $environment
+     */
     public static final function setEnv($environment) {
         if(!self::isRunningFromConsole()) {
             throw new \RuntimeException("The setEnv() function is only used if the application is running from console!");
         }
 
         self::$detectedEnvironment = $environment;
+        self::$isInitialized = TRUE;
     }
 
     /**
@@ -84,6 +91,12 @@ class BuildrEnvironment {
      * Detect the environment by domain
      */
     private static final function detectEnvironment() {
+        if(self::isRunningFromConsole()) {
+            self::$detectedEnvironment = self::E_DEV;
+            self::$isInitialized = TRUE;
+            return;
+        }
+
         $environmentConfig = Config::getEnvDetectionConfig();
         $detectedEnvironment = static::E_DEV;
 
