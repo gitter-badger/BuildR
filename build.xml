@@ -174,7 +174,7 @@
     </target>
 
     <!-- Artifact creation -->
-    <target name="artifact" depends="cs-fix" description="Archive current build as artifact">
+    <target name="artifact" description="Archive current build as artifact">
         <echo message="Started archiving current release" level="info" />
 
         <zip destfile="${buildOutputPath}/release/${ant.project.name}-${version}.${harbormaster_vcs_type}-${harbormaster_build_id}.zip"
