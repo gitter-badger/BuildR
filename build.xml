@@ -20,7 +20,7 @@
 
     <!-- Target for default build configuration -->
     <target name="build"
-            depends="clean,prepare,composer,lint,phpunit,phpcpd,phploc,cs-fix,documentation,artifact"
+            depends="clean,prepare,composer,lint,phpunit,phpcpd,phploc,pdepend,documentation,artifact"
             description=""/>
 
     <!-- Clean all previous build in workspace -->
@@ -47,6 +47,7 @@
 
         <mkdir dir="${buildOutputPath}/logs" />
         <mkdir dir="${buildOutputPath}/coverage" />
+        <mkdir dir="${buildOutputPath}/pdepend" />
         <mkdir dir="${buildOutputPath}/release" />
         <mkdir dir="${buildOutputPath}/doc" />
         <property name="prepare.done" value="true" />
@@ -128,6 +129,16 @@
         <echo message="Finished checking for duplicated code" level="info" />
     </target>
 
+    <!-- Software metrics -->
+    <target name="pdepend">
+        <exec executable="${toolsdir}pdepend">
+            <arg value="--jdepend-xml=${buildOutputPath}/pdepend/jdepend.xml" />
+            <arg value="--jdepend-chart=${buildOutputPath}/pdepend/dependencies.svg" />
+            <arg value="--overview-pyramid=${buildOutputPath}/pdepend/overview-pyramid.svg" />
+            <arg path="${basedir}/src" />
+        </exec>
+    </target>
+
     <!-- Project size measurement -->
     <target name="phploc"
             depends="composer">
@@ -145,19 +156,6 @@
         </exec>
 
         <echo message="Finished project size measurement" level="info" />
-    </target>
-
-    <!-- PSR-2 coding standart optimalization. Just for release only. We replace it with own coding standard later on -->
-    <target name="cs-fix" depends="phpunit" description="Optimizing coding standard for PSR-2">
-        <echo message="Fixing condig standard to compatible with PSR-2" level="info" />
-
-        <exec executable="php-cs-fixer" failonerror="false">
-            <arg value="fix" />
-            <arg path="${basedir}/src/" />
-            <arg value="--level=psr2" />
-        </exec>
-
-        <echo message="Finished CS fixing" level="info" />
     </target>
 
     <!-- Documentation generation -->
