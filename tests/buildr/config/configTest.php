@@ -1,6 +1,6 @@
 <?php namespace buildr\tests\config;
 
-use \buildr\tests\buildr_TestCase as BuildRTestCase;
+use \buildr\tests\Buildr_TestCase as BuildRTestCase;
 
 class configTest extends BuildRTestCase {
 

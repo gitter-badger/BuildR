@@ -1,6 +1,6 @@
 <?php namespace buildr\tests\utils;
 
-use \buildr\tests\buildr_TestCase as BuildRTestCase;
+use \buildr\tests\Buildr_TestCase as BuildRTestCase;
 
 /**
  * BuildR - PHP based continuous integration server

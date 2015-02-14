@@ -15,7 +15,7 @@ use Faker\Factory;
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
  */
-class buildr_TestCase extends \PHPUnit_Framework_TestCase {
+class Buildr_TestCase extends \PHPUnit_Framework_TestCase {
 
     /**
      * @var \Faker\Generator

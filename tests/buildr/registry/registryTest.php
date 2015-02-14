@@ -1,6 +1,6 @@
 <?php namespace buildr\tests\registry;
 
-use \buildr\tests\buildr_TestCase as BuildRTestCase;
+use \buildr\tests\Buildr_TestCase as BuildRTestCase;
 
 class registryTest extends BuildRTestCase {
 
