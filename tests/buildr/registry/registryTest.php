@@ -1,15 +1,17 @@
-<?php
+<?php namespace buildr\tests\registry;
 
-class registryTest extends buildr_TestCase {
+use \buildr\tests\buildr_TestCase as BuildRTestCase;
+
+class registryTest extends BuildRTestCase {
 
     const TEST_BINDING_NAME = "testClass";
     const TEST_VARIABLE_NAME = "testVariable";
 
     public function testIsStoreClassesProperly() {
-        $classToStore = new stdClass();
+        $classToStore = new \stdClass();
 
         \buildr\Registry\Registry::bindClass(self::TEST_BINDING_NAME, $classToStore);
-        $reflector = new ReflectionClass(\buildr\Registry\Registry::class);
+        $reflector = new \ReflectionClass(\buildr\Registry\Registry::class);
         $containedClasses = $reflector->getStaticProperties();
 
         $this->assertInstanceOf("stdClass", $containedClasses["classes"][self::TEST_BINDING_NAME]);
@@ -33,7 +35,7 @@ class registryTest extends buildr_TestCase {
         $toStore = "testValue";
 
         \buildr\Registry\Registry::setVariable(SELF::TEST_VARIABLE_NAME, $toStore);
-        $reflector = new ReflectionClass(\buildr\Registry\Registry::class);
+        $reflector = new \ReflectionClass(\buildr\Registry\Registry::class);
         $containedVariables = $reflector->getStaticProperties();
 
         $this->assertEquals($toStore, $containedVariables["variables"][self::TEST_VARIABLE_NAME]);

@@ -1,4 +1,6 @@
-<?php
+<?php namespace buildr\tests;
+
+use Faker\Factory;
 
 /**
  * BuildR - PHP based continuous integration server
@@ -13,15 +15,15 @@
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
  */
-class buildr_TestCase extends PHPUnit_Framework_TestCase {
+class buildr_TestCase extends \PHPUnit_Framework_TestCase {
 
     /**
-     * @var Faker\Generator
+     * @var \Faker\Generator
      */
     protected $faker = NULL;
 
     public function __construct($name = null, array $data = array(), $dataName = '') {
-        $this->faker = Faker\Factory::create();
+        $this->faker = Factory::create();
 
         parent::__construct($name, $data, $dataName);
     }

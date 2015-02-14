@@ -96,7 +96,7 @@ class PSR4ClassLoader implements classLoaderInterface {
     /**
      * The loader unique name
      *
-     * @return string
+     * @return \buildr\Loader\classLoaderInterface
      */
     public function getName() {
         return "PSR4ClassLoader";

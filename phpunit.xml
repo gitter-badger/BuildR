@@ -11,6 +11,8 @@
         <testsuite name="BuildR - Main">
             <directory suffix="Test.php">./tests/buildr/registry</directory>
             <directory suffix="Test.php">./tests/buildr/config</directory>
+            <directory suffix="Test.php">./tests/buildr/serviceProvider</directory>
+            <directory suffix="Test.php">./tests/buildr/facade</directory>
         </testsuite>
     </testsuites>
 

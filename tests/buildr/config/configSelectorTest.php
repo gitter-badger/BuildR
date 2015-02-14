@@ -1,6 +1,8 @@
-<?php
+<?php namespace buildr\tests\config;
 
-class configSelectorTest extends buildr_TestCase {
+use \buildr\tests\buildr_TestCase as BuildRTestCase;
+
+class configSelectorTest extends BuildRTestCase {
 
     /**
      * @expectedException \InvalidArgumentException

@@ -1,6 +1,8 @@
-<?php
+<?php namespace buildr\tests\config;
 
-class configTest extends buildr_TestCase {
+use \buildr\tests\buildr_TestCase as BuildRTestCase;
+
+class configTest extends BuildRTestCase {
 
     /**
      * @expectedException \InvalidArgumentException
@@ -30,7 +32,7 @@ class configTest extends buildr_TestCase {
     }
 
     public function testFileIsAlreadyOnTheCache() {
-        $reflector = new ReflectionClass(\buildr\Config\Config::class);
+        $reflector = new \ReflectionClass(\buildr\Config\Config::class);
         $properties = $reflector->getStaticProperties();
 
         $this->assertArrayHasKey('test', $properties['configCache']);
@@ -45,7 +47,7 @@ class configTest extends buildr_TestCase {
     }
 
     public function testEnvironmentDetectionConfigGet() {
-        $reflector = new ReflectionClass(\buildr\Config\Config::class);
+        $reflector = new \ReflectionClass(\buildr\Config\Config::class);
         $method = $reflector->getMethod("getEnvDetectionConfig");
         $method->setAccessible(TRUE);
         $result = $method->invoke($reflector->newInstance());

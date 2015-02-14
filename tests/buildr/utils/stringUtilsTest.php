@@ -1,4 +1,6 @@
-<?php
+<?php namespace buildr\tests\utils;
+
+use \buildr\tests\buildr_TestCase as BuildRTestCase;
 
 /**
  * BuildR - PHP based continuous integration server
@@ -13,7 +15,7 @@
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
  */
-class stringUtilsTest extends buildr_TestCase {
+class stringUtilsTest extends BuildRTestCase {
 
     /**
      * @dataProvider startWithProvider

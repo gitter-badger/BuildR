@@ -17,7 +17,12 @@ require_once $startupLocation;
 \buildr\Startup\BuildrStartup::initializeAutoloading($basePath, TRUE);
 buildr\Startup\BuildrEnvironment::setEnv(\buildr\Startup\BuildrEnvironment::E_TESTING);
 
-//Loading base test class
-$testCasePath = realpath("./tests/buildr/Buildr_TestCase.php");
+//Do additional autoloading
+$loader = \buildr\Startup\BuildrStartup::getAutoloader();
+$PSR4Loader = $loader->getLoaderByName("PSR4ClassLoader");
 
-require_once $testCasePath;
+$testsPath = realpath($basePath . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR . 'buildr') . DIRECTORY_SEPARATOR;
+
+$PSR4Loader->registerNamespace('buildr\\tests\\', $testsPath);
+
+
