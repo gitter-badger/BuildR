@@ -8,8 +8,13 @@ class ServiceProvider {
      * Register service providers by array
      *
      * @param array $providersArray
+     * @throw \InvalidArgumentException
      */
     public static function registerProvidersByArray($providersArray) {
+        if(!is_array($providersArray)) {
+            throw new \InvalidArgumentException("This method must take an array as argument!");
+        }
+
         foreach($providersArray as $providerClassName) {
             self::registerByName($providerClassName);
         }
