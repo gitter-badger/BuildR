@@ -49,9 +49,9 @@ class stringUtilsTest extends BuildRTestCase {
     /**
      * @dataProvider patternProvider
      */
-    public function testPattern($word, $pattern) {
+    public function testPattern($word, $pattern, $expected) {
         $res = \buildr\Utils\String\StringUtils::match($word, $pattern);
-        $this->assertTrue($res);
+        $this->assertEquals($expected, $res);
     }
 
     /**
@@ -81,6 +81,7 @@ class stringUtilsTest extends BuildRTestCase {
             $return[] =  [$word, $start, $p];
         }
 
+        $return[] = ["testValue", "testValueNotEnd", "testValue"];
         return $return;
     }
 
@@ -95,6 +96,7 @@ class stringUtilsTest extends BuildRTestCase {
             $return[] =  [$word, $start, $p];
         }
 
+        $return[] = ["testValue", "notStartTestValue", "testValue"];
         return $return;
     }
 
@@ -121,6 +123,7 @@ class stringUtilsTest extends BuildRTestCase {
             $return[] =  [$word, $end];
         }
 
+        $return[] = ["nullValue", ""];
         return $return;
     }
 
@@ -156,17 +159,19 @@ class stringUtilsTest extends BuildRTestCase {
             $return[] = [$word, $position, $char];
         }
 
+        $return[] = ["asd", 4, null];
         return $return;
     }
 
     public function patternProvider() {
         $return = [];
 
-        $return[] = ["Lorem", "Lo.em"];
-        $return[] = ["Lorem", "Lo*m"];
-        $return[] = ["Lorem", ".orem"];
-        $return[] = ["Lorem", "L.r.m"];
-        $return[] = ["Lorem", "*r.m"];
+        $return[] = ["Lorem", "Lo.em", TRUE];
+        $return[] = ["Lorem", "Lo*m", TRUE];
+        $return[] = ["Lorem", ".orem", TRUE];
+        $return[] = ["Lorem", "L.r.m", TRUE];
+        $return[] = ["Lorem", "*r.m", TRUE];
+        $return[] = ["testValue", "*r.m", FALSE];
 
         return $return;
     }

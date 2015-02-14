@@ -16,6 +16,7 @@
 /**
  * Var-dumps the given variable
  *
+ * @codeCoverageIgnore
  * @param mixed $var
  */
 function d($var) {
@@ -25,6 +26,7 @@ function d($var) {
 /**
  * Var-dumps the given variable and stop the program execution
  *
+ * @codeCoverageIgnore
  * @param mixed $var
  */
 function dd($var) {
