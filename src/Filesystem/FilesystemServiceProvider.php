@@ -14,6 +14,8 @@ use buildr\ServiceProvider\ServiceProviderInterface;
  * @copyright    Copyright 2015, Zoltán Borsos.
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
+ *
+ * @codeCoverageIgnore
  */
 class FilesystemServiceProvider implements ServiceProviderInterface {
 

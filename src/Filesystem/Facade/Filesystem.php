@@ -22,6 +22,8 @@ use buildr\Facade\Facade;
  * @method static bool touch(string $fileLocation) Touches the file, and creates when its not exits
  * @method static string makeAbsolute(string $location) Makes a location to absolute link
  * @method string bool touch($fileLocation) Touches a file. If not exist, it will create, or set the modification time to current system time
+ *
+ * @codeCoverageIgnore
  */
 class Filesystem extends Facade {
 
