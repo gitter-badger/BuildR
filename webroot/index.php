@@ -1,7 +1,7 @@
 <?php
 
 //System-safe absolute path generation
-$basePath = realpath('..');
+$basePath = realpath(dirname(__DIR__));
 
 $startupLocation = [$basePath, 'src', 'Startup', 'BuildrStartup.php'];
 $startupLocation = implode(DIRECTORY_SEPARATOR, $startupLocation);

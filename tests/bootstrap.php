@@ -3,7 +3,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
-$basePath = realpath('.');
+$basePath = realpath(dirname(__DIR__));
 
 //System-safe absolute path generation
 $startupLocation = [$basePath, 'src', 'Startup', 'BuildrStartup.php'];
