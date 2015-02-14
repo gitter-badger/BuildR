@@ -50,4 +50,19 @@ class serviceProviderTest extends BuilderTestCase {
         $method->invokeArgs($classReflector->newInstanceWithoutConstructor(), ['\buildr\tests\serviceProvider\dummy\dummyProviderWithoutSubclass']);
     }
 
+    public function testRegistration() {
+        $providers = [
+            '\buildr\tests\serviceProvider\dummy\dummyProviderOne',
+            '\buildr\tests\serviceProvider\dummy\dummyProviderTwo'
+        ];
+
+        ServiceProvider::registerProvidersByArray($providers);
+
+        $registryReflector = new \ReflectionClass('\buildr\Registry\Registry');
+        $properties = $registryReflector->getStaticProperties();
+
+        $this->assertInstanceOf('\stdClass', $properties['classes']['dummyOne']);
+        $this->assertInstanceOf('\stdClass', $properties['classes']['dummyTwo']);
+    }
+
 }
