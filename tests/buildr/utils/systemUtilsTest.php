@@ -1,6 +1,8 @@
-<?php
+<?php namespace buildr\tests\utils;
 
-class systemUtilsTest extends buildr_TestCase {
+use \buildr\tests\buildr_TestCase as BuildRTestCase;
+
+class systemUtilsTest extends BuildRTestCase {
 
     public function testProperDetectOsType() {
         $osType = \buildr\Utils\System\SystemUtils::getOsType();
