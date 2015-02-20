@@ -14,17 +14,20 @@ use buildr\Registry\Registry;
  * @copyright    Copyright 2015, Zoltán Borsos.
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
+ *
+ * @codeCoverageIgnore
  */
-class Facade {
+abstract class Facade {
 
-    public static function getBindingName() {
-        ;
-    }
+    abstract public function getBindingName();
 
     public static function __callStatic($method, $arguments) {
-        $bindingName = static::getBindingName();
-        $class = Registry::getClass($bindingName);
+        $reflector = new \ReflectionClass(static::class);
 
+        $bindingName = $reflector->getMethod('getBindingName')
+            ->invoke($reflector->newInstanceWithoutConstructor());
+
+        $class = Registry::getClass($bindingName);
         return call_user_func_array([$class, $method], $arguments);
     }
 

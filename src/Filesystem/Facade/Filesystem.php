@@ -27,7 +27,7 @@ use buildr\Facade\Facade;
  */
 class Filesystem extends Facade {
 
-    public static function getBindingName() {
+    public function getBindingName() {
         return "filesystem";
     }
 
