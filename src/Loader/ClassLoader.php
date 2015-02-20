@@ -24,6 +24,8 @@ class ClassLoader {
 
     /**
      * Properly include all files require for autoloading support
+     *
+     * @codeCoverageIgnore
      */
     public static function loadAutoLoader() {
         //Include interface first All class depends on it
@@ -47,7 +49,6 @@ class ClassLoader {
      * until a free priority space available. If this occurs this trigger an E_USER_NOTICE
      *
      * On register, this function class the loader register() method. It will allows to listen to loader registration
-     *
      *
      * @param \buildr\Loader\classLoaderInterface $classLoader
      * @return bool
@@ -88,7 +89,7 @@ class ClassLoader {
             return $this->loaders[$priority];
         }
 
-        throw new \InvalidArgumentException("Not found any class Loader for priority {$index}!");
+        throw new \InvalidArgumentException("Not found any class Loader for priority {$priority}!");
     }
 
     /**
@@ -96,14 +97,20 @@ class ClassLoader {
      * This name is hard-coded on all loader class
      *
      * @param string $loaderName
-     * @return \buildr\Loader\classLoaderInterface
+     * @return \buildr\Loader\classLoaderInterface[]
      * @throws \InvalidArgumentException
      */
     public function getLoaderByName($loaderName) {
+        $loaders = [];
+
         foreach($this->loaders as $loader) {
             if($loader->getName() == $loaderName) {
-                return $loader;
+                $loaders[] = $loader;
             }
+        }
+
+        if(count($loaders) > 0) {
+            return $loaders;
         }
 
         throw new \InvalidArgumentException("Not found any class Loader, tagged with \"{$loaderName}\" name!");
@@ -127,6 +134,8 @@ class ClassLoader {
     /**
      * Main initialization method, it just simply register this class for autoloading
      * with spl_autoload_register() method.
+     *
+     * @codeCoverageIgnore
      */
     public function initialize() {
         spl_autoload_register(__NAMESPACE__ . '\ClassLoader::loadClass');
