@@ -1,5 +1,8 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', 'On');
+
 //System-safe absolute path generation
 $basePath = realpath(dirname(__DIR__));
 

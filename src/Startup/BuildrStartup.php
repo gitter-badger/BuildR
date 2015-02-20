@@ -1,6 +1,7 @@
 <?php namespace buildr\Startup;
 
 use buildr\Config\Config;
+use buildr\Filesystem\Facade\Filesystem;
 use buildr\Loader\classMapClassLoader;
 use buildr\Registry\Registry;
 use buildr\ServiceProvider\ServiceProvider;
@@ -41,17 +42,19 @@ class BuildrStartup {
         //Initialize Patchwork/utf8 mbstring replacement
         Bootup::initMbstring();
 
-        //Bind installation paths to registry
-        self::bindInstallPath();
-
         //Environment detection and registration
         $environment = BuildrEnvironment::getEnv();
         Registry::setVariable('buildr.environment.protected', $environment);
 
-        //Registering services to registry by configuration
+        self::registerProviders();
+    }
+
+    /**
+     * Registering services to registry by configuration
+     */
+    public static final function registerProviders() {
         $serviceProviders = Config::get("registry.serviceProviders");
         ServiceProvider::registerProvidersByArray($serviceProviders);
-
     }
 
     /**
