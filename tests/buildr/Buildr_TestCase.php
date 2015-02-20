@@ -28,6 +28,31 @@ class Buildr_TestCase extends \PHPUnit_Framework_TestCase {
         parent::__construct($name, $data, $dataName);
     }
 
+    protected function getPrivatePropertyFromClass($className, $propertyName, $concreteClass = NULL) {
+        $reflector = new \ReflectionClass($className);
+
+        $propertyReflector = $reflector->getProperty($propertyName);
+        $propertyReflector->setAccessible(TRUE);
+
+        if($concreteClass !== NULL) {
+            return $propertyReflector->getValue($concreteClass);
+        }
+
+        return $propertyReflector->getValue($reflector->newInstanceWithoutConstructor());
+    }
+
+    protected function invokePrivateMethod($className, $methodName, $methodArguments = [], $concreteClass = NULL) {
+        $reflector = new \ReflectionClass($className);
+
+        $methodReflector = $reflector->getMethod($methodName);
+        $methodReflector->setAccessible(TRUE);
+
+        if($concreteClass !== NULL) {
+            return $methodReflector->invokeArgs($concreteClass, $methodArguments);
+        }
+
+        return $methodReflector->invokeArgs($reflector->newInstanceWithoutConstructor(), $methodArguments);
+    }
 
     protected function setUp() {
 

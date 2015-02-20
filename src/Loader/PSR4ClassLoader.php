@@ -17,6 +17,8 @@ use buildr\Loader\classLoaderInterface;
  */
 class PSR4ClassLoader implements classLoaderInterface {
 
+    const NAME = "PSR4ClassLoader";
+
     /**
      * Priority holder
      *
@@ -35,6 +37,7 @@ class PSR4ClassLoader implements classLoaderInterface {
      * Called on loader registration. Its allow to listen to registration event
      *
      * @return void
+     * @codeCoverageIgnore
      */
     public function register() {
         ;
@@ -99,7 +102,7 @@ class PSR4ClassLoader implements classLoaderInterface {
      * @return \buildr\Loader\classLoaderInterface
      */
     public function getName() {
-        return "PSR4ClassLoader";
+        return self::NAME;
     }
 
     /**

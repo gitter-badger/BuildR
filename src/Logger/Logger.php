@@ -15,8 +15,4 @@
  */
 class Logger {
 
-    public function log($message) {
-        echo "Log my message: " . $message;
-    }
-
 }

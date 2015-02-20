@@ -20,7 +20,7 @@ require_once $startupLocation;
 
 //Registering PSR4 namespace for tests
 $loader = \buildr\Startup\BuildrStartup::getAutoloader();
-$PSR4Loader = $loader->getLoaderByName("PSR4ClassLoader")[0];
+$PSR4Loader = $loader->getLoaderByName(\buildr\Loader\PSR4ClassLoader::NAME)[0];
 
 $testsPath = realpath($basePath . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR . 'buildr') . DIRECTORY_SEPARATOR;
 

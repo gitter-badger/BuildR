@@ -15,6 +15,8 @@
  */
 class ClassMapClassLoader implements classLoaderInterface {
 
+    const NAME = "classMapClassLoader";
+
     /**
      * @type int
      */
@@ -34,6 +36,7 @@ class ClassMapClassLoader implements classLoaderInterface {
      * Called on loader registration. Its allow to listen to registration event
      *
      * @return void
+     * @codeCoverageIgnore
      */
     public function register() {
         $this->preLoadRegisteredFiles();
@@ -99,7 +102,7 @@ class ClassMapClassLoader implements classLoaderInterface {
      * @return string
      */
     public function getName() {
-        return "classMapClassLoader";
+        return self::NAME;
     }
 
     /**
