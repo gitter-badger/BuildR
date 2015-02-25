@@ -22,12 +22,21 @@ class Buildr_TestCase extends \PHPUnit_Framework_TestCase {
      */
     protected $faker = NULL;
 
-    public function __construct($name = null, array $data = array(), $dataName = '') {
+    public function __construct($name = null, array $data = [], $dataName = '') {
         $this->faker = Factory::create();
 
         parent::__construct($name, $data, $dataName);
     }
 
+    /**
+     * Get a private property content from class using reflection if the concrete class is provided,
+     * reds the property from the concrete class not from a new one
+     *
+     * @param string $className
+     * @param string $propertyName
+     * @param null|\stdClass $concreteClass
+     * @return mixed
+     */
     protected function getPrivatePropertyFromClass($className, $propertyName, $concreteClass = NULL) {
         $reflector = new \ReflectionClass($className);
 
@@ -41,7 +50,18 @@ class Buildr_TestCase extends \PHPUnit_Framework_TestCase {
         return $propertyReflector->getValue($reflector->newInstanceWithoutConstructor());
     }
 
-    protected function invokePrivateMethod($className, $methodName, $methodArguments = [], $concreteClass = NULL) {
+    /**
+     * Invoke a private property on a class. If you pass a concrete class the method be called on the concrete,
+     * in other case it instantiate a new class without calling the constructor.
+     * Call the method and returns the result
+     *
+     * @param string $className
+     * @param string $methodName
+     * @param array $methodArguments
+     * @param null|\stdClass $concreteClass
+     * @return mixed
+     */
+    protected function invokePrivateMethod($className, $methodName, array $methodArguments = [], $concreteClass = NULL) {
         $reflector = new \ReflectionClass($className);
 
         $methodReflector = $reflector->getMethod($methodName);

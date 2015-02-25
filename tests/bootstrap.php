@@ -15,7 +15,7 @@ require_once $startupLocation;
 
 //Do startup initialization and set environment to testing
 \buildr\Startup\BuildrStartup::initializeAutoloading($basePath, TRUE);
-\buildr\Startup\BuildrEnvironment::setEnv(\buildr\Startup\BuildrEnvironment::E_TESTING);
+\buildr\Startup\BuildrEnvironment::isRunningUnitTests();
 \buildr\Startup\BuildrStartup::registerProviders();
 
 //Registering PSR4 namespace for tests

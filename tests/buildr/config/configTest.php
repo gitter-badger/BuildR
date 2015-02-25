@@ -43,7 +43,7 @@ class configTest extends BuildRTestCase {
     }
 
     public function testConfigKeyGetWhenNoEnvironmentalFile() {
-        \buildr\Config\Config::get("environment.production");
+        \buildr\Config\Config::get("environment.domains.production");
     }
 
     public function testEnvironmentDetectionConfigGet() {
@@ -52,7 +52,7 @@ class configTest extends BuildRTestCase {
         $method->setAccessible(TRUE);
         $result = $method->invoke($reflector->newInstance());
 
-        $this->assertTrue($result);
+        $this->assertArrayHasKey("domains", $result);
     }
 
 }

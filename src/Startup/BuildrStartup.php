@@ -43,7 +43,9 @@ class BuildrStartup {
         Bootup::initMbstring();
 
         //Environment detection and registration
+        BuildrEnvironment::detectEnvironment();
         $environment = BuildrEnvironment::getEnv();
+
         Registry::setVariable('buildr.environment.protected', $environment);
 
         self::registerProviders();

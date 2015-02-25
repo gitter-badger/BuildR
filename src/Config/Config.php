@@ -63,7 +63,7 @@ class Config {
      */
     public static final function getEnvDetectionConfig() {
         $envConfig = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'environment.php');
-        $envConfig = require_once $envConfig;
+        $envConfig = require $envConfig;
 
         return $envConfig;
     }

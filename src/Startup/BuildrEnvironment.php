@@ -1,5 +1,7 @@
 <?php namespace buildr\Startup;
 use buildr\Config\Config;
+use buildr\Startup\Environment\Detector\EnvironmentException;
+use buildr\Startup\Environment\EnvironmentDetector;
 
 /**
  * BuildR - PHP based continuous integration server
@@ -39,7 +41,7 @@ class BuildrEnvironment {
     /**
      * @type string
      */
-    private static $detectedEnvironment;
+    private static $currentEnvironment;
 
     /**
      * @type bool
@@ -47,71 +49,62 @@ class BuildrEnvironment {
     private static $isInitialized = FALSE;
 
     /**
-     * Public function to get the detected environment name
+     * Returns the current environment of the application
      *
-     * @return string
+     * @return null|string
      */
     public static final function getEnv() {
         if(self::$isInitialized === FALSE) {
-            self::detectEnvironment();
-            self::$isInitialized = TRUE;
+            return NULL;
         }
 
-        return self::$detectedEnvironment;
+        return self::$currentEnvironment;
     }
 
     /**
-     * Modify the detected environment variable on-the-fly
+     * Run the environment detection. If the callback is a Closuer will run teh closure
+     * and returns the result, in other case get the detector class from the config
+     * and use the detect() method as the closer
      *
-     * @param string $environment
+     * @param \Closure|null $callback
+     * @throws \buildr\Startup\Environment\Detector\EnvironmentException
      */
-    public static final function setEnv($environment) {
-        if(!self::isRunningFromConsole()) {
-            throw new \RuntimeException("The setEnv() function is only used if the application is running from console!");
+    public static final function detectEnvironment($callback = null) {
+        $consoleArgs = (isset($_SERVER['argv'])) ? $_SERVER['argv'] : NULL;
+
+        if(!($callback instanceof \Closure)) {
+            $callback = self::getDetectorClosure();
         }
 
-        self::$detectedEnvironment = $environment;
+        self::$currentEnvironment = (new EnvironmentDetector())->detect($callback, $consoleArgs);
         self::$isInitialized = TRUE;
     }
 
     /**
-     * Determine of te current run is initiated from condole, or is a HTTP request
-     *
-     * @return bool
+     * Set environment to unit testing mode
      */
-    public static final function isRunningFromConsole() {
-        if(php_sapi_name() === "cli") {
-            return TRUE;
-        }
-
-        return FALSE;
+    public static final function isRunningUnitTests() {
+        self::$isInitialized = TRUE;
+        self::$currentEnvironment = self::E_TESTING;
     }
 
     /**
-     * Detect the environment by domain
+     * Returns the dynamically created closure from a Datector class detect() method
+     *
+     * @return callable
+     * @throws \buildr\Startup\Environment\Detector\EnvironmentException
      */
-    private static final function detectEnvironment() {
-        if(self::isRunningFromConsole()) {
-            self::$detectedEnvironment = self::E_DEV;
-            self::$isInitialized = TRUE;
-            return;
+    private static function getDetectorClosure() {
+        $envConfig = Config::getEnvDetectionConfig();
+        $detectorClass = $envConfig['detector'];
+        $detectorReflector = new \ReflectionClass($detectorClass);
+
+        if(!$detectorReflector->implementsInterface('buildr\Startup\Environment\Detector\DetectorInterface')) {
+            throw new EnvironmentException("The class ({$detectorClass}) must be implements the DetectorInterface!");
         }
 
-        $environmentConfig = Config::getEnvDetectionConfig();
-        $detectedEnvironment = static::E_DEV;
-
-        $host = $_SERVER['HTTP_HOST'];
-
-        foreach($environmentConfig as $environment => $domains) {
-            foreach($domains as $domain) {
-                if($domain == $host) {
-                    $detectedEnvironment = $environment;
-                }
-            }
-        }
-
-        self::$isInitialized = TRUE;
-        self::$detectedEnvironment = $detectedEnvironment;
+        $methodReflector = $detectorReflector->getMethod("detect");
+        return $methodReflector->getClosure($detectorReflector->newInstance());
     }
 
 }
