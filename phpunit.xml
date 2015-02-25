@@ -17,6 +17,7 @@
             <directory suffix="Test.php">./tests/buildr/serviceProvider</directory>
             <directory suffix="Test.php">./tests/buildr/loader</directory>
             <directory suffix="Test.php">./tests/buildr/environment</directory>
+            <directory suffix="Test.php">./tests/buildr/filesystem</directory>
         </testsuite>
     </testsuites>
 

@@ -53,7 +53,7 @@ class Filesystem {
     }
 
     /**
-     * Normalize directory, or file name by repalcing any slashes to system-proper directory separator
+     * Normalize directory, or file name by replacing any slashes to system-proper directory separator
      *
      * @param $path
      * @return mixed
@@ -62,6 +62,8 @@ class Filesystem {
         $replacements = [
             "/" => DIRECTORY_SEPARATOR,
             "\\" => DIRECTORY_SEPARATOR,
+            "//" => DIRECTORY_SEPARATOR,
+            "\\\\" => DIRECTORY_SEPARATOR,
         ];
 
         return str_replace(array_keys($replacements), array_values($replacements), $path);
@@ -93,12 +95,13 @@ class Filesystem {
      * Touches a file. If not exist, it will create, or set the modification time
      * to current system time
      *
-     * @param string $fileLocation
+     * @param string $location relative to project absolute root
+     * @param string $fileName
      * @return bool
      */
-    public final function touch($fileLocation) {
-        $absolute = $this->makeAbsolute($fileLocation);
-        return touch($absolute);
+    public final function touch($location, $fileName) {
+        $fileLocation = $this->getProjectAbsoluteRoot() . $this->normalizeSlashes($location) . DIRECTORY_SEPARATOR . $fileName;
+        return touch($fileLocation);
     }
 
     /**
