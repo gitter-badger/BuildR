@@ -62,12 +62,12 @@ class FileObjectTest extends BuilderTestCase {
     public function testItReturnsTheFileSizeCorrectlyAsHumanReadable() {
         $filesystem = new Filesystem();
         $testFile = $filesystem->getFile($filesystem->assembleDirSystemSafe(['tests', 'filesystem_fixtures', '10KbFile.txt']));
-        $sizeBytes = (SystemUtils::getOsType() == SystemUtils::OS_TYPE_WIN) ? $testFile->getSize(FALSE) + 1 : $testFile->getSize(FALSE);
+        $sizeBytes = $testFile->getSize(FALSE);
 
         $this->assertEquals("10.00 kB", $testFile->getSize());
         $this->assertEquals("10.00", $testFile->getSize(TRUE, 2, FALSE));
         $this->assertEquals("10", $testFile->getSize(TRUE, 0, FALSE));
-        $this->assertEquals("10240", $sizeBytes);
+        $this->assertEquals("10239", $sizeBytes);
     }
 
     public function testItPutsContentCorrectly() {
