@@ -102,9 +102,11 @@ class File {
     /**
      * Include this file to the include_path, its basically simple
      * requiring the file
+     *
+     * @return mixed
      */
     public final function requireOnce() {
-        require_once $this->fileLocation;
+        return require_once $this->fileLocation;
     }
 
     /**
