@@ -98,23 +98,22 @@ abstract class BaseSystemModule {
      * @return array
      */
     public function getUnSupportReason() {
-        if(($this->isLoaded() === FALSE) && ($this->isSupportedBySystem() === FALSE) && ($this->errorFunction !== NULL)) {
-            return ["This extension is not loaded!", "This system not support this extension!", "The following test function ({$this->errorFunction}) not found!"];
+        $messages = [];
+
+        switch(TRUE) {
+            case ($this->isLoaded() === FALSE):
+                $messages[] = "This extension is not loaded!";
+                break;
+            case ($this->isSupportedBySystem()):
+                $messages[] = "This extension is not supported on this OS!";
+                break;
+            case ($this->errorFunction != NULL):
+                $messages[] = "The following test function ({$this->errorFunction}) not found!";
+                break;
+            default:
+                break;
         }
 
-        if(!$this->isLoaded()) {
-            return ["This extension is not loaded!"];
-        }
-
-        if(!$this->isSupportedBySystem()) {
-            return ["This system not support this extension!"];
-        }
-
-        if($this->errorFunction !== NULL) {
-            return ["The following test function ({$this->errorFunction}) not found!"];
-        }
-
-        return [];
+        return $messages;
     }
-
 }

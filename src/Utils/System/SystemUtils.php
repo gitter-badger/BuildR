@@ -1,5 +1,6 @@
 <?php namespace buildr\Utils\System;
 use buildr\Utils\String\StringUtils;
+use buildr\Utils\System\Exception\ModuleNotSupportedException;
 
 /**
  * BuildR - PHP based continuous integration server
@@ -30,6 +31,7 @@ class SystemUtils {
      * Return the support of a SystemModule on current system
      *
      * @param array $extensionModule
+     * @throws \buildr\Utils\System\Exception\ModuleNotSupportedException
      * @return array
      */
     public static final function getExtensionSupport(array $extensionModule) {
@@ -45,7 +47,7 @@ class SystemUtils {
             if($moduleClass->isSupported()) {
                 $extensionStates[$moduleName] = TRUE;
             } else {
-                $extensionStates[$moduleName] = $moduleClass->getUnSupportReason();
+                throw new ModuleNotSupportedException($moduleName, $moduleClass->getUnSupportReason(), "The extension ({$moduleName}) is not supported!");
             }
 
             return $extensionStates;
