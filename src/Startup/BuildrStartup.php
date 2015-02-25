@@ -1,7 +1,6 @@
 <?php namespace buildr\Startup;
 
 use buildr\Config\Config;
-use buildr\Filesystem\Facade\Filesystem;
 use buildr\Loader\classMapClassLoader;
 use buildr\Registry\Registry;
 use buildr\ServiceProvider\ServiceProvider;

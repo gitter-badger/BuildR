@@ -50,6 +50,21 @@ class Buildr_TestCase extends \PHPUnit_Framework_TestCase {
         return $propertyReflector->getValue($reflector->newInstanceWithoutConstructor());
     }
 
+    protected function getStaticPropertyFromClass($className, $propertyName) {
+        $reflector = new \ReflectionClass($className);
+        $properties = $reflector->getStaticProperties();
+
+        return $properties[$propertyName];
+    }
+
+    protected function setStaticProperty($className, $propertyName, $newValue) {
+        $reflector = new \ReflectionClass($className);
+        $property = $reflector->getProperty($propertyName);
+        $property->setAccessible(TRUE);
+
+        $property->setValue($reflector->newInstance(), $newValue);
+    }
+
     /**
      * Invoke a private property on a class. If you pass a concrete class the method be called on the concrete,
      * in other case it instantiate a new class without calling the constructor.

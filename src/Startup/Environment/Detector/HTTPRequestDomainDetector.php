@@ -1,6 +1,7 @@
 <?php namespace buildr\Startup\Environment\Detector;
 
 use buildr\Config\Config;
+use buildr\Startup\BuildrEnvironment;
 use buildr\Startup\Environment\Detector\DetectorInterface;
 
 /**
@@ -34,5 +35,7 @@ class HTTPRequestDomainDetector implements DetectorInterface {
                 }
             }
         }
+
+        return BuildrEnvironment::E_DEV;
     }
 }

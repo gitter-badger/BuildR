@@ -1,4 +1,5 @@
 <?php namespace buildr\Startup;
+
 use buildr\Config\Config;
 use buildr\Startup\Environment\Detector\EnvironmentException;
 use buildr\Startup\Environment\EnvironmentDetector;
@@ -68,16 +69,27 @@ class BuildrEnvironment {
      *
      * @param \Closure|null $callback
      * @throws \buildr\Startup\Environment\Detector\EnvironmentException
+     * @codeCoverageIgnore
      */
     public static final function detectEnvironment($callback = null) {
         $consoleArgs = (isset($_SERVER['argv'])) ? $_SERVER['argv'] : NULL;
 
         if(!($callback instanceof \Closure)) {
-            $callback = self::getDetectorClosure();
+            $envConfig = Config::getEnvDetectionConfig();
+            $callback = self::getDetectorClosure($envConfig['detector']);
         }
 
         self::$currentEnvironment = (new EnvironmentDetector())->detect($callback, $consoleArgs);
         self::$isInitialized = TRUE;
+    }
+
+    public static function setEnv($environmentString) {
+        if(!is_string($environmentString)) {
+            throw new EnvironmentException("The setEnv() function must be take a string as argument!");
+        }
+
+        self::$isInitialized = TRUE;
+        self::$currentEnvironment = $environmentString;
     }
 
     /**
@@ -89,15 +101,18 @@ class BuildrEnvironment {
     }
 
     /**
-     * Returns the dynamically created closure from a Datector class detect() method
+     * Returns the dynamically created closure from a detector class detect() method
      *
-     * @return callable
+     * @param string $detectorClass
+     * @return \Closure
      * @throws \buildr\Startup\Environment\Detector\EnvironmentException
      */
-    private static function getDetectorClosure() {
-        $envConfig = Config::getEnvDetectionConfig();
-        $detectorClass = $envConfig['detector'];
-        $detectorReflector = new \ReflectionClass($detectorClass);
+    private static function getDetectorClosure($detectorClass) {
+        try {
+            $detectorReflector = new \ReflectionClass($detectorClass);
+        } catch(\ReflectionException $e) {
+            throw new EnvironmentException("The following detector class ({$detectorClass}) is not instantiable!");
+        }
 
         if(!$detectorReflector->implementsInterface('buildr\Startup\Environment\Detector\DetectorInterface')) {
             throw new EnvironmentException("The class ({$detectorClass}) must be implements the DetectorInterface!");

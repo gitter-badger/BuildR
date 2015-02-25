@@ -31,7 +31,7 @@ class EnvironmentDetector {
         if($consoleArgs != NULL) {
             $consoleEnv = $this->detectEnvByConsoleArgs($consoleArgs);
 
-            if($consoleArgs == NULL) {
+            if($consoleEnv == NULL) {
                 return BuildrEnvironment::E_CONSOLE;
             }
 
