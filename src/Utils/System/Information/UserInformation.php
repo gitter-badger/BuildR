@@ -2,7 +2,6 @@
 
 use buildr\Utils\System\SystemUtils;
 use buildr\Utils\System\Modules\PosixModule;
-use buildr\Utils\System\Exception\ModuleNotFoundException;
 
 /**
  * BuildR - PHP based continuous integration server

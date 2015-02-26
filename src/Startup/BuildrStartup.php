@@ -118,10 +118,6 @@ class BuildrStartup {
         return self::$loader;
     }
 
-    private static function bindInstallPath() {
-
-    }
-
     /**
      * Return the startup time in microseconds
      *

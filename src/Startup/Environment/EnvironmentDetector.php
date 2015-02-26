@@ -66,5 +66,4 @@ class EnvironmentDetector {
 
         return NULL;
     }
-
 }

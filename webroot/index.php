@@ -1,8 +1,5 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 'On');
-
 //System-safe absolute path generation
 $basePath = realpath(dirname(__DIR__));
 
@@ -15,3 +12,5 @@ require_once $startupLocation;
 
 //Do startup initialization
 \buildr\Startup\BuildrStartup::doStartup($basePath);
+
+echo 'Render Time: ' . substr(\buildr\Startup\BuildrStartup::getTimeSinceStartup() * 1000, 0, 4) . 'ms';
