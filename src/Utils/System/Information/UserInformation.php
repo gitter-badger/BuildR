@@ -44,9 +44,7 @@ class UserInformation {
      * @throws \buildr\Utils\System\Exception\ModuleNotFoundException
      */
     public function __construct($user) {
-        if(SystemUtils::getExtensionSupport([PosixModule::class])[PosixModule::MODULE_NAME] !== TRUE) {
-            throw new ModuleNotFoundException("The following module is not found on your system: " . PosixModule::MODULE_NAME);
-        }
+        SystemUtils::getExtensionSupport([PosixModule::class])[PosixModule::MODULE_NAME];
 
         if(is_numeric($user)) {
             $this->userId = (int) $user;

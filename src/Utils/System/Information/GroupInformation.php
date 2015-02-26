@@ -40,9 +40,7 @@ class GroupInformation {
      * @throws \buildr\Utils\System\Exception\ModuleNotFoundException
      */
     public function __construct($group) {
-        if(SystemUtils::getExtensionSupport([PosixModule::class])[PosixModule::MODULE_NAME] !== TRUE) {
-            throw new ModuleNotFoundException("The following module not found on your system: " . PosixModule::MODULE_NAME);
-        }
+        SystemUtils::getExtensionSupport([PosixModule::class])[PosixModule::MODULE_NAME];
 
         if(is_numeric($group)) {
             $this->groupId = (int) $group;

@@ -1,7 +1,7 @@
 <?php namespace buildr\Filesystem\Types;
 
+use buildr\Utils\System\Exception\ModuleNotSupportedException;
 use buildr\Utils\System\Information\GroupInformation;
-use buildr\Utils\System\Exception\ModuleNotFoundException;
 use buildr\Utils\System\Information\UserInformation;
 
 /**
@@ -31,7 +31,7 @@ trait PermissionsTrait {
         if($groupId !== FALSE) {
             try {
                 return new GroupInformation($groupId);
-            } catch(ModuleNotFoundException $e) {
+            } catch(ModuleNotSupportedException $e) {
                 return $groupId;
             }
         }
@@ -51,7 +51,7 @@ trait PermissionsTrait {
         if($ownerId !== FALSE) {
             try {
                 return new UserInformation($ownerId);
-            } catch(ModuleNotFoundException $e) {
+            } catch(ModuleNotSupportedException $e) {
                 return $ownerId;
             }
         }

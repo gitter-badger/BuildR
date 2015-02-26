@@ -1,7 +1,7 @@
 <?php namespace buildr\filesystem;
 
-use buildr\Filesystem\Filesystem;
-use buildr\Filesystem\Types\File;
+use \buildr\Utils\System\Information\GroupInformation;
+use \buildr\Utils\System\Information\UserInformation;
 use buildr\tests\Buildr_TestCase as BuilderTestCase;
 use buildr\Utils\String\StringUtils;
 use buildr\Utils\System\SystemUtils;
@@ -138,5 +138,27 @@ class FileObjectTest extends BuilderTestCase {
         $this->assertTrue(StringUtils::contains($filesystem->makeAbsolute("tests/filesystem_fixtures/move_test/singleFile.txt"), $filesystem->getProjectAbsoluteRoot()));
 
         @unlink($filesystem->makeAbsolute("tests/filesystem_fixtures/move_test/singleFile.txt"));
+    }
+
+    public function testItReturnsTheGroupProperly() {
+        $groupInfo = $this->fileObject->getGroup();
+
+        if(SystemUtils::getOsType() == SystemUtils::OS_TYPE_NIX) {
+            $this->assertInstanceOf(GroupInformation::class, $groupInfo);
+            return;
+        }
+
+        $this->assertTrue(is_numeric($groupInfo));
+    }
+
+    public function testItReturnsTheUserInfoProperly() {
+        $userInfo = $this->fileObject->getOwner();
+
+        if(SystemUtils::getOsType() == SystemUtils::OS_TYPE_NIX) {
+            $this->assertInstanceOf(UserInformation::class, $userInfo);
+            return;
+        }
+
+        $this->assertTrue(is_numeric($userInfo));
     }
 }
