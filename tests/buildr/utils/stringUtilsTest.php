@@ -1,6 +1,8 @@
 <?php namespace buildr\tests\utils;
 
 use \buildr\tests\Buildr_TestCase as BuildRTestCase;
+use buildr\Utils\String\Pattern;
+use TheSeer\fDOM\Tests\fDOMXPathTest;
 
 /**
  * BuildR - PHP based continuous integration server
@@ -68,6 +70,13 @@ class stringUtilsTest extends BuildRTestCase {
     public function testTrimEnd($word, $trimWord, $result) {
         $res = \buildr\Utils\String\StringUtils::trimFromEnd($word, $trimWord);
         $this->assertEquals($result, $res);
+    }
+
+    public function testPatternReturnsTheOriginalPattern() {
+        $pattern ='Lo.em';
+        $patternClass = new Pattern($pattern);
+
+        $this->assertEquals($pattern, $patternClass->getOriginal());
     }
 
     public function trimEndProvider() {
