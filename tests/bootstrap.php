@@ -13,17 +13,16 @@ $startupLocation = realpath($startupLocation);
 //Load startup class
 require_once $startupLocation;
 
-//Do startup initialization and set environment to testing
-\buildr\Startup\BuildrStartup::initializeAutoloading($basePath, TRUE);
-\buildr\Startup\BuildrEnvironment::isRunningUnitTests();
-\buildr\Startup\BuildrStartup::registerProviders();
+/**
+ * Startup Initialization block
+ */
 
-//Registering PSR4 namespace for tests
-$loader = \buildr\Startup\BuildrStartup::getAutoloader();
-$PSR4Loader = $loader->getLoaderByName(\buildr\Loader\PSR4ClassLoader::NAME)[0];
+//Initialize the autoloader
+\buildr\Startup\BuildrStartup::setBasePath($basePath);
+\buildr\Startup\BuildrStartup::initializeAutoloading(TRUE);
 
-$testsPath = realpath($basePath . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR . 'buildr') . DIRECTORY_SEPARATOR;
-
-$PSR4Loader->registerNamespace('buildr\\tests\\', $testsPath);
+//Run the initializer
+$startup = new \buildr\Startup\BuildrStartup();
+$startup->setInitializer(new \buildr\Startup\Initializer\UnitTestingInitializer());
 
 

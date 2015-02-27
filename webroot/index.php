@@ -10,7 +10,16 @@ $startupLocation = realpath($startupLocation);
 //Load startup class
 require_once $startupLocation;
 
-//Do startup initialization
-\buildr\Startup\BuildrStartup::doStartup($basePath);
+/**
+ * Startup Initialization block
+ */
+
+//Initialize the autoloader
+\buildr\Startup\BuildrStartup::setBasePath($basePath);
+\buildr\Startup\BuildrStartup::initializeAutoloading(TRUE);
+
+//Run the initializer
+$startup = new \buildr\Startup\BuildrStartup();
+$startup->setInitializer(new \buildr\Startup\Initializer\WebInitializer);
 
 echo 'Render Time: ' . substr(\buildr\Startup\BuildrStartup::getTimeSinceStartup() * 1000, 0, 4) . 'ms';

@@ -1,10 +1,8 @@
 <?php namespace buildr\Startup;
 
-use buildr\Config\Config;
 use buildr\Loader\classMapClassLoader;
-use buildr\Registry\Registry;
-use buildr\ServiceProvider\ServiceProvider;
-use Patchwork\Utf8\Bootup;
+use buildr\Startup\Exception\StartupException;
+use buildr\Startup\Initializer\InitializerInterface;
 
 /**
  * BuildR - PHP based continuous integration server
@@ -34,42 +32,61 @@ class BuildrStartup {
     private static $loader;
 
     /**
-     * Do the startup initialization on web requests
-     *
-     * @param string $basePath
-     * @throws \buildr\Registry\Exception\ProtectedVariableException
+     * @type string
      */
-    public static function doStartup($basePath) {
-        //Set the startup time, to debug processing time
-        self::$startupTime = microtime(true);
+    private static $basePath;
 
-        //Initialize autoloading
-        self::initializeAutoloading($basePath);
+    /**
+     * Constructor
+     */
+    public function __construct() {
 
-        //Initialize Patchwork/utf8 mbstring replacement
-        Bootup::initMbstring();
-
-        //Environment detection and registration
-        BuildrEnvironment::detectEnvironment();
-        $environment = BuildrEnvironment::getEnv();
-
-        Registry::setVariable('buildr.environment.protected', $environment);
-
-        self::registerProviders();
     }
 
     /**
-     * Registering services to registry by configuration
+     * Set the initializer class to be executed
+     *
+     * @param \buildr\Startup\Initializer\InitializerInterface $initializer
+     * @throws \buildr\Startup\Exception\StartupException
      */
-    public static final function registerProviders() {
-        $serviceProviders = Config::get("registry.serviceProviders");
-        ServiceProvider::registerProvidersByArray($serviceProviders);
+    public function setInitializer(InitializerInterface $initializer) {
+        if(self::$basePath == NULL) {
+            throw new StartupException("You must set up the basePath before initializing!");
+        }
+
+        self::$startupTime = microtime(TRUE);
+        $initializer->initialize(self::getBasePath(), self::getAutoloader());
+    }
+
+    /**
+     * Set the absolute base path of the current project
+     *
+     * @param string $basePath
+     */
+    public static final function setBasePath($basePath) {
+        self::$basePath = $basePath;
+    }
+
+    /**
+     * Return the absolute base path of the current project
+     *
+     * @return string
+     */
+    public static final function getBasePath() {
+        return self::$basePath;
     }
 
     /**
      * @param bool $withComposer
+     * @throws \buildr\Startup\Exception\StartupException
      */
-    public static final function initializeAutoloading($basePath, $withComposer = TRUE) {
+    public static final function initializeAutoloading($withComposer = TRUE) {
+        if(self::$basePath == NULL) {
+            throw new StartupException("You must set up the basePath before initializing the autoloader!");
+        }
+
+        $basePath = self::getBasePath();
+
         //System-safe absolute path generation
         $classLoaderLocation = [$basePath, 'src', 'Loader', 'ClassLoader.php'];
         $classLoaderLocation = implode(DIRECTORY_SEPARATOR, $classLoaderLocation);
