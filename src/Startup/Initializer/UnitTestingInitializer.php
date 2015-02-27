@@ -31,5 +31,7 @@ class UnitTestingInitializer extends BaseInitializer implements InitializerInter
         $PSR4Loader = $autoloader->getLoaderByName(\buildr\Loader\PSR4ClassLoader::NAME)[0];
         $testsPath = realpath($basePath . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR . 'buildr') . DIRECTORY_SEPARATOR;
         $PSR4Loader->registerNamespace('buildr\\tests\\', $testsPath);
+
+        $this->registerServiceProviders();
     }
 }
