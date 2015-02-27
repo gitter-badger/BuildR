@@ -1,7 +1,7 @@
 <?php namespace buildr\Filesystem;
 
 use buildr\Filesystem\Types\File;
-use buildr\Utils\String\StringUtils;
+use buildr\Utils\StringUtils;
 
 /**
  * BuildR - PHP based continuous integration server

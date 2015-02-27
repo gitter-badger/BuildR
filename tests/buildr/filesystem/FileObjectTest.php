@@ -3,7 +3,7 @@
 use \buildr\Utils\System\Information\GroupInformation;
 use \buildr\Utils\System\Information\UserInformation;
 use buildr\tests\Buildr_TestCase as BuilderTestCase;
-use buildr\Utils\String\StringUtils;
+use buildr\Utils\StringUtils;
 use buildr\Utils\System\SystemUtils;
 
 /**

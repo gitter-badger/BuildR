@@ -1,4 +1,4 @@
-<?php namespace buildr\Utils\String;
+<?php namespace buildr\Utils;
 
 /**
  * BuildR - PHP based continuous integration server

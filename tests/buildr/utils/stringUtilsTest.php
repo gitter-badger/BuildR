@@ -1,8 +1,8 @@
 <?php namespace buildr\tests\utils;
 
 use \buildr\tests\Buildr_TestCase as BuildRTestCase;
-use buildr\Utils\String\Pattern;
-use TheSeer\fDOM\Tests\fDOMXPathTest;
+use \buildr\Utils\Pattern;
+use \buildr\Utils\StringUtils;
 
 /**
  * BuildR - PHP based continuous integration server
@@ -23,28 +23,28 @@ class stringUtilsTest extends BuildRTestCase {
      * @dataProvider startWithProvider
      */
     public function testStartWith($word, $start) {
-        $this->assertTrue(\buildr\Utils\String\StringUtils::startWith($word, $start));
+        $this->assertTrue(StringUtils::startWith($word, $start));
     }
 
     /**
      * @dataProvider endWithProvider
      */
     public function testEndWith($word, $end) {
-        $this->assertTrue(\buildr\Utils\String\StringUtils::endWith($word, $end));
+        $this->assertTrue(StringUtils::endWith($word, $end));
     }
 
     /**
      * @dataProvider containsProvider
      */
     public function testContains($word, $part) {
-        $this->assertTrue(\buildr\Utils\String\StringUtils::contains($word, $part));
+        $this->assertTrue(StringUtils::contains($word, $part));
     }
 
     /**
      * @dataProvider charAtProvider
      */
     public function testCharAt($word, $position, $char) {
-        $givenChar = \buildr\Utils\String\StringUtils::charAt($word, $position);
+        $givenChar = StringUtils::charAt($word, $position);
         $this->assertEquals($char, $givenChar);
     }
 
@@ -52,7 +52,7 @@ class stringUtilsTest extends BuildRTestCase {
      * @dataProvider patternProvider
      */
     public function testPattern($word, $pattern, $expected) {
-        $res = \buildr\Utils\String\StringUtils::match($word, $pattern);
+        $res = StringUtils::match($word, $pattern);
         $this->assertEquals($expected, $res);
     }
 
@@ -60,7 +60,7 @@ class stringUtilsTest extends BuildRTestCase {
      * @dataProvider trimBeginningProvider
      */
     public function testTrimBeginning($word, $trimWord, $result) {
-        $res = \buildr\Utils\String\StringUtils::trimFromBeginning($word, $trimWord);
+        $res = StringUtils::trimFromBeginning($word, $trimWord);
         $this->assertEquals($result, $res);
     }
 
@@ -68,7 +68,7 @@ class stringUtilsTest extends BuildRTestCase {
      * @dataProvider trimEndProvider
      */
     public function testTrimEnd($word, $trimWord, $result) {
-        $res = \buildr\Utils\String\StringUtils::trimFromEnd($word, $trimWord);
+        $res = StringUtils::trimFromEnd($word, $trimWord);
         $this->assertEquals($result, $res);
     }
 

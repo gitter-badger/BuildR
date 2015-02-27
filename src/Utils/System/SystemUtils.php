@@ -1,5 +1,5 @@
 <?php namespace buildr\Utils\System;
-use buildr\Utils\String\StringUtils;
+use buildr\Utils\StringUtils;
 use buildr\Utils\System\Exception\ModuleNotSupportedException;
 
 /**

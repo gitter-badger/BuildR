@@ -1,7 +1,7 @@
 <?php namespace buildr\Startup\Environment;
 
 use buildr\Startup\BuildrEnvironment;
-use buildr\Utils\String\StringUtils;
+use buildr\Utils\StringUtils;
 
 /**
  * BuildR - PHP based continuous integration server
