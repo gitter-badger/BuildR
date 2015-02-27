@@ -1,6 +1,7 @@
 <?php namespace buildr\Startup\Initializer;
 
 use buildr\Config\Config;
+use buildr\Loader\classLoader;
 use buildr\ServiceProvider\ServiceProvider;
 
 /**
@@ -15,9 +16,25 @@ use buildr\ServiceProvider\ServiceProvider;
  * @copyright    Copyright 2015, Zoltán Borsos.
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
+ *
+ * @codeCoverageIgnore
  */
-class BaseInitializer {
+class BaseInitializer implements InitializerInterface {
 
+    /**
+     * Run the startup initialization process
+     *
+     * @param string $basePath
+     * @param \buildr\Loader\classLoader $autoloader
+     * @return bool
+     */
+    public function initialize($basePath, classLoader $autoloader) {
+        $this->registerServiceProviders();
+    }
+
+    /**
+     * Register the service providers in the registry
+     */
     protected function registerServiceProviders() {
         $serviceProviders = Config::get("registry.serviceProviders");
         ServiceProvider::registerProvidersByArray($serviceProviders);

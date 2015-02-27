@@ -3,6 +3,10 @@
 use buildr\Loader\classMapClassLoader;
 use buildr\Startup\Exception\StartupException;
 use buildr\Startup\Initializer\InitializerInterface;
+use buildr\Utils\Reflection\ReflectionUtils;
+use \Closure;
+use \ReflectionClass;
+use \ReflectionMethod;
 
 /**
  * BuildR - PHP based continuous integration server
@@ -16,8 +20,6 @@ use buildr\Startup\Initializer\InitializerInterface;
  * @copyright    Copyright 2015, Zoltán Borsos.
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
- *
- * @codeCoverageIgnore
  */
 class BuildrStartup {
 
@@ -37,25 +39,38 @@ class BuildrStartup {
     private static $basePath;
 
     /**
-     * Constructor
-     */
-    public function __construct() {
-
-    }
-
-    /**
      * Set the initializer class to be executed
      *
-     * @param \buildr\Startup\Initializer\InitializerInterface $initializer
+     * @param \Closure|\buildr\Startup\Initializer\InitializerInterface $initializer
      * @throws \buildr\Startup\Exception\StartupException
+     *
+     * @codeCoverageIgnore
      */
-    public function setInitializer(InitializerInterface $initializer) {
+    public function setInitializer($initializer) {
+        self::$startupTime = microtime(TRUE);
+
         if(self::$basePath == NULL) {
             throw new StartupException("You must set up the basePath before initializing!");
         }
 
-        self::$startupTime = microtime(TRUE);
-        $initializer->initialize(self::getBasePath(), self::getAutoloader());
+        $initializerClosure = $this->getClosureForInitializer($initializer);
+        call_user_func_array($initializerClosure, [self::getBasePath(), self::getAutoloader()]);
+    }
+
+    /**
+     * Get the closure for initializer class
+     *
+     * @param \Closure|\buildr\Startup\Initializer\InitializerInterface $initializer
+     * @return callable
+     *
+     * @codeCoverageIgnore
+     */
+    private function getClosureForInitializer($initializer) {
+        if($initializer instanceof Closure) {
+            return $initializer;
+        }
+
+        return ReflectionUtils::getClosureForMethod(get_class($initializer), 'initialize');
     }
 
     /**
@@ -79,6 +94,8 @@ class BuildrStartup {
     /**
      * @param bool $withComposer
      * @throws \buildr\Startup\Exception\StartupException
+     *
+     * @codeCoverageIgnore
      */
     public static final function initializeAutoloading($withComposer = TRUE) {
         if(self::$basePath == NULL) {

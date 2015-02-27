@@ -1,6 +1,7 @@
 <?php namespace buildr\Startup\Initializer;
 
 use buildr\Loader\classLoader;
+use buildr\Loader\PSR4ClassLoader;
 use buildr\Startup\BuildrEnvironment;
 
 /**
@@ -15,8 +16,10 @@ use buildr\Startup\BuildrEnvironment;
  * @copyright    Copyright 2015, Zoltán Borsos.
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
+ *
+ * @codeCoverageIgnore
  */
-class UnitTestingInitializer extends BaseInitializer implements InitializerInterface {
+class UnitTestingInitializer extends BaseInitializer {
 
     /**
      * Run the startup initialization process
@@ -28,10 +31,10 @@ class UnitTestingInitializer extends BaseInitializer implements InitializerInter
     public function initialize($basePath, classLoader $autoloader) {
         BuildrEnvironment::isRunningUnitTests();
 
-        $PSR4Loader = $autoloader->getLoaderByName(\buildr\Loader\PSR4ClassLoader::NAME)[0];
+        $PSR4Loader = $autoloader->getLoaderByName(PSR4ClassLoader::NAME)[0];
         $testsPath = realpath($basePath . DIRECTORY_SEPARATOR . 'tests' . DIRECTORY_SEPARATOR . 'buildr') . DIRECTORY_SEPARATOR;
         $PSR4Loader->registerNamespace('buildr\\tests\\', $testsPath);
 
-        $this->registerServiceProviders();
+        parent::initialize($basePath, $autoloader);
     }
 }

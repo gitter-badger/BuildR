@@ -3,7 +3,6 @@
 use buildr\Loader\classLoader;
 use buildr\Registry\Registry;
 use buildr\Startup\BuildrEnvironment;
-use \buildr\Startup\Initializer\InitializerInterface;
 use Patchwork\Utf8\Bootup;
 
 /**
@@ -18,8 +17,10 @@ use Patchwork\Utf8\Bootup;
  * @copyright    Copyright 2015, Zoltán Borsos.
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
+ *
+ * @codeCoverageIgnore
  */
-class WebInitializer extends BaseInitializer implements InitializerInterface {
+class WebInitializer extends BaseInitializer {
 
     /**
      * Run the startup initialization process
@@ -39,6 +40,6 @@ class WebInitializer extends BaseInitializer implements InitializerInterface {
         //Set up the environment in the registry
         Registry::setVariable('buildr.environment.protected', $environment);
 
-        $this->registerServiceProviders();
+        parent::initialize($basePath, $autoloader);
     }
 }
