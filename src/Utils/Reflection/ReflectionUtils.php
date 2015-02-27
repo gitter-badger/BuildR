@@ -1,7 +1,7 @@
 <?php namespace buildr\Utils\Reflection;
 
+use buildr\Utils\Reflection\Annotation\Reader;
 use \ReflectionClass;
-use \ReflectionMethod;
 
 /**
  * BuildR - PHP based continuous integration server
@@ -34,4 +34,24 @@ class ReflectionUtils {
         return $methodReflector->getClosure($classReflector->newInstanceArgs($constructorParams));
     }
 
+    /**
+     * Return the annotation reader for a given class, or the class method
+     *
+     * @param string $className
+     * @param null|string $methodName
+     * @return \buildr\Utils\Reflection\Annotation\Reader
+     */
+    public static final function getAnnotationReader($className, $methodName = NULL) {
+        $classReflector = new ReflectionClass($className);
+
+        if($methodName !== NULL) {
+            $methodReflector = $classReflector->getMethod($methodName);
+            $methodReflector->setAccessible(TRUE);
+            $docBlock = $methodReflector->getDocComment();
+
+            return new Reader($docBlock);
+        }
+
+        return new Reader($docBlock = $classReflector->getDocComment());
+    }
 }
