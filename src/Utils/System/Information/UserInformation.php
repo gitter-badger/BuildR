@@ -40,7 +40,7 @@ class UserInformation {
      * Constructor
      *
      * @param int|string $user
-     * @throws \buildr\Utils\System\Exception\ModuleNotFoundException
+     * @throws \buildr\Utils\System\Exception\ModuleNotSupportedException
      */
     public function __construct($user) {
         SystemUtils::getExtensionSupport([PosixModule::class])[PosixModule::MODULE_NAME];
