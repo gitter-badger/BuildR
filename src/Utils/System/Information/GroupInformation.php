@@ -36,7 +36,7 @@ class GroupInformation {
      * Get the group information by a group name, or group ID
      *
      * @param int|string $group
-     * @throws \buildr\Utils\System\Exception\ModuleNotFoundException
+     * @throws \buildr\Utils\System\Exception\ModuleNotSupportedException
      */
     public function __construct($group) {
         SystemUtils::getExtensionSupport([PosixModule::class])[PosixModule::MODULE_NAME];
