@@ -14,6 +14,7 @@
         <testsuite name="BuildR - Main">
             <directory suffix="Test.php">../tests/buildr/startup</directory>
             <directory suffix="Test.php">../tests/buildr/reflection</directory>
+            <directory suffix="Test.php">../tests/buildr/enumeration</directory>
             <directory suffix="Test.php">../tests/buildr/registry</directory>
             <directory suffix="Test.php">../tests/buildr/config</directory>
             <directory suffix="Test.php">../tests/buildr/serviceProvider</directory>

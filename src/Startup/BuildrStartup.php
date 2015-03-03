@@ -2,11 +2,8 @@
 
 use buildr\Loader\classMapClassLoader;
 use buildr\Startup\Exception\StartupException;
-use buildr\Startup\Initializer\InitializerInterface;
 use buildr\Utils\Reflection\ReflectionUtils;
 use \Closure;
-use \ReflectionClass;
-use \ReflectionMethod;
 
 /**
  * BuildR - PHP based continuous integration server
