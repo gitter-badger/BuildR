@@ -1,8 +1,9 @@
 <?php namespace buildr\Config;
 
-use buildr\Config\Exception\InvalidConfigKeyException;
+use buildr\Config\Exception\ConfigurationException;
 use buildr\Config\Selector\ConfigSelector;
-use buildr\Startup\BuildrEnvironment;
+use buildr\Config\Source\ConfigSourceInterface;
+use \InvalidArgumentException;
 
 /**
  * BuildR - PHP based continuous integration server
@@ -19,39 +20,144 @@ use buildr\Startup\BuildrEnvironment;
  */
 class Config {
 
-    /**
-     * @type bool
-     */
-    private static $isInitialized = FALSE;
+    const DEFAULT_PRIORITY = 50;
 
     /**
-     * @type string
+     * @type \buildr\Config\Source\ConfigSourceInterface[]
      */
-    private static $configLocation;
+    private $sources = [];
+
+    public function __construct(ConfigSourceInterface $source) {
+        $this->sources[self::DEFAULT_PRIORITY] = $source;
+    }
 
     /**
-     * @type string
+     * Get the configuration value from the main config source (Default: File)
+     *
+     * @param string $selector A dot-notated selector string
+     * @param null|mixed $defaultValue
+     * @return mixed
      */
-    private static $environmentalConfigLocation;
+    public function getFromMainSource($selector, $defaultValue = NULL) {
+        $source = $this->sources[self::DEFAULT_PRIORITY];
+        $selector = new ConfigSelector($selector);
 
-    /**
-     * @type array
-     */
-    private static $configCache = [];
-
-    /**
-     * Initialize this class, its set the proper location of the configuration files root folder
-     */
-    private static function initialize() {
-        if(self::$isInitialized === TRUE) {
-            return;
+        if(($result = $source->get($selector)) !== NULL) {
+            return $result;
         }
 
-        $currentEnvironment = BuildrEnvironment::getEnv();
-        //Begin class initialization
-        self::$configLocation = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config');
-        self::$environmentalConfigLocation = realpath(self::$configLocation . DIRECTORY_SEPARATOR . $currentEnvironment);
-        self::$isInitialized = TRUE;
+        return $defaultValue;
+    }
+
+    /**
+     * Try to get configuration value from any configuration source. Sources
+     * ordered by its priority.
+     *
+     * @param string $selector A dot-notated selector string
+     * @param null $defaultValue
+     * @return mixed
+     */
+    public function getFormAnySource($selector, $defaultValue = NULL) {
+        $selector = new ConfigSelector($selector);
+
+        foreach($this->sources as $source) {
+            if(($result = $source->get($selector)) !== NULL) {
+                return $result;
+            }
+        }
+
+        return $defaultValue;
+    }
+
+    /**
+     * Get a configuration value from a pre-defined source
+     *
+     * @param string $sourceName Use sources SOURCE_NAME constant to define
+     * @param string $selector A dot-notated selector string
+     * @param null $defaultValue
+     * @return mixed
+     * @throws \buildr\Config\Exception\ConfigurationException
+     */
+    public function getFromSource($sourceName, $selector, $defaultValue = NULL) {
+        $source = $this->getSourceByName($sourceName);
+        $selector = new ConfigSelector($selector);
+
+        if(($result = $source->get($selector)) !== NULL) {
+            return $result;
+        }
+
+        return $defaultValue;
+    }
+
+    /**
+     * Push a new configuration source to the source stack
+     *
+     * @param \buildr\Config\Source\ConfigSourceInterface $source
+     * @param int $priority
+     * @throws \buildr\Config\Exception\ConfigurationException
+     * @throws \InvalidArgumentException
+     */
+    public function addSource(ConfigSourceInterface $source, $priority) {
+        if(is_numeric($priority)) {
+            throw new InvalidArgumentException("The priority must be a number!");
+        }
+
+        if(isset($this->sources[$priority])) {
+            throw new ConfigurationException("The priority ({$priority}) is already taken!");
+        }
+
+        $this->sources[$priority] = $source;
+        ksort($this->sources);
+    }
+
+    /**
+     * Return a configuration source by priority
+     *
+     * @param int $priority
+     * @throws \buildr\Config\Exception\ConfigurationException
+     */
+    public function getSourceByPriority($priority) {
+        if(!isset($this->sources[$priority])) {
+            throw new ConfigurationException("No configuration source exist at priority " . $priority . "!");
+        }
+    }
+
+    /**
+     * Return a configuration source by its name
+     *
+     * @param string $name
+     * @return \buildr\Config\Source\ConfigSourceInterface
+     * @throws \buildr\Config\Exception\ConfigurationException
+     */
+    public function getSourceByName($name) {
+        foreach($this->sources as $source) {
+            if($source->getName() == $name) {
+                return $source;
+            }
+        }
+
+        throw new ConfigurationException("Not found any configuration source, registered with name: " . $name . "!");
+    }
+
+    /**
+     * Returns the main configuration file statically
+     *
+     * @return array
+     */
+    public static final function getMainConfig() {
+        $mainConfig = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
+            . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'main.php');
+
+        return require $mainConfig;
+    }
+
+    /**
+     * Returns the registry binding list from the config
+     *
+     * @return array
+     */
+    public static final function getProviderConfig() {
+        return self::getMainConfig()['serviceProviders'];
     }
 
     /**
@@ -59,120 +165,9 @@ class Config {
      * initialize() method on this class. Its basically allow to me to use environmental base
      * configuration later on initialization
      *
-     * @return mixed|string
+     * @return array
      */
     public static final function getEnvDetectionConfig() {
-        $envConfig = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'environment.php');
-        $envConfig = require $envConfig;
-
-        return $envConfig;
+        return self::getMainConfig()['startup'];
     }
-
-    /**
-     * Get a config value by key
-     *
-     * @param string $configKey
-     * @return mixed
-     */
-    public static function get($configKey) {
-        self::initialize();
-        $selector = new ConfigSelector($configKey);
-
-        if(self::isFileAlreadyCached($selector->getFileName())) {
-            return self::getFromCache($selector);
-        }
-
-        return self::getFromFile($selector);
-    }
-
-    /**
-     * Decide a file, its already in cache or not
-     *
-     * @param string $configFile
-     * @return bool
-     */
-    private static function isFileAlreadyCached($configFile) {
-        if(isset(self::$configCache[$configFile])) {
-            return TRUE;
-        }
-
-        return FALSE;
-    }
-
-    /**
-     * Get the specified value from the cache
-     *
-     * @param \buildr\Config\Selector\ConfigSelector $selector
-     * @return mixed
-     * @throws \buildr\Config\Exception\InvalidConfigKeyException
-     */
-    private static function getFromCache(ConfigSelector $selector) {
-        $cacheContent = self::$configCache[$selector->getFileName()];
-
-        return self::getBySelector($selector->getSelectorArray(), $cacheContent);
-    }
-
-    /**
-     * Get the specified value from the file, and caches the file content by default
-     *
-     * @param \buildr\Config\Selector\ConfigSelector $selector
-     * @param bool $needCache
-     * @return mixed
-     * @throws \buildr\Config\Exception\InvalidConfigKeyException
-     */
-    private static function getFromFile(ConfigSelector $selector, $needCache = TRUE) {
-        $fileLocationBase = self::$configLocation . $selector->getFilenameForRequire();
-        $fileLocationEnvironmental = self::$environmentalConfigLocation . $selector->getFilenameForRequire();
-
-        if(file_exists($fileLocationEnvironmental)) {
-            $fileContentBase = [];
-            if(file_exists($fileLocationBase)) {
-                $fileContentBase = require_once $fileLocationBase;
-            }
-
-            $fileContentEnvironmental = [];
-            if(file_exists($fileLocationEnvironmental)) {
-                $fileContentEnvironmental = require_once $fileLocationEnvironmental;
-            }
-
-            $fileContent = array_merge($fileContentBase, $fileContentEnvironmental);
-        } else {
-            $fileContent = require_once $fileLocationBase;
-        }
-
-
-
-        if($needCache === TRUE) {
-            self::$configCache[$selector->getFileName()] = $fileContent;
-        }
-
-        return self::getBySelector($selector->getSelectorArray(), $fileContent);
-    }
-
-    /**
-     * Process the selector, and return the proper section of the configuration
-     *
-     * @param $selector
-     * @param $configArray
-     * @return mixed
-     * @throws \buildr\Config\Exception\InvalidConfigKeyException
-     */
-    private static function getBySelector($selector, $configArray) {
-        if(!is_array($selector)) {
-            throw new \InvalidArgumentException("Invalid selector!");
-        }
-
-        $tmp = $configArray;
-        foreach($selector as $key) {
-            if(isset($tmp[$key])) {
-                $tmp = $tmp[$key];
-                continue;
-            }
-
-            throw new InvalidConfigKeyException("The following part of the config not found: {$key}!");
-        }
-
-        return $tmp;
-    }
-
 }

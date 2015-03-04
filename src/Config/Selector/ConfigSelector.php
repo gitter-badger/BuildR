@@ -31,6 +31,11 @@ class ConfigSelector {
     private $selectorParts;
 
     /**
+     * @type string
+     */
+    private $fileName;
+
+    /**
      * Constructor
      *
      * @param string $selectorString
@@ -48,27 +53,38 @@ class ConfigSelector {
     private function process() {
         $this->selectorParts = explode(self::SELECTOR_SEPARATOR, $this->selectorString);
 
-        if((!is_array($this->selectorParts)) || (count($this->selectorParts) < 2)) {
-            throw new \InvalidArgumentException("The selector need to be at least 2 parts!");
+        if(count($this->selectorParts) > 1) {
+            $this->fileName = $this->selectorParts[0];
+            $this->chunkFilename();
         }
     }
 
     /**
-     * Return the file name without extension, basically its the first part of the selector
+     * Returns the corresponding file name
      *
      * @return string
      */
-    public function getFileName() {
-        return $this->selectorParts[0];
+    public function getFilename() {
+        return $this->fileName;
     }
 
     /**
-     * Return tha file name, properly formatted
+     * Returns the corresponding file name with extension and beginning slash
      *
      * @return string
      */
     public function getFilenameForRequire() {
-        return DIRECTORY_SEPARATOR . $this->selectorParts[0] . '.php';
+        $name = DIRECTORY_SEPARATOR . $this->fileName . ".php";
+        return $name;
+    }
+
+    /**
+     * If we get a filename from selector, chunk out the first element of the selector array
+     *
+     * @return void
+     */
+    private function chunkFilename() {
+        $this->selectorParts = array_splice($this->selectorParts, 1);
     }
 
     /**
@@ -77,8 +93,7 @@ class ConfigSelector {
      * @return array
      */
     public function getSelectorArray() {
-        $selectorArray = array_splice($this->selectorParts, 1);
-        return $selectorArray;
+        return $this->selectorParts;
     }
 
     /**

@@ -36,7 +36,7 @@ class BaseInitializer implements InitializerInterface {
      * Register the service providers in the registry
      */
     protected function registerServiceProviders() {
-        $serviceProviders = Config::get("registry.serviceProviders");
+        $serviceProviders = Config::getProviderConfig();
         ServiceProvider::registerProvidersByArray($serviceProviders);
     }
 }
