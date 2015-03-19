@@ -18,7 +18,7 @@ use \InvalidArgumentException;
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
  */
-class Config {
+class Config implements ConfigInterface {
 
     const DEFAULT_PRIORITY = 50;
 
@@ -98,9 +98,11 @@ class Config {
      * @throws \InvalidArgumentException
      */
     public function addSource(ConfigSourceInterface $source, $priority) {
-        if(is_numeric($priority)) {
-            throw new InvalidArgumentException("The priority must be a number!");
+        if(!is_numeric($priority)) {
+            throw new \InvalidArgumentException("The priority must be a number!");
         }
+
+        $priority = (int) $priority;
 
         if(isset($this->sources[$priority])) {
             throw new ConfigurationException("The priority ({$priority}) is already taken!");
@@ -114,12 +116,15 @@ class Config {
      * Return a configuration source by priority
      *
      * @param int $priority
+     * @return \buildr\Config\Source\ConfigSourceInterface
      * @throws \buildr\Config\Exception\ConfigurationException
      */
     public function getSourceByPriority($priority) {
         if(!isset($this->sources[$priority])) {
             throw new ConfigurationException("No configuration source exist at priority " . $priority . "!");
         }
+
+        return $this->sources[$priority];
     }
 
     /**
