@@ -66,7 +66,7 @@ class PHPConfigSourceTest extends ConfigSourceTestCase {
     public function testIsDetectsPathsCorrectly() {
         $normalPath = $this->getPrivatePropertyFromClass(get_class($this->getSource()), 'sourceFolder', $this->getSource());
 
-        $this->assertTrue(is_string($normalPath, "\\config\\"));
+        $this->assertTrue(is_string($normalPath));
     }
 
     public function testItReturnsTheMainConfigCorrectly() {
