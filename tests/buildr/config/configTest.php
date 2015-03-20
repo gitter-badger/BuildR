@@ -29,8 +29,8 @@ class configTest extends BuildRTestCase {
         $source = new PHPConfigSource();
 
         ConfigFacade::addSource($source, "asd");
-        ConfigFacade::addSource($source, null);
-        ConfigFacade::addSource($source, false);
+        ConfigFacade::addSource($source, NULL);
+        ConfigFacade::addSource($source, FALSE);
     }
 
     /**
@@ -96,5 +96,33 @@ class configTest extends BuildRTestCase {
         $this->assertTrue($sourceInstanceOfInterface);
     }
 
+    public function testItReturnsFromAnySource() {
+        $result = ConfigFacade::getFormAnySource("main.cache.driver");
 
+        $this->assertNotNull($result);
+    }
+
+    public function testItReturnsFromMainSource() {
+        $result = ConfigFacade::getFromMainSource("main.cache.driver");
+
+        $this->assertNotNull($result);
+    }
+
+    public function testItReturnsFromDefinedSource() {
+        $result = ConfigFacade::getFromSource(PHPConfigSource::SOURCE_NAME, "main.cache.driver");
+
+        $this->assertNotNull($result);
+    }
+
+    public function testItReturnsDefaultWhenSourceNotFound() {
+        $result = ConfigFacade::getFromSource("UNKNOWN_SOURCE", "noFile.noKey", "defaultValue");
+
+        $this->assertEquals("defaultValue", $result);
+    }
+
+    public function testItReturnsTheDefaultValueWhenNotFoundOnAnySource() {
+        $result = ConfigFacade::getFormAnySource("noFile.noKey", "defaultValue");
+
+        $this->assertEquals("defaultValue", $result);
+    }
 }

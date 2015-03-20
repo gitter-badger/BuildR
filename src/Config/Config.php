@@ -27,6 +27,13 @@ class Config implements ConfigInterface {
      */
     private $sources = [];
 
+    /**
+     * Constructor
+     *
+     * @param \buildr\Config\Source\ConfigSourceInterface $source
+     *
+     * @codeCoverageIgnore
+     */
     public function __construct(ConfigSourceInterface $source) {
         $this->sources[self::DEFAULT_PRIORITY] = $source;
     }
@@ -76,7 +83,12 @@ class Config implements ConfigInterface {
      * @throws \buildr\Config\Exception\ConfigurationException
      */
     public function getFromSource($sourceName, $selector, $defaultValue = NULL) {
-        $source = $this->getSourceByName($sourceName);
+        try {
+            $source = $this->getSourceByName($sourceName);
+        } catch(ConfigurationException $e) {
+            return $defaultValue;
+        }
+
         $selector = new ConfigSelector($selector);
 
         $result = $source->get($selector, $defaultValue);
