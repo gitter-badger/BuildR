@@ -1,6 +1,7 @@
 <?php namespace buildr\Config\Source;
 
 use \buildr\Registry\Registry;
+use \buildr\Config\Source\CachedConfigSourceInterface;
 use buildr\Config\Selector\ConfigSelector;
 
 /**

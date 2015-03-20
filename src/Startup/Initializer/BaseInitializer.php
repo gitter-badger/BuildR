@@ -2,6 +2,7 @@
 
 use buildr\Config\Config;
 use buildr\Loader\classLoader;
+use buildr\Startup\Initializer\InitializerInterface;
 use buildr\ServiceProvider\ServiceProvider;
 
 /**

@@ -1,6 +1,7 @@
 <?php namespace buildr\Config;
 
 use buildr\Config\Exception\ConfigurationException;
+use buildr\Config\ConfigInterface;
 use buildr\Config\Selector\ConfigSelector;
 use buildr\Config\Source\ConfigSourceInterface;
 use \InvalidArgumentException;

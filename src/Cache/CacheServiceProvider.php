@@ -1,6 +1,7 @@
 <?php namespace buildr\Cache;
 
 use buildr\Config\Config;
+use \buildr\Cache\CacheDriverInterface;
 use buildr\ServiceProvider\ServiceProviderInterface;
 
 /**
