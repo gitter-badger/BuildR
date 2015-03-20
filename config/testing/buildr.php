@@ -3,7 +3,7 @@
 return [
 
     'debug' => [
-        'enabled' => FALSE,
+        'enabled' => TRUE,
     ],
 
 ];

@@ -43,9 +43,10 @@ class PHPConfigSource extends CachedConfigSource {
      * Get a configuration value by selector
      *
      * @param \buildr\Config\Selector\ConfigSelector $selector
+     * @param mixed $defaultValue
      * @return mixed
      */
-    public function get(ConfigSelector $selector) {
+    public function get(ConfigSelector $selector, $defaultValue = NULL) {
         $cacheKey = $this->getCacheKeyForSelector($selector);
         $cacheEntry = $this->getCache()->get($cacheKey);
 
@@ -59,7 +60,9 @@ class PHPConfigSource extends CachedConfigSource {
 
             return $value;
         } catch(InvalidConfigKeyException $e) {
-            return NULL;
+            return $defaultValue;
+        } catch(ConfigurationException $e) {
+            return $defaultValue;
         }
     }
 
@@ -141,6 +144,6 @@ class PHPConfigSource extends CachedConfigSource {
      */
     protected function detectPaths() {
         $this->sourceFolder = Filesystem::makeAbsolute('/config') . DIRECTORY_SEPARATOR;
-        $this->environmentalSourceFolder = Filesystem::makeAbsolute($this->sourceFolder . '/' . $this->getEnvironmentName());
+        $this->environmentalSourceFolder = Filesystem::makeAbsolute($this->sourceFolder . '/' . $this->getEnvironmentName()) . DIRECTORY_SEPARATOR;
     }
 }

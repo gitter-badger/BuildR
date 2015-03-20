@@ -42,11 +42,9 @@ class Config implements ConfigInterface {
         $source = $this->sources[self::DEFAULT_PRIORITY];
         $selector = new ConfigSelector($selector);
 
-        if(($result = $source->get($selector)) !== NULL) {
-            return $result;
-        }
+        $result = $source->get($selector, $defaultValue);
 
-        return $defaultValue;
+        return $result;
     }
 
     /**
@@ -61,9 +59,8 @@ class Config implements ConfigInterface {
         $selector = new ConfigSelector($selector);
 
         foreach($this->sources as $source) {
-            if(($result = $source->get($selector)) !== NULL) {
-                return $result;
-            }
+            $result = $source->get($selector, $defaultValue);
+            return $result;
         }
 
         return $defaultValue;
@@ -82,11 +79,9 @@ class Config implements ConfigInterface {
         $source = $this->getSourceByName($sourceName);
         $selector = new ConfigSelector($selector);
 
-        if(($result = $source->get($selector)) !== NULL) {
-            return $result;
-        }
+        $result = $source->get($selector, $defaultValue);
 
-        return $defaultValue;
+        return $result;
     }
 
     /**
