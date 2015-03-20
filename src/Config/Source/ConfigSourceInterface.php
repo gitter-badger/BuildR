@@ -35,8 +35,9 @@ interface ConfigSourceInterface {
      * Get a configuration value by selector
      *
      * @param \buildr\Config\Selector\ConfigSelector $selector
+     * @param mixed $defaultValue
      * @return mixed
      */
-    public function get(ConfigSelector $selector);
+    public function get(ConfigSelector $selector, $defaultValue = NULL);
 
 }

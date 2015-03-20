@@ -24,7 +24,7 @@ abstract class ConfigSource implements ConfigSourceInterface {
      * @return string
      */
     public function getName() {
-        return self::SOURCE_NAME;
+        return static::SOURCE_NAME;
     }
 
     /**

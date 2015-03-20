@@ -4,7 +4,6 @@ use buildr\Config\Exception\ConfigurationException;
 use buildr\Config\Exception\InvalidConfigKeyException;
 use buildr\Config\Selector\ConfigSelector;
 use buildr\Filesystem\Facade\Filesystem;
-use buildr\Registry\Registry;
 
 /**
  * BuildR - PHP based continuous integration server
@@ -19,7 +18,7 @@ use buildr\Registry\Registry;
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
  */
-class PHPConfigSource extends ConfigSource implements CachedConfigSource {
+class PHPConfigSource extends CachedConfigSource {
 
     const SOURCE_NAME = "CONFIG_PHP_SOURCE";
 
@@ -44,9 +43,10 @@ class PHPConfigSource extends ConfigSource implements CachedConfigSource {
      * Get a configuration value by selector
      *
      * @param \buildr\Config\Selector\ConfigSelector $selector
+     * @param mixed $defaultValue
      * @return mixed
      */
-    public function get(ConfigSelector $selector) {
+    public function get(ConfigSelector $selector, $defaultValue = NULL) {
         $cacheKey = $this->getCacheKeyForSelector($selector);
         $cacheEntry = $this->getCache()->get($cacheKey);
 
@@ -60,7 +60,9 @@ class PHPConfigSource extends ConfigSource implements CachedConfigSource {
 
             return $value;
         } catch(InvalidConfigKeyException $e) {
-            return NULL;
+            return $defaultValue;
+        } catch(ConfigurationException $e) {
+            return $defaultValue;
         }
     }
 
@@ -136,32 +138,12 @@ class PHPConfigSource extends ConfigSource implements CachedConfigSource {
     }
 
     /**
-     * Generate a cacheKey for a ConfigSelector
-     *
-     * @param \buildr\Config\Selector\ConfigSelector $selector
-     * @return string
-     */
-    public function getCacheKeyForSelector(ConfigSelector $selector) {
-        return "CONFIG_" . strtoupper($this->getEnvironmentName()) . strtoupper(md5($selector->getOriginalSelector()));
-    }
-
-
-    /**
-     * Return the current cache driver
-     *
-     * @return \buildr\Cache\CacheDriverInterface
-     */
-    public function getCache() {
-        return Registry::getClass('cache');
-    }
-
-    /**
      * Detect configuration source paths
      *
      * @return void
      */
     protected function detectPaths() {
         $this->sourceFolder = Filesystem::makeAbsolute('/config') . DIRECTORY_SEPARATOR;
-        $this->environmentalSourceFolder = Filesystem::makeAbsolute($this->sourceFolder . '/' . $this->getEnvironmentName());
+        $this->environmentalSourceFolder = Filesystem::makeAbsolute($this->sourceFolder . '/' . $this->getEnvironmentName()) . DIRECTORY_SEPARATOR;
     }
 }

@@ -89,6 +89,18 @@ class Buildr_TestCase extends \PHPUnit_Framework_TestCase {
         return $methodReflector->invokeArgs($reflector->newInstanceWithoutConstructor(), $methodArguments);
     }
 
+    /**
+     * Return a defined constant from class
+     *
+     * @param $className
+     * @param $constantName
+     * @return mixed
+     */
+    protected function getConstantFromClass($className, $constantName) {
+        $reflector = new \ReflectionClass($className);
+        return $reflector->getConstant($constantName);
+    }
+
     protected function setUp() {
 
     }
