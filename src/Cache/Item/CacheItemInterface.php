@@ -1,4 +1,4 @@
-<?php namespace buildr\Cache;
+<?php namespace buildr\Cache\Item;
 
 /**
  * BuildR - PHP based continuous integration server

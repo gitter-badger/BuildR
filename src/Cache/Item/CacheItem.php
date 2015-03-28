@@ -1,6 +1,6 @@
-<?php namespace buildr\Cache;
+<?php namespace buildr\Cache\Item;
 
-use \buildr\Cache\CacheItemInterface;
+use \buildr\Cache\Item\CacheItemInterface;
 
 /**
  * BuildR - PHP based continuous integration server

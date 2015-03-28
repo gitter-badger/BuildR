@@ -1,7 +1,7 @@
 <?php namespace buildr\Cache\Driver;
 
 use buildr\Cache\CacheDriverInterface;
-use buildr\Cache\CacheItem;
+use buildr\Cache\Item\CacheItem;
 
 /**
  * BuildR - PHP based continuous integration server
@@ -29,7 +29,7 @@ class RuntimeCacheDriver implements CacheDriverInterface {
      *
      * @param string $key
      * @param mixed $defaultValue
-     * @return \buildr\Cache\CacheItemInterface
+     * @return \buildr\Cache\Item\CacheItemInterface
      */
     public function get($key, $defaultValue = NULL) {
         if(isset($this->cache[$key])) {

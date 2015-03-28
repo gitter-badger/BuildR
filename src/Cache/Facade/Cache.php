@@ -15,6 +15,8 @@ use buildr\Facade\Facade;
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
  *
+ * @codeCoverageIgnore
+ *
  * @method static \buildr\Cache\CacheItemInterface get(string $key, $defaultValue = NULL) Returns a cache entry from the driver
  * @method static bool set(string $key, mixed $value, int $ttl = 30) Store an entry in the cache
  * @method static bool function exist(string $key) Return the existence of the given key

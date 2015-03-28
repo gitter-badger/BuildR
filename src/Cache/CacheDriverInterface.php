@@ -20,7 +20,7 @@ interface CacheDriverInterface {
      *
      * @param string $key
      * @param mixed $defaultValue
-     * @return \buildr\Cache\CacheItemInterface
+     * @return \buildr\Cache\Item\CacheItemInterface
      */
     public function get($key, $defaultValue = NULL);
 
