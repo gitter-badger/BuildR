@@ -1,15 +1,13 @@
-<?php namespace buildr\Logger\Facade;
-
-use buildr\Facade\Facade;
+<?php namespace buildr\Logger\Exception;
 
 /**
  * BuildR - PHP based continuous integration server
  *
- * Facade for logger class
+ * Invalid timezone exception
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
- * @subpackage Logger\Facade
+ * @subpackage Logger\Exception
  *
  * @copyright    Copyright 2015, Zoltán Borsos.
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
@@ -17,10 +15,6 @@ use buildr\Facade\Facade;
  *
  * @codeCoverageIgnore
  */
-class Logger extends Facade {
-
-    public function getBindingName() {
-        return "logger";
-    }
+class InvalidTimeZoneException extends \Exception {
 
 }

@@ -1,6 +1,11 @@
 <?php namespace buildr\Logger;
 
+use buildr\Logger\Attachment\MemoryUsageAttachment;
+use buildr\Logger\Formatter\LineFormatter;
+use buildr\Logger\Handler\StdOutHandler;
+use buildr\Logger\Logger;
 use buildr\ServiceProvider\ServiceProviderInterface;
+use Psr\Log\LogLevel;
 
 /**
  * BuildR - PHP based continuous integration server
@@ -25,9 +30,15 @@ class LoggerServiceProvider implements ServiceProviderInterface {
      * @return Object
      */
     public function register() {
-        $loggerObject = new Logger();
+        $logger = new Logger('buildrLogger');
 
-        return $loggerObject;
+        $stdOutHandler = new StdOutHandler();
+        $stdOutHandler->setFormatter(new LineFormatter());
+
+        $logger->pushHandler($stdOutHandler);
+        $logger->pushAttachment(new MemoryUsageAttachment());
+
+        return $logger;
     }
 
 

@@ -129,4 +129,21 @@ class StringUtils {
         return mb_substr($string, 0, $needleLength);
     }
 
+    /**
+     * Substitute a string with the context
+     *
+     * @param string $input
+     * @param array $context
+     * @return string
+     */
+    public static final function substitution($input, $context = []) {
+        $replacements = [];
+
+        foreach($context as $field => $value) {
+            $replacements['{' . $field . '}'] = $value;
+        }
+
+        return str_replace(array_keys($replacements), array_values($replacements), $input);
+    }
+
 }

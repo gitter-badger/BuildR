@@ -1,15 +1,15 @@
-<?php namespace buildr\Logger\Facade;
+<?php namespace buildr\Logger;
 
-use buildr\Facade\Facade;
+use buildr\Utils\Enum\BaseEnumeration;
 
 /**
  * BuildR - PHP based continuous integration server
  *
- * Facade for logger class
+ * Log filter type enumeration
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
- * @subpackage Logger\Facade
+ * @subpackage Logger
  *
  * @copyright    Copyright 2015, Zoltán Borsos.
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
@@ -17,10 +17,12 @@ use buildr\Facade\Facade;
  *
  * @codeCoverageIgnore
  */
-class Logger extends Facade {
+class LogFilterType extends BaseEnumeration {
 
-    public function getBindingName() {
-        return "logger";
-    }
+    const FILTER_ABOVE = "ABOVE";
+
+    const FILTER_BELOW = "BELOW";
+
+    const FILTER_SAME = "SAME";
 
 }
