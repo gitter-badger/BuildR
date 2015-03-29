@@ -66,6 +66,15 @@ class Logger extends AbstractLogger implements LoggerInterface {
     }
 
     /**
+     * Return the current logger instance name
+     *
+     * @return string
+     */
+    public function getName() {
+        return $this->name;
+    }
+
+    /**
      * Push a new handler to the stack
      *
      * @param \buildr\Logger\Handler\HandlerInterface $handler

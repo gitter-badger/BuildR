@@ -3,6 +3,7 @@
 use buildr\Logger\Entry\LogEntryInterface;
 use buildr\Logger\Formatter\FormatterTrait;
 use buildr\Logger\Handler\FilterableHandlerTrait;
+use buildr\Logger\Handler\HandlerInterface;
 
 /**
  * BuildR - PHP based continuous integration server

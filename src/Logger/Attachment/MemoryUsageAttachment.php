@@ -1,5 +1,7 @@
 <?php namespace buildr\Logger\Attachment;
 
+use buildr\Logger\Attachment\AttachmentInterface;
+
 /**
  * BuildR - PHP based continuous integration server
  *

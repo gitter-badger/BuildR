@@ -1,6 +1,7 @@
 <?php namespace buildr\Logger\Entry;
 
 use buildr\Utils\StringUtils;
+use buildr\Logger\Entry\LogEntryInterface;
 use \DateTime;
 
 /**

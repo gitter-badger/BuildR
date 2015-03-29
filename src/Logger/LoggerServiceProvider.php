@@ -5,7 +5,6 @@ use buildr\Logger\Formatter\LineFormatter;
 use buildr\Logger\Handler\StdOutHandler;
 use buildr\Logger\Logger;
 use buildr\ServiceProvider\ServiceProviderInterface;
-use Psr\Log\LogLevel;
 
 /**
  * BuildR - PHP based continuous integration server
