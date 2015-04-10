@@ -1,0 +1,13 @@
+language: php
+git:
+  submodules: false
+php:
+  - 5.5
+  - 5.6
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install ant
+before_script:
+  - composer install --no-interaction --dev
+script:
+ - ant -f build.xml build
