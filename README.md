@@ -1,4 +1,4 @@
-[![Build Status](http://ci.zolli.hu/buildStatus/icon?job=BuildR)](http://ci.zolli.hu/job/BuildR/) [![SensioLabsInsight](https://insight.sensiolabs.com/projects/ceb36416-12c1-4da8-9567-e460a751bc0c/mini.png)](https://insight.sensiolabs.com/projects/ceb36416-12c1-4da8-9567-e460a751bc0c)
+[![Build Status](http://ci.zolli.hu/buildStatus/icon?job=BuildR)](http://ci.zolli.hu/job/BuildR/) [![Code Coverage](http://zolli.hu/buildstatus/buildr.svg)](http://ci.zolli.hu/job/BuildR/) [![SensioLabsInsight](https://insight.sensiolabs.com/projects/ceb36416-12c1-4da8-9567-e460a751bc0c/mini.png)](https://insight.sensiolabs.com/projects/ceb36416-12c1-4da8-9567-e460a751bc0c)
 
 # BuildR
 ### PHP-based continuous integration server
