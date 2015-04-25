@@ -26,7 +26,8 @@
     "phploc/phploc": "2.0.6",
     "sebastian/phpcpd": "2.0.1",
     "pdepend/pdepend": "2.0.4",
-    "mockery/mockery": "0.9.3"
+    "mockery/mockery": "0.9.3",
+    "apigen/apigen": "4.1.1"
   },
   "config": {
     "preferred-install": "dist"

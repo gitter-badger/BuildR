@@ -7,9 +7,5 @@ php:
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install ant
-  - sudo apt-get install wget
-  - wget http://apigen.org/apigen.phar
-  - chmod +x apigen.phar
-  - mv apigen.phar /usr/local/bin/apigen
 script:
  - ant -f build.xml build

@@ -160,7 +160,7 @@
 
     <!-- Documentation generation -->
     <target name="documentation" description="Generate documentation for this build">
-        <exec executable="apigen">
+        <exec executable="${toolsdir}apigen">
             <arg value="generate"/>
             <arg value="--source"/>
             <arg path="${basedir}/src/"/>
