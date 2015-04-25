@@ -79,22 +79,17 @@
 
     <!-- Linting PHP syntax using PHP build-in parser -->
     <target name="lint" description="Perform syntax check of sourcecode files">
-
         <echo message="Run syntax checking on source and tests" level="info"/>
 
-        <apply executable="php" failonerror="true">
-            <arg value="-l"/>
+        <exec executable="bash" failonerror="true">
+            <arg value="-c" />
+            <arg value="find ./src -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l" />
+        </exec>
 
-            <fileset dir="${basedir}/src">
-                <include name="**/*.php"/>
-                <modified/>
-            </fileset>
-
-            <fileset dir="${basedir}/tests">
-                <include name="**/*.php"/>
-                <modified/>
-            </fileset>
-        </apply>
+        <exec executable="bash" failonerror="true">
+            <arg value="-c" />
+            <arg value="find ./tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l" />
+        </exec>
 
         <echo message="Finished PHP syntax checking" level="info"/>
     </target>
