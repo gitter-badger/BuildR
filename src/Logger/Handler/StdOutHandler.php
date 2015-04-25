@@ -37,6 +37,7 @@ class StdOutHandler implements HandlerInterface {
             }
 
             $this->writeToStdOut($message);
+            $entry->setHandled();
 
             return TRUE;
         }

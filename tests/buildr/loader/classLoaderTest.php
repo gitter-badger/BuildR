@@ -72,6 +72,8 @@ class classLoaderTest extends BuilderTestCase {
 
         $returnedLoaders = $this->loader->getLoaderByName("classMapClassLoader");
 
+        restore_error_handler();
+
         $this->assertCount(2, $returnedLoaders);
     }
 
@@ -101,6 +103,8 @@ class classLoaderTest extends BuilderTestCase {
 
         $this->loader->registerLoader($classMapLoaderOne);
         $this->loader->registerLoader($classMapLoaderTwo);
+
+        restore_error_handler();
 
         $this->assertEquals(3, $classMapLoaderTwo->getPriority());
     }

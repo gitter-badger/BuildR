@@ -120,12 +120,7 @@ class Logger extends AbstractLogger implements LoggerInterface {
          * @var \buildr\Logger\Handler\HandlerInterface $handler
          */
         foreach ($this->handlers as $handler) {
-            $result = $handler->handle($logEntry);
-
-            //If the handling is success and the entry is currently in unhandled state, mark it handled
-            if(($result === TRUE) && ($logEntry->isHandled() === FALSE)) {
-                $logEntry->setHandled();
-            }
+            $handler->handle($logEntry);
         }
     }
 
