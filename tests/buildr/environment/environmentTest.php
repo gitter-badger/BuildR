@@ -1,12 +1,12 @@
 <?php namespace buildr\tests\environment;
 
 use buildr\Startup\BuildrEnvironment;
-use \buildr\tests\Buildr_TestCase as BuildRTestCase;
+use buildr\tests\Buildr_TestCase as BuildRTestCase;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * BuildREnvironment tests
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

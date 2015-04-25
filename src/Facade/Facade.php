@@ -3,9 +3,9 @@
 use buildr\Registry\Registry;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Abstract class for facades
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -24,11 +24,14 @@ abstract class Facade {
     public static function __callStatic($method, $arguments) {
         $reflector = new \ReflectionClass(static::class);
 
-        $bindingName = $reflector->getMethod('getBindingName')
-            ->invoke($reflector->newInstanceWithoutConstructor());
+        $bindingName = $reflector->getMethod('getBindingName')->invoke($reflector->newInstanceWithoutConstructor());
 
         $class = Registry::getClass($bindingName);
-        return call_user_func_array([$class, $method], $arguments);
+
+        return call_user_func_array([
+            $class,
+            $method
+        ], $arguments);
     }
 
 }

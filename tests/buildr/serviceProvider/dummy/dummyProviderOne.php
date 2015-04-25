@@ -3,9 +3,9 @@
 use buildr\ServiceProvider\ServiceProviderInterface;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Dummy test class
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

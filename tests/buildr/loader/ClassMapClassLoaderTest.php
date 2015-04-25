@@ -3,9 +3,9 @@
 use buildr\Loader\ClassMapClassLoader;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * ClassMapClassLoader tests
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

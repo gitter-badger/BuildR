@@ -1,14 +1,14 @@
 <?php namespace buildr\tests\filesystem;
 
 use buildr\Filesystem\Filesystem;
+use buildr\Filesystem\Types\File;
 use buildr\tests\Buildr_TestCase as BuilderTestCase;
 use buildr\Utils\StringUtils;
-use \buildr\Filesystem\Types\File;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Filyesystem class tests
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -36,7 +36,11 @@ class FilesystemTest extends BuilderTestCase {
      * @expectedExceptionMessage The given file is not found!
      */
     public function testGetFileObjectThrowsExceptionWhenFileNotFound() {
-        $this->filesystem->getFile($this->filesystem->assembleDirSystemSafe(['tests', 'filesystem_fixtures', 'singleFileNotExist.txt']));
+        $this->filesystem->getFile($this->filesystem->assembleDirSystemSafe([
+            'tests',
+            'filesystem_fixtures',
+            'singleFileNotExist.txt'
+        ]));
     }
 
     public function testItDetectsTheProperAbsoluteRoot() {
@@ -45,7 +49,13 @@ class FilesystemTest extends BuilderTestCase {
 
     public function testItNormalizeSeparatorsCorrectly() {
         $wrongPath = "home\\test\\\\my//location/path";
-        $correctPath = $this->filesystem->assembleDirSystemSafe(['home', 'test', 'my', 'location', 'path']);
+        $correctPath = $this->filesystem->assembleDirSystemSafe([
+            'home',
+            'test',
+            'my',
+            'location',
+            'path'
+        ]);
         $normalizedpath = $this->filesystem->normalizeSlashes($wrongPath);
 
         $this->assertEquals($correctPath, $normalizedpath);
@@ -68,7 +78,11 @@ class FilesystemTest extends BuilderTestCase {
     }
 
     public function testItReturnsTheProperFileObjectFromFile() {
-        $file = $this->filesystem->getFile($this->filesystem->assembleDirSystemSafe(['tests', 'filesystem_fixtures', 'singleFile.txt']));
+        $file = $this->filesystem->getFile($this->filesystem->assembleDirSystemSafe([
+            'tests',
+            'filesystem_fixtures',
+            'singleFile.txt'
+        ]));
         $this->assertInstanceOf(File::class, $file);
     }
 }

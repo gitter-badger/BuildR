@@ -1,9 +1,9 @@
 <?php namespace buildr\ServiceProvider;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Interface for ServiceProvider classes
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

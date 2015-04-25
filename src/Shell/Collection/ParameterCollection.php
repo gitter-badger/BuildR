@@ -3,9 +3,9 @@
 use buildr\Shell\Value\Parameter;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Parameter collection
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

@@ -1,11 +1,11 @@
 <?php namespace buildr\Config\Exception;
 
-use \Exception;
+use Exception;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * General configuration exception
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

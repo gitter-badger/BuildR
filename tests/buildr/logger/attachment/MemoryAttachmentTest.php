@@ -1,10 +1,11 @@
 <?php namespace buildr\tests\logger\attachment;
+
 use buildr\Logger\Attachment\MemoryUsageAttachment;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Memory usage attachment tester
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

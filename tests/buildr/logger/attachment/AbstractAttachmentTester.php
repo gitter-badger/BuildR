@@ -4,9 +4,9 @@ use buildr\Logger\Attachment\AttachmentInterface;
 use buildr\tests\Buildr_TestCase as BuilderTestCase;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Abstract Logger attachment test
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

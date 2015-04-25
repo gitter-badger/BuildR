@@ -3,9 +3,9 @@
 use buildr\Loader\PSR4ClassLoader;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * PSR4ClassLoader tests
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

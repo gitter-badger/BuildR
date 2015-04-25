@@ -3,9 +3,9 @@
 use buildr\Loader\classLoader;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Initializer interface
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -22,6 +22,7 @@ interface InitializerInterface {
      *
      * @param string $basePath
      * @param \buildr\Loader\classLoader $autoloader
+     *
      * @return bool
      */
     public function initialize($basePath, classLoader $autoloader);

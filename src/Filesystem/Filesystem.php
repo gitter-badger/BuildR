@@ -4,9 +4,9 @@ use buildr\Filesystem\Types\File;
 use buildr\Utils\StringUtils;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Filesystem component
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -39,13 +39,17 @@ class Filesystem {
      * @return string
      */
     private final function detectBasePath() {
-        return realpath(__DIR__ . DIRECTORY_SEPARATOR . self::assembleDirSystemSafe(['..', '..'])) . DIRECTORY_SEPARATOR;
+        return realpath(__DIR__ . DIRECTORY_SEPARATOR . self::assembleDirSystemSafe([
+                '..',
+                '..'
+            ])) . DIRECTORY_SEPARATOR;
     }
 
     /**
      * Assemble dire by system-safe separator
      *
      * @param array $directoryParts
+     *
      * @return string
      */
     public static final function assembleDirSystemSafe(array $directoryParts) {
@@ -56,6 +60,7 @@ class Filesystem {
      * Normalize directory, or file name by replacing any slashes to system-proper directory separator
      *
      * @param $path
+     *
      * @return mixed
      */
     public final function normalizeSlashes($path) {
@@ -73,6 +78,7 @@ class Filesystem {
      * Make a directory, or file location to absolute from a relative location
      *
      * @param $location
+     *
      * @return string
      */
     public final function makeAbsolute($location) {
@@ -97,10 +103,12 @@ class Filesystem {
      *
      * @param string $location relative to project absolute root
      * @param string $fileName
+     *
      * @return bool
      */
     public final function touch($location, $fileName) {
         $fileLocation = $this->getProjectAbsoluteRoot() . $this->normalizeSlashes($location) . DIRECTORY_SEPARATOR . $fileName;
+
         return touch($fileLocation);
     }
 
@@ -109,6 +117,7 @@ class Filesystem {
      * in-depth interaction with that file
      *
      * @param string $fileLocation
+     *
      * @return \buildr\Filesystem\Types\File
      */
     public final function getFile($fileLocation) {

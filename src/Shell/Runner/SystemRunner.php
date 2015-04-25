@@ -3,9 +3,9 @@
 use buildr\Shell\CommandInterface;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Runner using system()
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -23,6 +23,7 @@ class SystemRunner implements RunnerInterface, ReturnValueOutputInterface {
      * Run the command
      *
      * @param \buildr\Shell\CommandInterface $command
+     *
      * @return \buildr\Shell\Runner\SystemRunner
      */
     public function run(CommandInterface $command) {

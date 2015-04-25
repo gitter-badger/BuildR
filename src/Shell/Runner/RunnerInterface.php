@@ -3,9 +3,9 @@
 use buildr\Shell\CommandInterface;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Runner interface
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -21,6 +21,7 @@ interface RunnerInterface {
      * Run the command
      *
      * @param \buildr\Shell\CommandInterface $command
+     *
      * @return mixed
      */
     public function run(CommandInterface $command);

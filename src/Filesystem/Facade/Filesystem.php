@@ -3,9 +3,9 @@
 use buildr\Facade\Facade;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Facade for filesystem class
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

@@ -5,9 +5,9 @@ use buildr\Loader\ClassMapClassLoader;
 use buildr\tests\Buildr_TestCase as BuilderTestCase;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Serviceprovider tests
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -64,7 +64,8 @@ class classLoaderTest extends BuilderTestCase {
     }
 
     public function testItReturnsTheProperLoadersByName() {
-        set_error_handler(function($code, $string) {});
+        set_error_handler(function ($code, $string) {
+        });
 
         $this->loader->registerLoader(new ClassMapClassLoader());
         $this->loader->registerLoader(new ClassMapClassLoader());
@@ -93,7 +94,7 @@ class classLoaderTest extends BuilderTestCase {
         $classMapLoaderOne = new ClassMapClassLoader();
         $classMapLoaderTwo = new ClassMapClassLoader();
 
-        set_error_handler(function($errorNumber, $errorString) {
+        set_error_handler(function ($errorNumber, $errorString) {
             $this->assertEquals(E_USER_NOTICE, $errorNumber);
             $this->assertEquals("Another class Loader is registered with priority 2! Increasing priority by one, to find a new spot.", $errorString);
         });

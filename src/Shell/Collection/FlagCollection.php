@@ -3,9 +3,9 @@
 use buildr\Shell\Value\Flag;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Flag collection
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

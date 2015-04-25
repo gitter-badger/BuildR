@@ -1,9 +1,9 @@
 <?php namespace buildr\Utils;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Basic pattern matching class
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -63,8 +63,8 @@ class Pattern {
         $charArray = str_split($this->originalPattern);
         $regex = "/";
 
-        foreach($charArray as $key => $char) {
-            switch($char) {
+        foreach ($charArray as $key => $char) {
+            switch ($char) {
                 case '*':
                     $regex .= ".*";
                     break;

@@ -1,13 +1,13 @@
 <?php namespace buildr\Utils\Enum;
 
-use \ReflectionClass;
-use \BadMethodCallException;
-use \UnexpectedValueException;
+use BadMethodCallException;
+use ReflectionClass;
+use UnexpectedValueException;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Enumeration base class
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -64,6 +64,7 @@ abstract class BaseEnumeration {
      * Validate the value of the enumeration
      *
      * @param mixed $value
+     *
      * @return bool
      */
     public function isValid($value) {
@@ -99,6 +100,7 @@ abstract class BaseEnumeration {
      * Find a key by the enumeration value
      *
      * @param string $value
+     *
      * @return null|string
      */
     public static function find($value) {
@@ -118,6 +120,7 @@ abstract class BaseEnumeration {
      * Return a key existence in the current enumeration
      *
      * @param string $key
+     *
      * @return bool
      * @throw \BadMethodCallException
      */
@@ -134,6 +137,7 @@ abstract class BaseEnumeration {
      *
      * @param $name
      * @param $arguments
+     *
      * @return static
      * @throw \BadMethodCallException
      */

@@ -1,11 +1,9 @@
 <?php namespace buildr\Loader;
 
-use \buildr\Loader\classLoaderInterface;
-
 /**
- * BuildR - PHP based continuous integration server
- *
  * Class loader implementation with multiple type of loader support (PSR-4, ClassMap)
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -32,9 +30,14 @@ class ClassLoader {
         require_once __DIR__ . DIRECTORY_SEPARATOR . 'classLoaderInterface.php';
 
         $files = scandir(__DIR__, SCANDIR_SORT_DESCENDING);
-        $unnedFiles = ['.', '..', 'ClassLoader.php', 'classLoaderInterface.php'];
+        $unnedFiles = [
+            '.',
+            '..',
+            'ClassLoader.php',
+            'classLoaderInterface.php'
+        ];
 
-        foreach($files as $k => $file) {
+        foreach ($files as $k => $file) {
             if(in_array($file, $unnedFiles)) {
                 continue;
             }
@@ -51,6 +54,7 @@ class ClassLoader {
      * On register, this function class the loader register() method. It will allows to listen to loader registration
      *
      * @param \buildr\Loader\classLoaderInterface $classLoader
+     *
      * @return bool
      */
     public function registerLoader(classLoaderInterface $classLoader) {
@@ -59,10 +63,11 @@ class ClassLoader {
         if(!isset($this->loaders[$priority])) {
             $this->loaders[$priority] = $classLoader;
             $classLoader->register();
+
             return TRUE;
         }
 
-        $classLoader->setPriority($priority+1);
+        $classLoader->setPriority($priority + 1);
         $this->registerLoader($classLoader);
 
         trigger_error("Another class Loader is registered with priority {$priority}! Increasing priority by one, to find a new spot.", E_USER_NOTICE);
@@ -81,6 +86,7 @@ class ClassLoader {
      * Return a specific loader at the given priority
      *
      * @param int $priority
+     *
      * @return \buildr\Loader\classLoaderInterface
      * @throws \InvalidArgumentException
      */
@@ -97,13 +103,14 @@ class ClassLoader {
      * This name is hard-coded on all loader class
      *
      * @param string $loaderName
+     *
      * @return \buildr\Loader\classLoaderInterface[]
      * @throws \InvalidArgumentException
      */
     public function getLoaderByName($loaderName) {
         $loaders = [];
 
-        foreach($this->loaders as $loader) {
+        foreach ($this->loaders as $loader) {
             if($loader->getName() == $loaderName) {
                 $loaders[] = $loader;
             }
@@ -124,7 +131,7 @@ class ClassLoader {
      */
     public function loadClass($className) {
         //Sorted by priority on register
-        foreach($this->loaders as $loader) {
+        foreach ($this->loaders as $loader) {
             if($loader->load($className) === TRUE) {
                 break;
             }

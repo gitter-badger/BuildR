@@ -5,9 +5,9 @@ use buildr\Loader\PSR4ClassLoader;
 use buildr\Startup\BuildrEnvironment;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Unit testing bootup initializer
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -26,6 +26,7 @@ class UnitTestingInitializer extends BaseInitializer {
      *
      * @param string $basePath
      * @param \buildr\Loader\classLoader $autoloader
+     *
      * @return bool
      */
     public function initialize($basePath, classLoader $autoloader) {

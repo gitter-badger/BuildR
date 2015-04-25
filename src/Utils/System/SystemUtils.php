@@ -1,11 +1,12 @@
 <?php namespace buildr\Utils\System;
+
 use buildr\Utils\StringUtils;
 use buildr\Utils\System\Exception\ModuleNotSupportedException;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * System support helper for PHP module
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -31,6 +32,7 @@ class SystemUtils {
      * Return the support of a SystemModule on current system
      *
      * @param array $extensionModule
+     *
      * @throws \buildr\Utils\System\Exception\ModuleNotSupportedException
      * @return array
      */
@@ -40,7 +42,7 @@ class SystemUtils {
         /**
          * @var \buildr\Utils\System\Modules\BaseSystemModule $moduleClass
          */
-        foreach($extensionModule as $module) {
+        foreach ($extensionModule as $module) {
             $moduleClass = new $module;
             $moduleName = $moduleClass->moduleName;
 
@@ -60,7 +62,7 @@ class SystemUtils {
      * @return string
      */
     public static final function getOsType() {
-        if (StringUtils::contains(PHP_OS, "WIN")) {
+        if(StringUtils::contains(PHP_OS, "WIN")) {
             return self::OS_TYPE_WIN;
         }
 

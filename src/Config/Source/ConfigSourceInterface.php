@@ -3,9 +3,9 @@
 use buildr\Config\Selector\ConfigSelector;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Common interface for config sources
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -36,6 +36,7 @@ interface ConfigSourceInterface {
      *
      * @param \buildr\Config\Selector\ConfigSelector $selector
      * @param mixed $defaultValue
+     *
      * @return mixed
      */
     public function get(ConfigSelector $selector, $defaultValue = NULL);

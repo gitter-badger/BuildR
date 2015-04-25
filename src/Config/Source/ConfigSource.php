@@ -1,12 +1,11 @@
 <?php namespace buildr\Config\Source;
 
-use \buildr\Config\Source\ConfigSourceInterface;
 use buildr\Startup\BuildrEnvironment;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Base class for configuration sources
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

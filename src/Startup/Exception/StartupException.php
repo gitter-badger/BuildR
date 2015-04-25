@@ -1,9 +1,9 @@
 <?php namespace buildr\Startup\Exception;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Startup exception
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

@@ -4,12 +4,12 @@ use buildr\Config\Config;
 use buildr\Config\Facade\Config as ConfigFacade;
 use buildr\Config\Source\ConfigSourceInterface;
 use buildr\Config\Source\PHPConfigSource;
-use \buildr\tests\Buildr_TestCase as BuildRTestCase;
+use buildr\tests\Buildr_TestCase as BuildRTestCase;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Tests for Config class
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

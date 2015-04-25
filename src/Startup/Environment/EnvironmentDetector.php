@@ -4,9 +4,9 @@ use buildr\Startup\BuildrEnvironment;
 use buildr\Utils\StringUtils;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Environment detector class
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -25,6 +25,7 @@ class EnvironmentDetector {
      *
      * @param callable $callback
      * @param null $consoleArgs
+     *
      * @return mixed|string
      */
     public function detect(\Closure $callback, $consoleArgs = NULL) {
@@ -45,6 +46,7 @@ class EnvironmentDetector {
      * Runs the closure and returns its result
      *
      * @param callable $callback
+     *
      * @return mixed
      */
     private function detectByCallback(\Closure $callback) {
@@ -55,10 +57,11 @@ class EnvironmentDetector {
      * Get the environment from the proper console argument
      *
      * @param $consoleArgs
+     *
      * @return string|null
      */
     private function detectEnvByConsoleArgs($consoleArgs) {
-        foreach($consoleArgs as $consoleArg) {
+        foreach ($consoleArgs as $consoleArg) {
             if(StringUtils::startWith($consoleArg, '--env=')) {
                 return StringUtils::trimFromBeginning($consoleArg, '--env=');
             }

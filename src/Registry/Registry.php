@@ -1,12 +1,12 @@
 <?php namespace buildr\Registry;
 
-use buildr\Utils\StringUtils;
 use buildr\Registry\Exception\ProtectedVariableException;
+use buildr\Utils\StringUtils;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Basic object holder implementation
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -42,6 +42,7 @@ class Registry {
      * Get a registered object from the registry
      *
      * @param string $bindingName
+     *
      * @return \stdClass
      * @throws \InvalidArgumentException
      */
@@ -58,6 +59,7 @@ class Registry {
      *
      * @param string $variableName
      * @param mixed $value
+     *
      * @throws \buildr\Registry\Exception\ProtectedVariableException
      */
     public static final function setVariable($variableName, $value) {
@@ -76,6 +78,7 @@ class Registry {
      * Get a registered variable from registry
      *
      * @param string $variableName
+     *
      * @return mixed
      * @throws \InvalidArgumentException
      */

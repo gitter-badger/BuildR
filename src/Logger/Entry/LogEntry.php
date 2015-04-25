@@ -1,13 +1,12 @@
 <?php namespace buildr\Logger\Entry;
 
 use buildr\Utils\StringUtils;
-use buildr\Logger\Entry\LogEntryInterface;
-use \DateTime;
+use DateTime;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Loge entry class
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

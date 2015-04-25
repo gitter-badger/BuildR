@@ -3,9 +3,9 @@
 use buildr\Shell\Value\Argument;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Argument collection
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

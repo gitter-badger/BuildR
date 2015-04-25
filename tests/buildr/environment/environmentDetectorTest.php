@@ -2,13 +2,13 @@
 
 use buildr\Startup\BuildrEnvironment;
 use buildr\Startup\Environment\Detector\HTTPRequestDomainDetector;
-use \buildr\tests\Buildr_TestCase as BuildRTestCase;
-use \buildr\Startup\Environment\EnvironmentDetector;
+use buildr\Startup\Environment\EnvironmentDetector;
+use buildr\tests\Buildr_TestCase as BuildRTestCase;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * EnvironmentDetector tests
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -21,7 +21,7 @@ use \buildr\Startup\Environment\EnvironmentDetector;
 class environmentDetectorTest extends BuildRTestCase {
 
     public function testItsReturnTheCallbackCorrectly() {
-        $closure = (function() {
+        $closure = (function () {
             return TRUE;
         });
 
@@ -35,7 +35,7 @@ class environmentDetectorTest extends BuildRTestCase {
     }
 
     public function testIsReturnTheCorrectEnvironmentOnWeb() {
-        $closure = (function() {
+        $closure = (function () {
             return 'envClosure';
         });
 
@@ -48,7 +48,7 @@ class environmentDetectorTest extends BuildRTestCase {
     }
 
     public function testItsReturnTheDefaultEnvironmentOnWrongConsoleArgs() {
-        $closure = (function() {
+        $closure = (function () {
             return 'envClosure';
         });
 

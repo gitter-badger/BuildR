@@ -5,9 +5,9 @@ use buildr\Startup\Environment\Detector\EnvironmentException;
 use buildr\Startup\Environment\EnvironmentDetector;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Environment handler
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -68,10 +68,11 @@ class BuildrEnvironment {
      * and use the detect() method as the closer
      *
      * @param \Closure|null $callback
+     *
      * @throws \buildr\Startup\Environment\Detector\EnvironmentException
      * @codeCoverageIgnore
      */
-    public static final function detectEnvironment($callback = null) {
+    public static final function detectEnvironment($callback = NULL) {
         $consoleArgs = (isset($_SERVER['argv'])) ? $_SERVER['argv'] : NULL;
 
         if(!($callback instanceof \Closure)) {
@@ -104,13 +105,14 @@ class BuildrEnvironment {
      * Returns the dynamically created closure from a detector class detect() method
      *
      * @param string $detectorClass
+     *
      * @return \Closure
      * @throws \buildr\Startup\Environment\Detector\EnvironmentException
      */
     private static function getDetectorClosure($detectorClass) {
         try {
             $detectorReflector = new \ReflectionClass($detectorClass);
-        } catch(\ReflectionException $e) {
+        } catch (\ReflectionException $e) {
             throw new EnvironmentException("The following detector class ({$detectorClass}) is not instantiable!");
         }
 
@@ -119,6 +121,7 @@ class BuildrEnvironment {
         }
 
         $methodReflector = $detectorReflector->getMethod("detect");
+
         return $methodReflector->getClosure($detectorReflector->newInstance());
     }
 

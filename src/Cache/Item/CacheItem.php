@@ -1,11 +1,9 @@
 <?php namespace buildr\Cache\Item;
 
-use \buildr\Cache\Item\CacheItemInterface;
-
 /**
- * BuildR - PHP based continuous integration server
- *
  * Common cache item
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

@@ -6,9 +6,9 @@ use buildr\Config\Selector\ConfigSelector;
 use buildr\Filesystem\Facade\Filesystem;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * PHP Array configuration source
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -44,6 +44,7 @@ class PHPConfigSource extends CachedConfigSource {
      *
      * @param \buildr\Config\Selector\ConfigSelector $selector
      * @param mixed $defaultValue
+     *
      * @return mixed
      */
     public function get(ConfigSelector $selector, $defaultValue = NULL) {
@@ -59,9 +60,9 @@ class PHPConfigSource extends CachedConfigSource {
             $this->getCache()->set($cacheKey, $value);
 
             return $value;
-        } catch(InvalidConfigKeyException $e) {
+        } catch (InvalidConfigKeyException $e) {
             return $defaultValue;
-        } catch(ConfigurationException $e) {
+        } catch (ConfigurationException $e) {
             return $defaultValue;
         }
     }
@@ -71,6 +72,7 @@ class PHPConfigSource extends CachedConfigSource {
      * the real config value
      *
      * @param \buildr\Config\Selector\ConfigSelector $selector
+     *
      * @return array
      * @throws \buildr\Config\Exception\ConfigurationException
      * @throws \buildr\Config\Exception\InvalidConfigKeyException
@@ -92,7 +94,7 @@ class PHPConfigSource extends CachedConfigSource {
 
         $selectorTmp = $fullContent;
 
-        foreach($selector->getSelectorArray() as $selector) {
+        foreach ($selector->getSelectorArray() as $selector) {
             if(isset($selectorTmp[$selector])) {
                 $selectorTmp = $selectorTmp[$selector];
                 continue;
@@ -108,6 +110,7 @@ class PHPConfigSource extends CachedConfigSource {
      * Returns the environmental based config file content, if is exist
      *
      * @param $filename
+     *
      * @return mixed|null
      */
     protected function getEnvContent($filename) {
@@ -124,6 +127,7 @@ class PHPConfigSource extends CachedConfigSource {
      * Return the main config file content
      *
      * @param $filename
+     *
      * @return mixed
      * @throws \buildr\Config\Exception\ConfigurationException
      */

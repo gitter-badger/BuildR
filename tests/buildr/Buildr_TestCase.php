@@ -3,9 +3,9 @@
 use Faker\Factory;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Basic testCase for easily unit testing
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -22,7 +22,7 @@ class Buildr_TestCase extends \PHPUnit_Framework_TestCase {
      */
     protected $faker = NULL;
 
-    public function __construct($name = null, array $data = [], $dataName = '') {
+    public function __construct($name = NULL, array $data = [], $dataName = '') {
         $this->faker = Factory::create();
 
         parent::__construct($name, $data, $dataName);
@@ -35,6 +35,7 @@ class Buildr_TestCase extends \PHPUnit_Framework_TestCase {
      * @param string $className
      * @param string $propertyName
      * @param null|\stdClass $concreteClass
+     *
      * @return mixed
      */
     protected function getPrivatePropertyFromClass($className, $propertyName, $concreteClass = NULL) {
@@ -74,6 +75,7 @@ class Buildr_TestCase extends \PHPUnit_Framework_TestCase {
      * @param string $methodName
      * @param array $methodArguments
      * @param null|\stdClass $concreteClass
+     *
      * @return mixed
      */
     protected function invokePrivateMethod($className, $methodName, array $methodArguments = [], $concreteClass = NULL) {
@@ -94,10 +96,12 @@ class Buildr_TestCase extends \PHPUnit_Framework_TestCase {
      *
      * @param $className
      * @param $constantName
+     *
      * @return mixed
      */
     protected function getConstantFromClass($className, $constantName) {
         $reflector = new \ReflectionClass($className);
+
         return $reflector->getConstant($constantName);
     }
 

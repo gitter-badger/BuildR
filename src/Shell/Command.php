@@ -9,9 +9,9 @@ use buildr\Shell\Value\Parameter;
 use buildr\Shell\Value\SubCommand;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Shell command builder
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -64,6 +64,7 @@ class Command implements CommandInterface {
      * Push a new argument to the argument collection
      *
      * @param \buildr\Shell\Value\Argument $argument
+     *
      * @return \buildr\Shell\Command
      */
     public function addArgument(Argument $argument) {
@@ -76,6 +77,7 @@ class Command implements CommandInterface {
      * Push a new flag to the flag collection
      *
      * @param \buildr\Shell\Value\Flag $flag
+     *
      * @return \buildr\Shell\Command
      */
     public function addFlag(Flag $flag) {
@@ -88,6 +90,7 @@ class Command implements CommandInterface {
      * Push a new parameter to the parameter collection
      *
      * @param \buildr\Shell\Value\Parameter $parameter
+     *
      * @return \buildr\Shell\Command
      */
     public function addParameter(Parameter $parameter) {
@@ -100,6 +103,7 @@ class Command implements CommandInterface {
      * Set the currently used sub command
      *
      * @param \buildr\Shell\Value\SubCommand $subCommand
+     *
      * @return \buildr\Shell\Command
      */
     public function addSubCommand(SubCommand $subCommand) {
@@ -109,12 +113,7 @@ class Command implements CommandInterface {
     }
 
     public function __toString() {
-        return sprintf("%s %s %s %s %s",
-            $this->mainCommand,
-            $this->subCommand,
-            $this->argumentCollection,
-            $this->flagCollection,
-            $this->parameterCollection);
+        return sprintf("%s %s %s %s %s", $this->mainCommand, $this->subCommand, $this->argumentCollection, $this->flagCollection, $this->parameterCollection);
     }
 
 }

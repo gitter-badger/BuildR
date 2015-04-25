@@ -3,9 +3,9 @@
 use buildr\Shell\CommandInterface;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Runner using shell_exec()
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -23,6 +23,7 @@ class ShellExecRunner implements RunnerInterface, ExecutionOutputInterface {
      * Run the command
      *
      * @param \buildr\Shell\CommandInterface $command
+     *
      * @return \buildr\Shell\Runner\ShellExecRunner
      */
     public function run(CommandInterface $command) {

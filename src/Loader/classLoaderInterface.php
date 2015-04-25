@@ -1,9 +1,9 @@
 <?php namespace buildr\Loader;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Interface for class loader implementations
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -26,6 +26,7 @@ interface classLoaderInterface {
      * Load the specified class
      *
      * @param string $className
+     *
      * @return bool
      */
     public function load($className);
@@ -42,6 +43,7 @@ interface classLoaderInterface {
      * is already reserved by another loader
      *
      * @param int $priority
+     *
      * @return void
      */
     public function setPriority($priority);

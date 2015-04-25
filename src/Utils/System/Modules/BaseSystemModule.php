@@ -1,10 +1,11 @@
 <?php namespace buildr\Utils\System\Modules;
+
 use buildr\Utils\System\SystemUtils;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Base modules for all SystemSupport module
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -69,9 +70,10 @@ abstract class BaseSystemModule {
      * @return bool
      */
     private function runFunctionTest() {
-        foreach($this->testFunctions as $function) {
+        foreach ($this->testFunctions as $function) {
             if(!function_exists($function)) {
                 $this->errorFunction = $function;
+
                 return FALSE;
             }
         }
@@ -100,7 +102,7 @@ abstract class BaseSystemModule {
     public function getUnSupportReason() {
         $messages = [];
 
-        switch(TRUE) {
+        switch (TRUE) {
             case ($this->isLoaded() === FALSE):
                 $messages[] = "This extension is not loaded!";
                 break;

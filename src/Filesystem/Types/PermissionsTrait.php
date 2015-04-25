@@ -5,9 +5,9 @@ use buildr\Utils\System\Information\GroupInformation;
 use buildr\Utils\System\Information\UserInformation;
 
 /**
- * BuildR - PHP based continuous integration server
+ * Trait to easily implements fiel or directory permission info support
  *
- *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -31,7 +31,7 @@ trait PermissionsTrait {
         if($groupId !== FALSE) {
             try {
                 return new GroupInformation($groupId);
-            } catch(ModuleNotSupportedException $e) {
+            } catch (ModuleNotSupportedException $e) {
                 return $groupId;
             }
         }
@@ -51,7 +51,7 @@ trait PermissionsTrait {
         if($ownerId !== FALSE) {
             try {
                 return new UserInformation($ownerId);
-            } catch(ModuleNotSupportedException $e) {
+            } catch (ModuleNotSupportedException $e) {
                 return $ownerId;
             }
         }

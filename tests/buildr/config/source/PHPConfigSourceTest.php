@@ -2,12 +2,11 @@
 
 use buildr\Config\Selector\ConfigSelector;
 use buildr\tests\config\source\ConfigSourceTestCase;
-use buildr\Utils\StringUtils;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Test for
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

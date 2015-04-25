@@ -1,13 +1,12 @@
 <?php namespace buildr\Config\Source;
 
-use \buildr\Registry\Registry;
-use \buildr\Config\Source\CachedConfigSourceInterface;
 use buildr\Config\Selector\ConfigSelector;
+use buildr\Registry\Registry;
 
 /**
- * BuildR - PHP based continuous integration server
+ * Abstract super class for cachable configuration sources
  *
- * 
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -23,6 +22,7 @@ abstract class CachedConfigSource extends ConfigSource implements CachedConfigSo
      * Generate a cacheKey for a ConfigSelector
      *
      * @param \buildr\Config\Selector\ConfigSelector $selector
+     *
      * @return string
      */
     public function getCacheKeyForSelector(ConfigSelector $selector) {

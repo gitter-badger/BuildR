@@ -2,13 +2,11 @@
 
 use buildr\Logger\Entry\LogEntryInterface;
 use buildr\Logger\Formatter\FormatterTrait;
-use buildr\Logger\Handler\FilterableHandlerTrait;
-use buildr\Logger\Handler\HandlerInterface;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Write all log to the PHP STDOUT
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -27,6 +25,7 @@ class StdOutHandler implements HandlerInterface {
      * Handle the LogEntry
      *
      * @param \buildr\Logger\Entry\LogEntryInterface $entry
+     *
      * @return bool
      */
     public function handle(LogEntryInterface $entry) {

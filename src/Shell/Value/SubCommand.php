@@ -1,9 +1,9 @@
 <?php namespace buildr\Shell\Value;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Sub command
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="buildr" default="build">
 
-    <property name="version" value="0.1.0" />
+    <property name="version" value="0.1.0"/>
 
     <!-- By default, we assume all tools to be on the $PATH -->
     <!-- <property name="toolsdir" value=""/> -->
@@ -10,13 +10,13 @@
     <property name="toolsdir" value="${basedir}/vendor/bin/"/>
 
     <!-- Set buildId and VCS type passed by phabricator, harbormaster application -->
-    <property name="buildId" value="${harbormaster_build_id}" />
-    <property name="vcsType" value="${harbormaster_vcs_type}" />
+    <property name="buildId" value="${harbormaster_build_id}"/>
+    <property name="vcsType" value="${harbormaster_vcs_type}"/>
 
     <!-- Where tools store output files -->
-    <property name="buildOutputPath" value="${basedir}/build/output" />
+    <property name="buildOutputPath" value="${basedir}/build/output"/>
 
-    <echo message="Started building ${ant.project.name}! Build ID on phabricator: ${buildId}" level="info" />
+    <echo message="Started building ${ant.project.name}! Build ID on phabricator: ${buildId}" level="info"/>
 
     <!-- Target for default build configuration -->
     <target name="build"
@@ -28,14 +28,14 @@
             unless="clean.done"
             description="Cleanup build artifacts">
 
-        <echo message="Cleaning out build output directories" level="info" />
+        <echo message="Cleaning out build output directories" level="info"/>
 
         <delete quiet="true" file="${basedir}/composer.lock"/>
         <delete quiet="true" dir="${basedir}/vendor"/>
         <delete quiet="true" dir="${buildOutputPath}"/>
         <property name="clean.done" value="true"/>
 
-        <echo message="Finished cleaning output directories with result: ${clean.done}" level="info" />
+        <echo message="Finished cleaning output directories with result: ${clean.done}" level="info"/>
     </target>
 
     <!-- Make all output sub directory for tools -->
@@ -43,60 +43,60 @@
             unless="prepare.done"
             description="Prepare for build">
 
-        <echo message="Make sub directories for build" level="info" />
+        <echo message="Make sub directories for build" level="info"/>
 
-        <mkdir dir="${buildOutputPath}/logs" />
-        <mkdir dir="${buildOutputPath}/coverage" />
-        <mkdir dir="${buildOutputPath}/pdepend" />
-        <mkdir dir="${buildOutputPath}/release" />
-        <mkdir dir="${buildOutputPath}/doc" />
-        <property name="prepare.done" value="true" />
+        <mkdir dir="${buildOutputPath}/logs"/>
+        <mkdir dir="${buildOutputPath}/coverage"/>
+        <mkdir dir="${buildOutputPath}/pdepend"/>
+        <mkdir dir="${buildOutputPath}/release"/>
+        <mkdir dir="${buildOutputPath}/doc"/>
+        <property name="prepare.done" value="true"/>
 
-        <echo message="Finished making sub directories with result: ${prepare.done}" />
+        <echo message="Finished making sub directories with result: ${prepare.done}"/>
     </target>
 
     <!-- Install composer dependencies and generating autoloader -->
     <target name="composer"
             description="Installing dependencies and generating autoloader">
 
-        <echo message="Start dependency installing using composer" level="info" />
+        <echo message="Start dependency installing using composer" level="info"/>
 
         <condition property="composer.command" value="update" else="install">
             <available file="${basedir}/composer.lock"/>
         </condition>
 
-        <echo message="Running the following sub-command: ${composer.command}" level="info" />
+        <echo message="Running the following sub-command: ${composer.command}" level="info"/>
 
         <exec executable="composer">
-            <arg value="${composer.command}" />
-            <arg value="--no-interaction" />
-            <arg value="--optimize-autoloader" />
-            <arg value="--dev" />
+            <arg value="${composer.command}"/>
+            <arg value="--no-interaction"/>
+            <arg value="--optimize-autoloader"/>
+            <arg value="--dev"/>
         </exec>
 
-        <echo message="Finished installing dependencies" level="info" />
+        <echo message="Finished installing dependencies" level="info"/>
     </target>
 
     <!-- Linting PHP syntax using PHP build-in parser -->
     <target name="lint" description="Perform syntax check of sourcecode files">
 
-        <echo message="Run syntax checking on source and tests" level="info" />
+        <echo message="Run syntax checking on source and tests" level="info"/>
 
         <apply executable="php" failonerror="true">
-            <arg value="-l" />
+            <arg value="-l"/>
 
             <fileset dir="${basedir}/src">
-                <include name="**/*.php" />
-                <modified />
+                <include name="**/*.php"/>
+                <modified/>
             </fileset>
 
             <fileset dir="${basedir}/tests">
-                <include name="**/*.php" />
-                <modified />
+                <include name="**/*.php"/>
+                <modified/>
             </fileset>
         </apply>
 
-        <echo message="Finished PHP syntax checking" level="info" />
+        <echo message="Finished PHP syntax checking" level="info"/>
     </target>
 
     <!-- Unit testing -->
@@ -104,38 +104,38 @@
             depends="composer"
             description="Run unit tests with PHPUnit">
 
-        <echo message="Started unit testing using PHPUnit" level="info" />
+        <echo message="Started unit testing using PHPUnit" level="info"/>
 
         <exec executable="${toolsdir}phpunit" failonerror="true">
             <arg value="--configuration"/>
             <arg path="${basedir}/build/phpunit-ci.xml"/>
         </exec>
 
-        <echo message="Finished unit testing" level="info" />
+        <echo message="Finished unit testing" level="info"/>
     </target>
 
     <!-- Duplicated code finding -->
     <target name="phpcpd"
             depends="composer">
 
-        <echo message="Started duplicated code finding" level="info" />
+        <echo message="Started duplicated code finding" level="info"/>
 
         <exec executable="${toolsdir}phpcpd">
-            <arg value="--log-pmd" />
-            <arg path="${buildOutputPath}/logs/pmd-cpd.xml" />
-            <arg path="${basedir}/src" />
+            <arg value="--log-pmd"/>
+            <arg path="${buildOutputPath}/logs/pmd-cpd.xml"/>
+            <arg path="${basedir}/src"/>
         </exec>
 
-        <echo message="Finished checking for duplicated code" level="info" />
+        <echo message="Finished checking for duplicated code" level="info"/>
     </target>
 
     <!-- Software metrics -->
     <target name="pdepend">
         <exec executable="${toolsdir}pdepend">
-            <arg value="--jdepend-xml=${buildOutputPath}/pdepend/jdepend.xml" />
-            <arg value="--jdepend-chart=${buildOutputPath}/pdepend/dependencies.svg" />
-            <arg value="--overview-pyramid=${buildOutputPath}/pdepend/overview-pyramid.svg" />
-            <arg path="${basedir}/src" />
+            <arg value="--jdepend-xml=${buildOutputPath}/pdepend/jdepend.xml"/>
+            <arg value="--jdepend-chart=${buildOutputPath}/pdepend/dependencies.svg"/>
+            <arg value="--overview-pyramid=${buildOutputPath}/pdepend/overview-pyramid.svg"/>
+            <arg path="${basedir}/src"/>
         </exec>
     </target>
 
@@ -143,39 +143,39 @@
     <target name="phploc"
             depends="composer">
 
-        <echo message="Started project size measurement" level="info" />
+        <echo message="Started project size measurement" level="info"/>
 
         <exec executable="${toolsdir}phploc">
-            <arg value="--count-tests" />
-            <arg value="--log-csv" />
-            <arg path="${buildOutputPath}/logs/phploc.csv" />
-            <arg value="--log-xml" />
-            <arg path="${buildOutputPath}/logs/phploc.xml" />
-            <arg path="${basedir}/src" />
-            <arg path="${basedir}/tests" />
+            <arg value="--count-tests"/>
+            <arg value="--log-csv"/>
+            <arg path="${buildOutputPath}/logs/phploc.csv"/>
+            <arg value="--log-xml"/>
+            <arg path="${buildOutputPath}/logs/phploc.xml"/>
+            <arg path="${basedir}/src"/>
+            <arg path="${basedir}/tests"/>
         </exec>
 
-        <echo message="Finished project size measurement" level="info" />
+        <echo message="Finished project size measurement" level="info"/>
     </target>
 
     <!-- Documentation generation -->
     <target name="documentation" description="Generate documentation for this build">
         <exec executable="apigen">
-            <arg value="generate" />
-            <arg value="--source" />
-            <arg path="${basedir}/src/" />
-            <arg value="--destination" />
-            <arg path="${buildOutputPath}/doc" />
-            <arg value="--deprecated" />
-            <arg value="--todo" />
-            <arg value="--tree" />
-            <arg value="--template-theme=bootstrap" />
+            <arg value="generate"/>
+            <arg value="--source"/>
+            <arg path="${basedir}/src/"/>
+            <arg value="--destination"/>
+            <arg path="${buildOutputPath}/doc"/>
+            <arg value="--deprecated"/>
+            <arg value="--todo"/>
+            <arg value="--tree"/>
+            <arg value="--template-theme=bootstrap"/>
         </exec>
     </target>
 
     <!-- Artifact creation -->
     <target name="artifact" description="Archive current build as artifact">
-        <echo message="Started archiving current release" level="info" />
+        <echo message="Started archiving current release" level="info"/>
 
         <zip destfile="${buildOutputPath}/release/${ant.project.name}-${version}.${harbormaster_vcs_type}-${harbormaster_build_id}.zip"
              basedir="."
@@ -186,6 +186,6 @@
              basedir="${buildOutputPath}/doc"
                 />
 
-        <echo message="Finished release artifact creation!" level="info" />
+        <echo message="Finished release artifact creation!" level="info"/>
     </target>
 </project>

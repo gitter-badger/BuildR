@@ -1,9 +1,9 @@
 <?php
 
 /**
- * BuildR - PHP based continuous integration server
+ * This configuration file holds settings for testing environment
  *
- * This configuration files hold settings for application base
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  *

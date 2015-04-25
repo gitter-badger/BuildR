@@ -3,9 +3,9 @@
 use buildr\Startup\Environment\Detector\DetectorInterface;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * DummyDetector
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -15,7 +15,7 @@ use buildr\Startup\Environment\Detector\DetectorInterface;
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
  */
-class DummyDetector  implements DetectorInterface {
+class DummyDetector implements DetectorInterface {
 
     /**
      * Returns the detected environment as string

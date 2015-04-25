@@ -1,12 +1,12 @@
 <?php namespace buildr\tests\enumeration;
 
-use \buildr\tests\Buildr_TestCase as BuildRTestCase;
+use buildr\tests\Buildr_TestCase as BuildRTestCase;
 use buildr\tests\enumeration\fixture\testEnumeration;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Enumerations tests
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -31,7 +31,7 @@ class enumerationTest extends BuildRTestCase {
      * @expectedExceptionMessage The key must be a string!
      */
     public function testItThrowsExceptionOnWrongKeyValidation() {
-        $this->assertFalse(testEnumeration::isValidKey(false));
+        $this->assertFalse(testEnumeration::isValidKey(FALSE));
     }
 
     /**
@@ -43,13 +43,19 @@ class enumerationTest extends BuildRTestCase {
     }
 
     public function testItReturnsConstantsAsArray() {
-        $expectedArray = ['TEST_ONE' => 'T1', 'TEST_TWO' => 'T2'];
+        $expectedArray = [
+            'TEST_ONE' => 'T1',
+            'TEST_TWO' => 'T2'
+        ];
 
         $this->assertEquals($expectedArray, testEnumeration::toArray());
     }
 
     public function testItReturnsKeysProperly() {
-        $expectedArray = ['TEST_ONE', 'TEST_TWO'];
+        $expectedArray = [
+            'TEST_ONE',
+            'TEST_TWO'
+        ];
 
         $this->assertEquals($expectedArray, testEnumeration::getKeys());
     }

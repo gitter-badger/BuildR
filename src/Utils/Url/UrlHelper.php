@@ -1,9 +1,9 @@
 <?php namespace buildr\Utils\Url;
 
 /**
- * BuildR - PHP based continuous integration server
+ * URL helper class
  *
- * 
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

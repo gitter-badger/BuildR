@@ -1,10 +1,11 @@
 <?php namespace buildr\Utils\System\Modules;
+
 use buildr\Utils\System\SystemUtils;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Posix module helper for SystemSupport class
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -22,6 +23,12 @@ class PosixModule extends BaseSystemModule {
 
     protected $supportedSystems = [SystemUtils::OS_TYPE_NIX];
 
-    protected $testFunctions = ["posix_access", "posix_geteuid", "posix_kill", "posix_times", "posix_uname"];
+    protected $testFunctions = [
+        "posix_access",
+        "posix_geteuid",
+        "posix_kill",
+        "posix_times",
+        "posix_uname"
+    ];
 
 }

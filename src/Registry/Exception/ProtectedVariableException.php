@@ -1,9 +1,11 @@
 <?php namespace buildr\Registry\Exception;
 
+use Exception;
+
 /**
- * BuildR - PHP based continuous integration server
- *
  * Exception, thrown while try to override a protected variable in registry
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -13,6 +15,6 @@
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
  */
-class ProtectedVariableException extends \Exception {
+class ProtectedVariableException extends Exception {
 
 }

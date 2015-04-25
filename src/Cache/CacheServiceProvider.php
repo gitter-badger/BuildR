@@ -1,13 +1,12 @@
 <?php namespace buildr\Cache;
 
 use buildr\Config\Config;
-use \buildr\Cache\CacheDriverInterface;
 use buildr\ServiceProvider\ServiceProviderInterface;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Cache service provider
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

@@ -1,11 +1,9 @@
 <?php namespace buildr\Loader;
 
-use buildr\Loader\classLoaderInterface;
-
 /**
- * BuildR - PHP based continuous integration server
- *
  * PSR-4 compatible class loader implementation
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -47,15 +45,16 @@ class PSR4ClassLoader implements classLoaderInterface {
      * Load the specified class
      *
      * @param string $className
+     *
      * @return bool
      */
     public function load($className) {
-        foreach($this->registeredNamespaces as $singleNamespace) {
+        foreach ($this->registeredNamespaces as $singleNamespace) {
             $prefix = $singleNamespace[0];
             $basePath = $singleNamespace[1];
 
             $prefixLength = strlen($prefix);
-            if (strncmp($prefix, $className, $prefixLength) !== 0) {
+            if(strncmp($prefix, $className, $prefixLength) !== 0) {
                 continue;
             }
 
@@ -64,6 +63,7 @@ class PSR4ClassLoader implements classLoaderInterface {
 
             if(file_exists($fileLocation)) {
                 include_once $fileLocation;
+
                 return TRUE;
             }
         }
@@ -85,6 +85,7 @@ class PSR4ClassLoader implements classLoaderInterface {
      * is already reserved by another loader
      *
      * @param int $priority
+     *
      * @return void
      * @throws \InvalidArgumentException
      */
@@ -112,7 +113,10 @@ class PSR4ClassLoader implements classLoaderInterface {
      * @param string $basePath
      */
     public function registerNamespace($namespace, $basePath) {
-        $this->registeredNamespaces[] = [$namespace, $basePath];
+        $this->registeredNamespaces[] = [
+            $namespace,
+            $basePath
+        ];
     }
 
 }

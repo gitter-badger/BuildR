@@ -4,9 +4,9 @@ use buildr\Logger\Formatter\FormatterInterface;
 use buildr\tests\Buildr_TestCase as BuilderTestCase;
 
 /**
- * BuildR - PHP based continuous integration server
+ * Abstract class for log formatter classess
  *
- *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

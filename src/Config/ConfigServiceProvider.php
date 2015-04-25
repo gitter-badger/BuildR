@@ -4,9 +4,9 @@ use buildr\Config\Source\PHPConfigSource;
 use buildr\ServiceProvider\ServiceProviderInterface;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Configuration service provider
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

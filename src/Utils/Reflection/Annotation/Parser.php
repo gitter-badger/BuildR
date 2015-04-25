@@ -1,9 +1,9 @@
 <?php namespace buildr\Utils\Reflection\Annotation;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Annotation parser
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -65,10 +65,10 @@ class Parser {
         $pattern = "/@(?=(.*)" . self::END_PATTERN . ")/U";
         preg_match_all($pattern, $rawBlock, $matches);
 
-        foreach($matches[1] as $rawParameter)  {
-            if(preg_match("/^(" . self::KEY_PATTERN . ") (.*)$/", $rawParameter, $match))  {
-                if(isset($this->parameters[$match[1]]))  {
-                    $this->parameters[$match[1]] = array_merge((array)$this->parameters[$match[1]], (array)$match[2]);
+        foreach ($matches[1] as $rawParameter) {
+            if(preg_match("/^(" . self::KEY_PATTERN . ") (.*)$/", $rawParameter, $match)) {
+                if(isset($this->parameters[$match[1]])) {
+                    $this->parameters[$match[1]] = array_merge((array) $this->parameters[$match[1]], (array) $match[2]);
                 } else {
                     $this->parameters[$match[1]] = $this->parseValue($match[2]);
                 }
@@ -84,13 +84,14 @@ class Parser {
      * Parse a row value as a JSON object
      *
      * @param string $originalValue
+     *
      * @return mixed|null
      */
     private function parseValue($originalValue) {
         $value = NULL;
 
         if($originalValue && $originalValue !== 'null') {
-            if( ($json = json_decode($originalValue, TRUE)) === NULL) {
+            if(($json = json_decode($originalValue, TRUE)) === NULL) {
                 $value = $originalValue;
             } else {
                 $value = $json;

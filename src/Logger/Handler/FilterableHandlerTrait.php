@@ -4,9 +4,9 @@ use buildr\Logger\LogFilterType;
 use buildr\Logger\Logger;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * FilterableHandler trait
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -25,6 +25,7 @@ trait FilterableHandlerTrait {
      *
      * @param $level
      * @param \buildr\Logger\LogFilterType $filterType
+     *
      * @return mixed
      */
     public function setFilter($level, LogFilterType $filterType) {
@@ -57,6 +58,7 @@ trait FilterableHandlerTrait {
      * Determine if the handler handle the given level, with the current filtering settings
      *
      * @param int $level
+     *
      * @return bool
      */
     public function isHandleThisLevel($level) {
@@ -66,6 +68,7 @@ trait FilterableHandlerTrait {
         }
 
         $levelIndex = Logger::$levels[$level];
+
         return in_array($levelIndex, $this->handledLevels);
     }
 

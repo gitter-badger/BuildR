@@ -3,9 +3,9 @@
 use buildr\Facade\Facade;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Cache facade
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -32,4 +32,3 @@ class Cache extends Facade {
         return 'cache';
     }
 }
-

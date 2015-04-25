@@ -3,9 +3,9 @@
 use buildr\Utils\Enum\BaseEnumeration;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Log filter type enumeration
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

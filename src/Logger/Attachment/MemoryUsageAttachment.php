@@ -1,11 +1,9 @@
 <?php namespace buildr\Logger\Attachment;
 
-use buildr\Logger\Attachment\AttachmentInterface;
-
 /**
- * BuildR - PHP based continuous integration server
- *
  * Memory usage attachment
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

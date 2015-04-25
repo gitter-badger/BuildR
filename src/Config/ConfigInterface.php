@@ -1,11 +1,11 @@
 <?php namespace buildr\Config;
 
-use \buildr\Config\Source\ConfigSourceInterface;
+use buildr\Config\Source\ConfigSourceInterface;
 
 /**
- * BuildR - PHP based continuous integration server
+ * Interface for configuration provider classes
  *
- * 
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -22,6 +22,7 @@ interface ConfigInterface {
      *
      * @param string $selector A dot-notated selector string
      * @param null|mixed $defaultValue
+     *
      * @return mixed
      */
     public function getFromMainSource($selector, $defaultValue = NULL);
@@ -32,6 +33,7 @@ interface ConfigInterface {
      *
      * @param string $selector A dot-notated selector string
      * @param null $defaultValue
+     *
      * @return mixed
      */
     public function getFormAnySource($selector, $defaultValue = NULL);
@@ -42,6 +44,7 @@ interface ConfigInterface {
      * @param string $sourceName Use sources SOURCE_NAME constant to define
      * @param string $selector A dot-notated selector string
      * @param null $defaultValue
+     *
      * @return mixed
      * @throws \buildr\Config\Exception\ConfigurationException
      */
@@ -52,6 +55,7 @@ interface ConfigInterface {
      *
      * @param \buildr\Config\Source\ConfigSourceInterface $source
      * @param int $priority
+     *
      * @throws \buildr\Config\Exception\ConfigurationException
      * @throws \InvalidArgumentException
      */
@@ -61,6 +65,7 @@ interface ConfigInterface {
      * Return a configuration source by priority
      *
      * @param int $priority
+     *
      * @return \buildr\Config\Source\ConfigSourceInterface
      * @throws \buildr\Config\Exception\ConfigurationException
      */
@@ -70,6 +75,7 @@ interface ConfigInterface {
      * Return a configuration source by its name
      *
      * @param string $name
+     *
      * @return \buildr\Config\Source\ConfigSourceInterface
      * @throws \buildr\Config\Exception\ConfigurationException
      */

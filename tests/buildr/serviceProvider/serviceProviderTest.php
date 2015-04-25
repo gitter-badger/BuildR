@@ -4,9 +4,9 @@ use buildr\ServiceProvider\ServiceProvider;
 use buildr\tests\Buildr_TestCase as BuilderTestCase;
 
 /**
- * BuildR - PHP based continuous integration server
+ * ServiceProvider tests
  *
- * Serviceprovider tests
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

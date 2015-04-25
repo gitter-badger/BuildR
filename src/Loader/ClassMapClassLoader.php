@@ -1,9 +1,9 @@
 <?php namespace buildr\Loader;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * ClassMap class loader implementation
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -46,6 +46,7 @@ class ClassMapClassLoader implements classLoaderInterface {
      * Load the specified class
      *
      * @param string $className
+     *
      * @return bool
      */
     public function load($className) {
@@ -57,6 +58,7 @@ class ClassMapClassLoader implements classLoaderInterface {
 
         if(file_exists($file)) {
             include_once $file;
+
             return TRUE;
         }
 
@@ -89,7 +91,7 @@ class ClassMapClassLoader implements classLoaderInterface {
      * Called on register() function, in laoder registration, preload all registered files
      */
     private function preLoadRegisteredFiles() {
-        foreach($this->registeredFiles as $preloadFile) {
+        foreach ($this->registeredFiles as $preloadFile) {
             if(file_exists($preloadFile)) {
                 include_once $preloadFile;
             }
@@ -119,6 +121,7 @@ class ClassMapClassLoader implements classLoaderInterface {
      * is already reserved by another loader
      *
      * @param int $priority
+     *
      * @return void
      */
     public function setPriority($priority) {

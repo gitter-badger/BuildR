@@ -1,14 +1,14 @@
 <?php namespace buildr\tests\reflection;
 
 use buildr\tests\Buildr_TestCase as BuilderTestCase;
-use \Closure;
 use buildr\tests\reflection\fixture\reflectorTestClass;
 use buildr\Utils\Reflection\ReflectionUtils;
+use Closure;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Tests for reflection utilities
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -47,7 +47,9 @@ class reflectionUtilsTest extends BuilderTestCase {
         $reader = ReflectionUtils::getAnnotationReader(reflectorTestClass::class, 'annotationTesterJson');
 
         $expectedOne = [
-            1, "false", false
+            1,
+            "false",
+            FALSE
         ];
 
         $expectedTwo = [
@@ -61,7 +63,10 @@ class reflectionUtilsTest extends BuilderTestCase {
     public function testAnnotationReaderWithMultipleValue() {
         $reader = ReflectionUtils::getAnnotationReader(reflectorTestClass::class, 'annotationTestMultiVal');
 
-        $expectedArray = ['value', 'value2'];
+        $expectedArray = [
+            'value',
+            'value2'
+        ];
         $this->assertEquals($expectedArray, $reader->getParam('key'));
     }
 

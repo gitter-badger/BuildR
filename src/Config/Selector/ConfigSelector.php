@@ -1,9 +1,9 @@
 <?php namespace buildr\Config\Selector;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Helper class to process configuration selectors
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -75,6 +75,7 @@ class ConfigSelector {
      */
     public function getFilenameForRequire() {
         $name = DIRECTORY_SEPARATOR . $this->fileName . ".php";
+
         return $name;
     }
 

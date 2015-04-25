@@ -1,12 +1,12 @@
 <?php namespace buildr\Utils\Reflection;
 
 use buildr\Utils\Reflection\Annotation\Reader;
-use \ReflectionClass;
+use ReflectionClass;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Reflection utilities
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -24,6 +24,7 @@ class ReflectionUtils {
      * @param string $className Must be FQN
      * @param string $methodName
      * @param array $constructorParams
+     *
      * @return callable
      */
     public static final function getClosureForMethod($className, $methodName, $constructorParams = []) {
@@ -39,6 +40,7 @@ class ReflectionUtils {
      *
      * @param string $className
      * @param null|string $methodName
+     *
      * @return \buildr\Utils\Reflection\Annotation\Reader
      */
     public static final function getAnnotationReader($className, $methodName = NULL) {

@@ -1,9 +1,9 @@
 <?php namespace buildr\Filesystem\Types;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Directory filesystem type
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

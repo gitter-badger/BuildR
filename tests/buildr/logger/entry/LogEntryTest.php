@@ -5,9 +5,9 @@ use buildr\tests\Buildr_TestCase as BuilderTestCase;
 use Psr\Log\LogLevel;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Log entry test
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

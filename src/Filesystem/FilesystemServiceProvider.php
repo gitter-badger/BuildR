@@ -3,9 +3,9 @@
 use buildr\ServiceProvider\ServiceProviderInterface;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Service provider for Filesystem class
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

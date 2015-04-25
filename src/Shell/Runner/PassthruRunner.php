@@ -3,9 +3,9 @@
 use buildr\Shell\CommandInterface;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Passthru runner
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -23,6 +23,7 @@ class PassthruRunner implements RunnerInterface, ReturnValueOutputInterface {
      * Run the command
      *
      * @param \buildr\Shell\CommandInterface $command
+     *
      * @return \buildr\Shell\Runner\PassthruRunner
      */
     public function run(CommandInterface $command) {

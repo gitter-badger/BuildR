@@ -6,9 +6,9 @@ use buildr\Startup\BuildrEnvironment;
 use Patchwork\Utf8\Bootup;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Initializer class for web requests
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -27,6 +27,7 @@ class WebInitializer extends BaseInitializer {
      *
      * @param string $basePath
      * @param \buildr\Loader\classLoader $autoloader
+     *
      * @return bool
      */
     public function initialize($basePath, classLoader $autoloader) {

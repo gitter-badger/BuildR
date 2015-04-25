@@ -1,9 +1,9 @@
 <?php namespace buildr\Logger\Attachment;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Attachment interface
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

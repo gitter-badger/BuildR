@@ -3,9 +3,9 @@
 use buildr\Logger\Entry\LogEntryInterface;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Line formatter
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -16,16 +16,18 @@ use buildr\Logger\Entry\LogEntryInterface;
  * @link         https://github.com/Zolli/BuildR
  */
 class LineFormatter implements FormatterInterface {
+
     /**
      * Format the given log entry
      *
      * @param \buildr\Logger\Entry\LogEntryInterface $entry
+     *
      * @return mixed
      */
     public function format(LogEntryInterface $entry) {
         $attachmentString = "";
 
-        foreach($entry->getAttachments() as $tag => $value) {
+        foreach ($entry->getAttachments() as $tag => $value) {
             $attachmentString .= "[" . $tag . " -> " . $value . "]";
         }
 

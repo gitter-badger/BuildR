@@ -1,9 +1,9 @@
 <?php namespace buildr\Logger\Entry;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Interface for LogEntry
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

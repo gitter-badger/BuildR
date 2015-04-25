@@ -5,9 +5,9 @@ use buildr\Startup\BuildrStartup;
 use buildr\tests\Buildr_TestCase as BuilderTestCase;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Startup tests
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

@@ -1,13 +1,13 @@
 <?php namespace buildr\tests\utils;
 
-use \buildr\tests\Buildr_TestCase as BuildRTestCase;
-use \buildr\Utils\Pattern;
-use \buildr\Utils\StringUtils;
+use buildr\tests\Buildr_TestCase as BuildRTestCase;
+use buildr\Utils\Pattern;
+use buildr\Utils\StringUtils;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Unit test for the String utilities in buildr
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -73,7 +73,7 @@ class stringUtilsTest extends BuildRTestCase {
     }
 
     public function testPatternReturnsTheOriginalPattern() {
-        $pattern ='Lo.em';
+        $pattern = 'Lo.em';
         $patternClass = new Pattern($pattern);
 
         $this->assertEquals($pattern, $patternClass->getOriginal());
@@ -82,41 +82,62 @@ class stringUtilsTest extends BuildRTestCase {
     public function trimEndProvider() {
         $return = [];
 
-        for($i = 1 ; $i <= 25 ; $i++) {
+        for ($i = 1 ; $i <= 25 ; $i++) {
             $word = $this->faker->word;
             $start = substr($word, -2);
             $p = substr($word, 0, -2);
 
-            $return[] =  [$word, $start, $p];
+            $return[] = [
+                $word,
+                $start,
+                $p
+            ];
         }
 
-        $return[] = ["testValue", "testValueNotEnd", "testValue"];
+        $return[] = [
+            "testValue",
+            "testValueNotEnd",
+            "testValue"
+        ];
+
         return $return;
     }
 
     public function trimBeginningProvider() {
         $return = [];
 
-        for($i = 1 ; $i <= 25 ; $i++) {
+        for ($i = 1 ; $i <= 25 ; $i++) {
             $word = $this->faker->word;
             $start = substr($word, 0, 2);
             $p = substr($word, 2);
 
-            $return[] =  [$word, $start, $p];
+            $return[] = [
+                $word,
+                $start,
+                $p
+            ];
         }
 
-        $return[] = ["testValue", "notStartTestValue", "testValue"];
+        $return[] = [
+            "testValue",
+            "notStartTestValue",
+            "testValue"
+        ];
+
         return $return;
     }
 
     public function startWithProvider() {
         $return = [];
 
-        for($i = 1 ; $i <= 25 ; $i++) {
+        for ($i = 1 ; $i <= 25 ; $i++) {
             $word = $this->faker->word;
             $start = substr($word, 0, 2);
 
-            $return[] =  [$word, $start];
+            $return[] = [
+                $word,
+                $start
+            ];
         }
 
         return $return;
@@ -125,21 +146,28 @@ class stringUtilsTest extends BuildRTestCase {
     public function endWithProvider() {
         $return = [];
 
-        for($i = 1 ; $i <= 25 ; $i++) {
+        for ($i = 1 ; $i <= 25 ; $i++) {
             $word = $this->faker->word;
             $end = substr($word, -1, 2);
 
-            $return[] =  [$word, $end];
+            $return[] = [
+                $word,
+                $end
+            ];
         }
 
-        $return[] = ["nullValue", ""];
+        $return[] = [
+            "nullValue",
+            ""
+        ];
+
         return $return;
     }
 
     public function containsProvider() {
         $return = [];
 
-        for($i = 1 ; $i <= 25 ; $i++) {
+        for ($i = 1 ; $i <= 25 ; $i++) {
             $word = $this->faker->word;
             $wordLen = strlen($word);
 
@@ -147,7 +175,10 @@ class stringUtilsTest extends BuildRTestCase {
                 $i--;
             } else {
                 $containPart = substr($word, 1, -2);
-                $return[] =  [$word, $containPart];
+                $return[] = [
+                    $word,
+                    $containPart
+                ];
             }
 
 
@@ -159,28 +190,61 @@ class stringUtilsTest extends BuildRTestCase {
     public function charAtProvider() {
         $return = [];
 
-        for($i = 1 ; $i <= 25 ; $i++) {
+        for ($i = 1 ; $i <= 25 ; $i++) {
             $word = $this->faker->word;
             $wordLen = strlen($word);
             $position = rand(1, $wordLen);
-            $char = str_split($word)[$position-1];
+            $char = str_split($word)[$position - 1];
 
-            $return[] = [$word, $position, $char];
+            $return[] = [
+                $word,
+                $position,
+                $char
+            ];
         }
 
-        $return[] = ["asd", 4, null];
+        $return[] = [
+            "asd",
+            4,
+            NULL
+        ];
+
         return $return;
     }
 
     public function patternProvider() {
         $return = [];
 
-        $return[] = ["Lorem", "Lo.em", TRUE];
-        $return[] = ["Lorem", "Lo*m", TRUE];
-        $return[] = ["Lorem", ".orem", TRUE];
-        $return[] = ["Lorem", "L.r.m", TRUE];
-        $return[] = ["Lorem", "*r.m", TRUE];
-        $return[] = ["testValue", "*r.m", FALSE];
+        $return[] = [
+            "Lorem",
+            "Lo.em",
+            TRUE
+        ];
+        $return[] = [
+            "Lorem",
+            "Lo*m",
+            TRUE
+        ];
+        $return[] = [
+            "Lorem",
+            ".orem",
+            TRUE
+        ];
+        $return[] = [
+            "Lorem",
+            "L.r.m",
+            TRUE
+        ];
+        $return[] = [
+            "Lorem",
+            "*r.m",
+            TRUE
+        ];
+        $return[] = [
+            "testValue",
+            "*r.m",
+            FALSE
+        ];
 
         return $return;
     }

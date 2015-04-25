@@ -3,9 +3,9 @@
 use buildr\Logger\Entry\LogEntryInterface;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Formatter interface
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -21,6 +21,7 @@ interface FormatterInterface {
      * Format the given log entry
      *
      * @param \buildr\Logger\Entry\LogEntryInterface $entry
+     *
      * @return mixed
      */
     public function format(LogEntryInterface $entry);

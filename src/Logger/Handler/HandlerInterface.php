@@ -1,12 +1,13 @@
 <?php namespace buildr\Logger\Handler;
+
 use buildr\Logger\Entry\LogEntryInterface;
 use buildr\Logger\Formatter\FormatterInterface;
 use buildr\Logger\LogFilterType;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * handler interface
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -22,6 +23,7 @@ interface HandlerInterface {
      * Handle the LogEntry
      *
      * @param \buildr\Logger\Entry\LogEntryInterface $entry
+     *
      * @return bool
      */
     public function handle(LogEntryInterface $entry);
@@ -37,6 +39,7 @@ interface HandlerInterface {
      * Set the current entry formatter
      *
      * @param \buildr\Logger\Formatter\FormatterInterface $formatter
+     *
      * @return void
      */
     public function setFormatter(FormatterInterface $formatter);
@@ -46,6 +49,7 @@ interface HandlerInterface {
      *
      * @param $level
      * @param \buildr\Logger\LogFilterType $filterType
+     *
      * @return mixed
      */
     public function setFilter($level, LogFilterType $filterType);
@@ -61,6 +65,7 @@ interface HandlerInterface {
      * Determine if the handler handle the given level, with the current filtering settings
      *
      * @param int $level
+     *
      * @return bool
      */
     public function isHandleThisLevel($level);

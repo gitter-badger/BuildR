@@ -1,9 +1,9 @@
 <?php namespace buildr\Cache\Item;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * CacheItemInterface
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

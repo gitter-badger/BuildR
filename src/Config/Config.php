@@ -1,15 +1,14 @@
 <?php namespace buildr\Config;
 
 use buildr\Config\Exception\ConfigurationException;
-use buildr\Config\ConfigInterface;
 use buildr\Config\Selector\ConfigSelector;
 use buildr\Config\Source\ConfigSourceInterface;
-use \InvalidArgumentException;
+use InvalidArgumentException;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Configuration class
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -44,6 +43,7 @@ class Config implements ConfigInterface {
      *
      * @param string $selector A dot-notated selector string
      * @param null|mixed $defaultValue
+     *
      * @return mixed
      */
     public function getFromMainSource($selector, $defaultValue = NULL) {
@@ -61,13 +61,15 @@ class Config implements ConfigInterface {
      *
      * @param string $selector A dot-notated selector string
      * @param null $defaultValue
+     *
      * @return mixed
      */
     public function getFormAnySource($selector, $defaultValue = NULL) {
         $selector = new ConfigSelector($selector);
 
-        foreach($this->sources as $source) {
+        foreach ($this->sources as $source) {
             $result = $source->get($selector, $defaultValue);
+
             return $result;
         }
 
@@ -80,13 +82,14 @@ class Config implements ConfigInterface {
      * @param string $sourceName Use sources SOURCE_NAME constant to define
      * @param string $selector A dot-notated selector string
      * @param null $defaultValue
+     *
      * @return mixed
      * @throws \buildr\Config\Exception\ConfigurationException
      */
     public function getFromSource($sourceName, $selector, $defaultValue = NULL) {
         try {
             $source = $this->getSourceByName($sourceName);
-        } catch(ConfigurationException $e) {
+        } catch (ConfigurationException $e) {
             return $defaultValue;
         }
 
@@ -102,6 +105,7 @@ class Config implements ConfigInterface {
      *
      * @param \buildr\Config\Source\ConfigSourceInterface $source
      * @param int $priority
+     *
      * @throws \buildr\Config\Exception\ConfigurationException
      * @throws \InvalidArgumentException
      */
@@ -124,6 +128,7 @@ class Config implements ConfigInterface {
      * Return a configuration source by priority
      *
      * @param int $priority
+     *
      * @return \buildr\Config\Source\ConfigSourceInterface
      * @throws \buildr\Config\Exception\ConfigurationException
      */
@@ -139,11 +144,12 @@ class Config implements ConfigInterface {
      * Return a configuration source by its name
      *
      * @param string $name
+     *
      * @return \buildr\Config\Source\ConfigSourceInterface
      * @throws \buildr\Config\Exception\ConfigurationException
      */
     public function getSourceByName($name) {
-        foreach($this->sources as $source) {
+        foreach ($this->sources as $source) {
             if($source->getName() == $name) {
                 return $source;
             }
@@ -158,8 +164,7 @@ class Config implements ConfigInterface {
      * @return array
      */
     public static final function getMainConfig() {
-        $mainConfig = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
-            . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'main.php');
+        $mainConfig = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'main.php');
 
         return require $mainConfig;
     }

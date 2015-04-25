@@ -1,15 +1,15 @@
 <?php namespace buildr\filesystem;
 
-use \buildr\Utils\System\Information\GroupInformation;
-use \buildr\Utils\System\Information\UserInformation;
 use buildr\tests\Buildr_TestCase as BuilderTestCase;
 use buildr\Utils\StringUtils;
+use buildr\Utils\System\Information\GroupInformation;
+use buildr\Utils\System\Information\UserInformation;
 use buildr\Utils\System\SystemUtils;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * File Object tests
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -33,8 +33,16 @@ class FileObjectTest extends BuilderTestCase {
 
     protected function setUp() {
         $filesystem = new Filesystem();
-        $this->fileObject = $filesystem->getFile($filesystem->assembleDirSystemSafe(['tests', 'filesystem_fixtures', 'singleFile.txt']));
-        $this->fileObjectPhp = $filesystem->getFile($filesystem->assembleDirSystemSafe(['tests', 'filesystem_fixtures', 'phpTest.php']));
+        $this->fileObject = $filesystem->getFile($filesystem->assembleDirSystemSafe([
+            'tests',
+            'filesystem_fixtures',
+            'singleFile.txt'
+        ]));
+        $this->fileObjectPhp = $filesystem->getFile($filesystem->assembleDirSystemSafe([
+            'tests',
+            'filesystem_fixtures',
+            'phpTest.php'
+        ]));
 
         parent::setUp();
     }
@@ -61,7 +69,11 @@ class FileObjectTest extends BuilderTestCase {
 
     public function testItReturnsTheFileSizeCorrectlyAsHumanReadable() {
         $filesystem = new Filesystem();
-        $testFile = $filesystem->getFile($filesystem->assembleDirSystemSafe(['tests', 'filesystem_fixtures', '10KbFile.txt']));
+        $testFile = $filesystem->getFile($filesystem->assembleDirSystemSafe([
+            'tests',
+            'filesystem_fixtures',
+            '10KbFile.txt'
+        ]));
         $sizeBytes = $testFile->getSize(FALSE);
 
         $this->assertEquals("10.00 kB", $testFile->getSize());
@@ -145,6 +157,7 @@ class FileObjectTest extends BuilderTestCase {
 
         if(SystemUtils::getOsType() == SystemUtils::OS_TYPE_NIX) {
             $this->assertInstanceOf(GroupInformation::class, $groupInfo);
+
             return;
         }
 
@@ -156,6 +169,7 @@ class FileObjectTest extends BuilderTestCase {
 
         if(SystemUtils::getOsType() == SystemUtils::OS_TYPE_NIX) {
             $this->assertInstanceOf(UserInformation::class, $userInfo);
+
             return;
         }
 

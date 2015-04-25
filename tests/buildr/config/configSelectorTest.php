@@ -1,12 +1,12 @@
 <?php namespace buildr\tests\config;
 
 use buildr\Config\Selector\ConfigSelector;
-use \buildr\tests\Buildr_TestCase as BuildRTestCase;
+use buildr\tests\Buildr_TestCase as BuildRTestCase;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Config selector tests
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -20,7 +20,10 @@ class configSelectorTest extends BuildRTestCase {
 
     public function testValidateProcessingIsProper() {
         $selector = new ConfigSelector("file.my.key");
-        $expectedResult = ["my", "key"];
+        $expectedResult = [
+            "my",
+            "key"
+        ];
 
         $this->assertEquals("file", $selector->getFileName());
         $this->assertEquals(DIRECTORY_SEPARATOR . "file.php", $selector->getFilenameForRequire());

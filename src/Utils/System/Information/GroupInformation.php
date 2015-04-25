@@ -1,12 +1,12 @@
 <?php namespace buildr\Utils\System\Information;
 
-use buildr\Utils\System\SystemUtils;
 use buildr\Utils\System\Modules\PosixModule;
+use buildr\Utils\System\SystemUtils;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Get information about *Nix system groups
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -36,6 +36,7 @@ class GroupInformation {
      * Get the group information by a group name, or group ID
      *
      * @param int|string $group
+     *
      * @throws \buildr\Utils\System\Exception\ModuleNotSupportedException
      */
     public function __construct($group) {
@@ -54,6 +55,7 @@ class GroupInformation {
      * Magic getter to read property array, returned by posix_* function
      *
      * @param $property
+     *
      * @return null
      */
     public function __get($property) {

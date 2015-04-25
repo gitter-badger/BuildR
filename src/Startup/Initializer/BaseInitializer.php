@@ -2,13 +2,12 @@
 
 use buildr\Config\Config;
 use buildr\Loader\classLoader;
-use buildr\Startup\Initializer\InitializerInterface;
 use buildr\ServiceProvider\ServiceProvider;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Base initializer
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -27,6 +26,7 @@ class BaseInitializer implements InitializerInterface {
      *
      * @param string $basePath
      * @param \buildr\Loader\classLoader $autoloader
+     *
      * @return bool
      */
     public function initialize($basePath, classLoader $autoloader) {

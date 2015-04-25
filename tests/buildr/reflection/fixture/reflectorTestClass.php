@@ -1,9 +1,9 @@
 <?php namespace buildr\tests\reflection\fixture;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Dummy class
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -24,7 +24,7 @@ class reflectorTestClass {
         $this->baz = $baz;
     }
 
-    private function getBar () {
+    private function getBar() {
         return $this->bar;
     }
 

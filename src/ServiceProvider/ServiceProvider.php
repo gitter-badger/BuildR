@@ -2,12 +2,26 @@
 
 use buildr\Registry\Registry;
 
+/**
+ * Service Provider
+ *
+ * BuildR PHP Framework
+ *
+ * @author Zoltán Borsos <zolli07@gmail.com>
+ * @package buildr
+ * @subpackage ServiceProvider
+ *
+ * @copyright    Copyright 2015, Zoltán Borsos.
+ * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
+ * @link         https://github.com/Zolli/BuildR
+ */
 class ServiceProvider {
 
     /**
      * Register service providers by array
      *
      * @param array $providersArray
+     *
      * @throw \InvalidArgumentException
      */
     public static function registerProvidersByArray($providersArray) {
@@ -15,7 +29,7 @@ class ServiceProvider {
             throw new \InvalidArgumentException("This method must take an array as argument!");
         }
 
-        foreach($providersArray as $providerClassName) {
+        foreach ($providersArray as $providerClassName) {
             self::registerByName($providerClassName);
         }
     }
@@ -38,6 +52,7 @@ class ServiceProvider {
      * Check provider by name and return the instated class
      *
      * @param string $providerName
+     *
      * @return \buildr\ServiceProvider\ServiceProviderInterface;
      */
     private static function checkProviderByName($providerName) {

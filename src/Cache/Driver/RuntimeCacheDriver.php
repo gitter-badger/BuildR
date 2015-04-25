@@ -4,9 +4,9 @@ use buildr\Cache\CacheDriverInterface;
 use buildr\Cache\Item\CacheItem;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Runtime (Lifetime based) cache driver
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -29,15 +29,18 @@ class RuntimeCacheDriver implements CacheDriverInterface {
      *
      * @param string $key
      * @param mixed $defaultValue
+     *
      * @return \buildr\Cache\Item\CacheItemInterface
      */
     public function get($key, $defaultValue = NULL) {
         if(isset($this->cache[$key])) {
             $this->hitRate++;
+
             return new CacheItem($key, $this->cache[$key], TRUE);
         }
 
         $this->missRate++;
+
         return new CacheItem($key, $defaultValue, FALSE);
     }
 
@@ -47,6 +50,7 @@ class RuntimeCacheDriver implements CacheDriverInterface {
      * @param string $key
      * @param mixed $value
      * @param int $ttl
+     *
      * @return bool
      */
     public function set($key, $value, $ttl = 30) {
@@ -57,6 +61,7 @@ class RuntimeCacheDriver implements CacheDriverInterface {
      * Return the existence of the given key
      *
      * @param string $key
+     *
      * @return bool
      */
     public function exist($key) {

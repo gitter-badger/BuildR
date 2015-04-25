@@ -1,9 +1,9 @@
 <?php namespace buildr\Startup\Environment\Detector;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * EnvironmentException
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

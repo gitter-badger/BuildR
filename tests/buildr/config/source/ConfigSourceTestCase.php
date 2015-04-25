@@ -5,9 +5,9 @@ use buildr\Startup\BuildrEnvironment;
 use buildr\tests\Buildr_TestCase;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Abstract test for various config sources
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -66,6 +66,7 @@ abstract class ConfigSourceTestCase extends Buildr_TestCase {
             $result = $this->getSource()->get(new ConfigSelector("main.cache.driver"));
 
             $this->assertNotNull($result);
+
             return;
         }
 

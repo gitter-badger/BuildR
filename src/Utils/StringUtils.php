@@ -1,9 +1,9 @@
 <?php namespace buildr\Utils;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Utility class for string manipulation
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -21,6 +21,7 @@ class StringUtils {
      *
      * @param string $haystack
      * @param string $needle
+     *
      * @return bool
      */
     public static final function startWith($haystack, $needle) {
@@ -33,15 +34,16 @@ class StringUtils {
      *
      * @param string $haystack
      * @param string $needle
+     *
      * @return bool
      */
     public static final function endWith($haystack, $needle) {
         $needleLength = strlen($needle);
-        if ($needleLength == 0) {
+        if($needleLength == 0) {
             return TRUE;
         }
 
-        return (substr($haystack, - $needleLength) === $needle);
+        return (substr($haystack, -$needleLength) === $needle);
     }
 
     /**
@@ -49,10 +51,11 @@ class StringUtils {
      *
      * @param string $haystack
      * @param string $needle
+     *
      * @return bool
      */
     public static final function contains($haystack, $needle) {
-        if (strpos($haystack, $needle) !== FALSE) {
+        if(strpos($haystack, $needle) !== FALSE) {
             return TRUE;
         }
 
@@ -62,18 +65,19 @@ class StringUtils {
     /**
      * return the letter at the given index, or NULL if no char at this index
      *
-     * @param string, $haystack
+     * @param string , $haystack
      * @param int $index
+     *
      * @return string|null
      */
     public static function charAt($haystack, $index) {
         $parts = str_split($haystack);
 
-        if(!isset($parts[$index-1])) {
+        if(!isset($parts[$index - 1])) {
             return NULL;
         }
 
-        return $parts[$index-1];
+        return $parts[$index - 1];
     }
 
     /**
@@ -81,6 +85,7 @@ class StringUtils {
      *
      * @param string $string
      * @param string $patternString
+     *
      * @return bool
      */
     public static final function match($string, $patternString) {
@@ -99,6 +104,7 @@ class StringUtils {
      *
      * @param string $string
      * @param string $needle
+     *
      * @return string
      */
     public static final function trimFromBeginning($string, $needle) {
@@ -116,6 +122,7 @@ class StringUtils {
      *
      * @param string $string
      * @param string $needle
+     *
      * @return string
      */
     public static final function trimFromEnd($string, $needle) {
@@ -126,6 +133,7 @@ class StringUtils {
         }
 
         $needleLength = $needleLength * -1;
+
         return mb_substr($string, 0, $needleLength);
     }
 
@@ -134,12 +142,13 @@ class StringUtils {
      *
      * @param string $input
      * @param array $context
+     *
      * @return string
      */
     public static final function substitution($input, $context = []) {
         $replacements = [];
 
-        foreach($context as $field => $value) {
+        foreach ($context as $field => $value) {
             $replacements['{' . $field . '}'] = $value;
         }
 

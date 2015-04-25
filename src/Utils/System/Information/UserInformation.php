@@ -1,12 +1,12 @@
 <?php namespace buildr\Utils\System\Information;
 
-use buildr\Utils\System\SystemUtils;
 use buildr\Utils\System\Modules\PosixModule;
+use buildr\Utils\System\SystemUtils;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Returns information absout a *nix user
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -40,6 +40,7 @@ class UserInformation {
      * Constructor
      *
      * @param int|string $user
+     *
      * @throws \buildr\Utils\System\Exception\ModuleNotSupportedException
      */
     public function __construct($user) {
@@ -58,6 +59,7 @@ class UserInformation {
      * Return entries from the posix information array
      *
      * @param string $property
+     *
      * @return null
      */
     public function __get($property) {

@@ -1,9 +1,9 @@
 <?php namespace buildr\Utils\Reflection\Annotation;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Annotation Reader
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -49,6 +49,7 @@ class Reader {
      * parameter not found
      *
      * @param string $paramName
+     *
      * @return mixed
      */
     public function getParam($paramName) {

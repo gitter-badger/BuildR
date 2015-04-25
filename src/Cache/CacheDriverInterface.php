@@ -1,9 +1,9 @@
 <?php namespace buildr\Cache;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Common interface for cache drivers
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -20,6 +20,7 @@ interface CacheDriverInterface {
      *
      * @param string $key
      * @param mixed $defaultValue
+     *
      * @return \buildr\Cache\Item\CacheItemInterface
      */
     public function get($key, $defaultValue = NULL);
@@ -30,6 +31,7 @@ interface CacheDriverInterface {
      * @param string $key
      * @param mixed $value
      * @param int $ttl
+     *
      * @return bool
      */
     public function set($key, $value, $ttl = 30);
@@ -38,6 +40,7 @@ interface CacheDriverInterface {
      * Return the existence of the given key
      *
      * @param string $key
+     *
      * @return bool
      */
     public function exist($key);

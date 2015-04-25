@@ -1,14 +1,13 @@
 <?php namespace buildr\tests\logger\formatter;
 
-use buildr\Logger\Formatter\LineFormatter;
 use buildr\Logger\Entry\LogEntry;
+use buildr\Logger\Formatter\LineFormatter;
 use Psr\Log\LogLevel;
-use \buildr\tests\logger\formatter\AbstractFormatterTester;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Line formatter tester
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

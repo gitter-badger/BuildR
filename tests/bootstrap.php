@@ -6,7 +6,12 @@ ini_set('display_errors', 'On');
 $basePath = realpath(dirname(__DIR__));
 
 //System-safe absolute path generation
-$startupLocation = [$basePath, 'src', 'Startup', 'BuildrStartup.php'];
+$startupLocation = [
+    $basePath,
+    'src',
+    'Startup',
+    'BuildrStartup.php'
+];
 $startupLocation = implode(DIRECTORY_SEPARATOR, $startupLocation);
 $startupLocation = realpath($startupLocation);
 

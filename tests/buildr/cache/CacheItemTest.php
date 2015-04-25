@@ -1,12 +1,12 @@
 <?php namespace buildr\tests\cache;
 
 use buildr\Cache\Item\CacheItem;
-use \buildr\tests\Buildr_TestCase as BuildRTestCase;
+use buildr\tests\Buildr_TestCase as BuildRTestCase;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * CacheItem test
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

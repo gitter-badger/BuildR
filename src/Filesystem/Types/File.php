@@ -1,11 +1,9 @@
 <?php namespace buildr\Filesystem\Types;
 
-use buildr\Filesystem\Types\PermissionsTrait;
-
 /**
- * BuildR - PHP based continuous integration server
- *
  * File type handler
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -47,6 +45,7 @@ class File {
      * content using file_put_contents() function
      *
      * @param string $content
+     *
      * @return int
      */
     public final function put($content) {
@@ -58,6 +57,7 @@ class File {
      * file_put_contents() function and the FILE_APPEND PHP flag
      *
      * @param string $content
+     *
      * @return int
      */
     public final function append($content) {
@@ -70,6 +70,7 @@ class File {
      * new content
      *
      * @param string $content
+     *
      * @return int
      */
     public final function prepend($content) {
@@ -83,6 +84,7 @@ class File {
      * Get the PHP resource for this file, with the given mode
      *
      * @param string $mode
+     *
      * @return resource
      */
     public final function getResource($mode = "a+") {
@@ -124,6 +126,7 @@ class File {
      * @param bool $humanReadable Return size in human readable format instead of bytes
      * @param int $precision
      * @param bool $showUnits Display units?
+     *
      * @return string
      */
     public function getSize($humanReadable = TRUE, $precision = 2, $showUnits = TRUE) {
@@ -133,14 +136,21 @@ class File {
             return $size;
         }
 
-        $sizeUnits = ["B", "kB", "MB", "GB", "TB", "PB"];
+        $sizeUnits = [
+            "B",
+            "kB",
+            "MB",
+            "GB",
+            "TB",
+            "PB"
+        ];
         $factor = floor((strlen($size) - 1) / 3);
 
         if($showUnits === TRUE) {
-            return sprintf("%.{$precision}f", $size/pow(1024, $factor)) . " " . $sizeUnits[$factor];
+            return sprintf("%.{$precision}f", $size / pow(1024, $factor)) . " " . $sizeUnits[$factor];
         }
 
-        return sprintf("%.{$precision}f", $size/pow(1024, $factor));
+        return sprintf("%.{$precision}f", $size / pow(1024, $factor));
     }
 
     /**
@@ -165,6 +175,7 @@ class File {
      * Moves this file across the filesystem using php rename() method
      *
      * @param string $absolutePath
+     *
      * @return bool
      */
     public final function move($absolutePath) {
@@ -178,6 +189,7 @@ class File {
      * Copy this file across filesystem using PHP copy() method
      *
      * @param string $absolutePath
+     *
      * @return bool
      */
     public final function copy($absolutePath) {

@@ -3,12 +3,12 @@
 use buildr\Loader\classMapClassLoader;
 use buildr\Startup\Exception\StartupException;
 use buildr\Utils\Reflection\ReflectionUtils;
-use \Closure;
+use Closure;
 
 /**
- * BuildR - PHP based continuous integration server
+ * Startup class
  *
- *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -39,6 +39,7 @@ class BuildrStartup {
      * Set the initializer class to be executed
      *
      * @param \Closure|\buildr\Startup\Initializer\InitializerInterface $initializer
+     *
      * @throws \buildr\Startup\Exception\StartupException
      *
      * @codeCoverageIgnore
@@ -51,13 +52,17 @@ class BuildrStartup {
         }
 
         $initializerClosure = $this->getClosureForInitializer($initializer);
-        call_user_func_array($initializerClosure, [self::getBasePath(), self::getAutoloader()]);
+        call_user_func_array($initializerClosure, [
+            self::getBasePath(),
+            self::getAutoloader()
+        ]);
     }
 
     /**
      * Get the closure for initializer class
      *
      * @param \Closure|\buildr\Startup\Initializer\InitializerInterface $initializer
+     *
      * @return callable
      *
      * @codeCoverageIgnore
@@ -90,6 +95,7 @@ class BuildrStartup {
 
     /**
      * @param bool $withComposer
+     *
      * @throws \buildr\Startup\Exception\StartupException
      *
      * @codeCoverageIgnore
@@ -102,7 +108,12 @@ class BuildrStartup {
         $basePath = self::getBasePath();
 
         //System-safe absolute path generation
-        $classLoaderLocation = [$basePath, 'src', 'Loader', 'ClassLoader.php'];
+        $classLoaderLocation = [
+            $basePath,
+            'src',
+            'Loader',
+            'ClassLoader.php'
+        ];
         $classLoaderLocation = implode(DIRECTORY_SEPARATOR, $classLoaderLocation);
         $classLoaderLocation = realpath($classLoaderLocation);
 
@@ -129,7 +140,11 @@ class BuildrStartup {
         //If we need composer autoloader, try to include it
         if($withComposer === TRUE) {
             //Loading composer's autolaoder, we must to use it, because some package not provide proper autolaoder
-            $composerLoaderLocation = [$basePath, 'vendor', 'autoload.php'];
+            $composerLoaderLocation = [
+                $basePath,
+                'vendor',
+                'autoload.php'
+            ];
             $composerLoaderLocation = implode(DIRECTORY_SEPARATOR, $composerLoaderLocation);
             $composerLoaderLocation = realpath($composerLoaderLocation);
 
@@ -165,6 +180,7 @@ class BuildrStartup {
      */
     public static final function getTimeSinceStartup() {
         $currentTime = microtime(TRUE);
+
         return $currentTime - self::getStartupTime();
     }
 

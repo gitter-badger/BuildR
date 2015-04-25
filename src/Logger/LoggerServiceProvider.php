@@ -3,13 +3,12 @@
 use buildr\Logger\Attachment\MemoryUsageAttachment;
 use buildr\Logger\Formatter\LineFormatter;
 use buildr\Logger\Handler\StdOutHandler;
-use buildr\Logger\Logger;
 use buildr\ServiceProvider\ServiceProviderInterface;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Service Provider for Logger
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

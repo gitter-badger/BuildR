@@ -1,9 +1,9 @@
 <?php namespace buildr\tests\environment\dummy;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * DetectorWithNoImplementation
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

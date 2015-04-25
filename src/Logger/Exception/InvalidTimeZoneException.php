@@ -1,9 +1,9 @@
 <?php namespace buildr\Logger\Exception;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Invalid timezone exception
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr

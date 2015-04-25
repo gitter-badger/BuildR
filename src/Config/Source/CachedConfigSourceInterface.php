@@ -3,9 +3,9 @@
 use buildr\Config\Selector\ConfigSelector;
 
 /**
- * BuildR - PHP based continuous integration server
- *
  * Interface for cache-enabled config sources
+ *
+ * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
@@ -28,6 +28,7 @@ interface CachedConfigSourceInterface {
      * Generate a cacheKey for a ConfigSelector
      *
      * @param \buildr\Config\Selector\ConfigSelector $selector
+     *
      * @return string
      */
     public function getCacheKeyForSelector(ConfigSelector $selector);
