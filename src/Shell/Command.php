@@ -49,10 +49,6 @@ class Command implements CommandInterface {
     private $mainCommand;
 
     public function __construct($command) {
-        if($command === NULL) {
-            throw new \InvalidArgumentException("The command cannot be NULL!");
-        }
-
         $this->mainCommand = $command;
 
         $this->argumentCollection = new ArgumentCollection();
@@ -94,7 +90,7 @@ class Command implements CommandInterface {
      * @return \buildr\Shell\Command
      */
     public function addParameter(Parameter $parameter) {
-        $this->parameterCollection = $parameter;
+        $this->parameterCollection->addParameter($parameter);
 
         return $this;
     }
@@ -113,7 +109,7 @@ class Command implements CommandInterface {
     }
 
     public function __toString() {
-        return sprintf("%s %s %s %s %s", $this->mainCommand, $this->subCommand, $this->argumentCollection, $this->flagCollection, $this->parameterCollection);
+        return str_replace('  ', ' ', sprintf("%s %s %s %s %s", $this->mainCommand, $this->subCommand, $this->argumentCollection, $this->flagCollection, $this->parameterCollection));
     }
 
 }

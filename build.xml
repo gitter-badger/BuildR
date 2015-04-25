@@ -18,6 +18,11 @@
 
     <echo message="Started building ${ant.project.name}! Build ID on phabricator: ${buildId}" level="info"/>
 
+    <!-- Target for travisCI builds -->
+    <target name="travis"
+            depends="clean,prepare,composer,lint,phpunit"
+            description=""/>
+
     <!-- Target for default build configuration -->
     <target name="build"
             depends="clean,prepare,composer,lint,phpunit,phpcpd,phploc,pdepend,documentation,artifact"

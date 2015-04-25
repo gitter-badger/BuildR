@@ -34,7 +34,7 @@ class ParameterCollection {
      *
      * @param \buildr\Shell\Value\Parameter $parameter
      */
-    public function addArgument(Parameter $parameter) {
+    public function addParameter(Parameter $parameter) {
         $this->parameters[] = $parameter;
     }
 
