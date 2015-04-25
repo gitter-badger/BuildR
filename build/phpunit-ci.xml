@@ -23,7 +23,7 @@
             <directory suffix="Test.php">../tests/buildr/filesystem</directory>
             <directory suffix="Test.php">../tests/buildr/cache</directory>
             <directory suffix="Test.php">../tests/buildr/logger</directory>
-            <directory suffix="Test.php">./tests/buildr/shell</directory>
+            <directory suffix="Test.php">../tests/buildr/shell</directory>
         </testsuite>
     </testsuites>
 
