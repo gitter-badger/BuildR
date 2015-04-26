@@ -35,6 +35,7 @@ class SystemUtils {
      *
      * @throws \buildr\Utils\System\Exception\ModuleNotSupportedException
      * @return array
+     * @codeCoverageIgnore
      */
     public static final function getExtensionSupport(array $extensionModule) {
         $extensionStates = [];
@@ -60,6 +61,7 @@ class SystemUtils {
      * return the current operation system type
      *
      * @return string
+     * @codeCoverageIgnore
      */
     public static final function getOsType() {
         if(StringUtils::contains(PHP_OS, "WIN")) {

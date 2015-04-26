@@ -23,6 +23,8 @@ use buildr\Utils\System\SystemUtils;
  * @property-read string gecos Return the other information from user, as a comma separated list
  * @property-read string dir The user home directory
  * @property-read string shell The user shell
+ *
+ * @codeCoverageIgnore
  */
 class UserInformation {
 

@@ -19,6 +19,8 @@ use buildr\Utils\System\SystemUtils;
  * @property-read string name The name of this group
  * @property-read array members An array, contains all members from this group
  * @property-read string gid The numerical ID of this group
+ *
+ * @codeCoverageIgnore
  */
 class GroupInformation {
 
