@@ -1,5 +1,7 @@
 <?php namespace buildr\Logger\Exception;
 
+use Exception;
+
 /**
  * Invalid timezone exception
  *
@@ -15,6 +17,6 @@
  *
  * @codeCoverageIgnore
  */
-class InvalidTimeZoneException extends \Exception {
+class InvalidTimeZoneException extends Exception {
 
 }
