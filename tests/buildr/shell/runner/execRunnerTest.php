@@ -28,7 +28,7 @@ class execRunnerTest extends abstractRunnerTester {
 
         $this->assertArrayHasKey(0, $runner->getOutput());
         $this->assertTrue(is_int($runner->getReturnValue()));
-        $this->assertTrue(StringUtils::contains($runner->getOutput()[0], 'ECHO is'));
+        $this->assertTrue(StringUtils::contains($runner->getOutput()[0], 'ECHO'));
     }
 
     /**

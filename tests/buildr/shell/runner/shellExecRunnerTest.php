@@ -27,7 +27,7 @@ class shellExecRunnerTest extends abstractRunnerTester {
         $runner->run($this->getCommandWin());
 
         $this->assertTrue((strlen($runner->getOutput()) > 0));
-        $this->assertTrue(StringUtils::contains($runner->getOutput(), 'ECHO is'));
+        $this->assertTrue(StringUtils::contains($runner->getOutput(), 'ECHO'));
     }
 
     /**
