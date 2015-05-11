@@ -50,7 +50,8 @@ class SystemUtils {
             if($moduleClass->isSupported()) {
                 $extensionStates[$moduleName] = TRUE;
             } else {
-                throw new ModuleNotSupportedException($moduleName, $moduleClass->getUnSupportReason(), "The extension ({$moduleName}) is not supported!");
+                throw new ModuleNotSupportedException($moduleName, $moduleClass->getUnSupportReason(),
+                                                        "The extension ({$moduleName}) is not supported!");
             }
 
             return $extensionStates;

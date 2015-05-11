@@ -72,7 +72,7 @@ class Parser {
                 } else {
                     $this->parameters[$match[1]] = $this->parseValue($match[2]);
                 }
-            } else if(preg_match("/^" . self::KEY_PATTERN . "$/", $rawParameter, $match)) {
+            } elseif(preg_match("/^" . self::KEY_PATTERN . "$/", $rawParameter, $match)) {
                 $this->parameters[$rawParameter] = TRUE;
             } else {
                 $this->parameters[$rawParameter] = NULL;

@@ -2,6 +2,8 @@
 
 use buildr\Facade\Facade;
 
+// @codingStandardsIgnoreFile
+
 /**
  * Facade for filesystem class
  *

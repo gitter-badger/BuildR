@@ -1,4 +1,0 @@
-[submodule "doc"]
-	path = doc
-	url = http://project.zolli.hu/diffusion/BLDRMDOC/buildr-documentation.git
-	branch = master

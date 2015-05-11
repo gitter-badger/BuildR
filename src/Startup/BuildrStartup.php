@@ -131,7 +131,9 @@ class BuildrStartup {
 
         //ClassMap
         $classMapLoader = new classMapClassLoader();
-        $classMapLoader->registerFile(realpath($basePath . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Utils' . DIRECTORY_SEPARATOR . 'Debug' . DIRECTORY_SEPARATOR . 'DebugHelper.php'));
+        $classMapLoader->registerFile(realpath($basePath . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Utils' .
+                                                DIRECTORY_SEPARATOR . 'Debug' . DIRECTORY_SEPARATOR .
+                                                'DebugHelper.php'));
 
         self::$loader->registerLoader($PSR4Loader);
         self::$loader->registerLoader($classMapLoader);

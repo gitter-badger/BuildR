@@ -31,7 +31,8 @@ class LineFormatter implements FormatterInterface {
             $attachmentString .= "[" . $tag . " -> " . $value . "]";
         }
 
-        return "[" . $entry->getDate()->format("Y-m-d H:i:s") . "][" . strtoupper($entry->getLevel()) . "] " . $entry->getMessage() . $attachmentString;
+        return "[" . $entry->getDate()->format("Y-m-d H:i:s") . "][" . strtoupper($entry->getLevel()) . "] " .
+                $entry->getMessage() . $attachmentString;
     }
 
 }

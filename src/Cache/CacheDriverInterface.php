@@ -71,7 +71,7 @@ interface CacheDriverInterface {
      *
      * @return int
      */
-    public function getMaxTTL();
+    public function getMaxTtl();
 
     /**
      * Return the maximum key count that driver can store at one session

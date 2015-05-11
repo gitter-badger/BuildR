@@ -13,7 +13,7 @@
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
  */
-interface classLoaderInterface {
+interface ClassLoaderInterface {
 
     /**
      * Called on loader registration. Its allow to listen to registration event
