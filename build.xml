@@ -20,12 +20,12 @@
 
     <!-- Target for travisCI builds -->
     <target name="travis"
-            depends="clean,prepare,composer,lint,phpunit"
+            depends="clean,prepare,composer,lint,phpunit,phpcs"
             description=""/>
 
     <!-- Target for default build configuration -->
     <target name="build"
-            depends="clean,prepare,composer,lint,phpunit,phpcpd,phploc,pdepend,documentation,artifact"
+            depends="clean,prepare,composer,lint,phpunit,phpcs,phpcpd,phploc,pdepend,documentation,artifact"
             description=""/>
 
     <!-- Clean all previous build in workspace -->
