@@ -70,8 +70,7 @@ class ClassLoader {
         $classLoader->setPriority($priority + 1);
         $this->registerLoader($classLoader);
 
-        trigger_error("Another class Loader is registered with priority {$priority}!
-                        Increasing priority by one, to find a new spot.", E_USER_NOTICE);
+        trigger_error("Another class Loader is registered with priority {$priority}! Increasing priority by one, to find a new spot.", E_USER_NOTICE);
     }
 
     /**
