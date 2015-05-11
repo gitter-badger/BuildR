@@ -109,7 +109,8 @@ class Command implements CommandInterface {
     }
 
     public function __toString() {
-        return str_replace('  ', ' ', sprintf("%s %s %s %s %s", $this->mainCommand, $this->subCommand, $this->argumentCollection, $this->flagCollection, $this->parameterCollection));
+        return str_replace('  ', ' ', sprintf("%s %s %s %s %s", $this->mainCommand, $this->subCommand,
+                            $this->argumentCollection, $this->flagCollection, $this->parameterCollection));
     }
 
 }

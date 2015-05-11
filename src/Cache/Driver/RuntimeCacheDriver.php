@@ -104,7 +104,7 @@ class RuntimeCacheDriver implements CacheDriverInterface {
      *
      * @return int
      */
-    public function getMaxTTL() {
+    public function getMaxTtl() {
         return 0;
     }
 

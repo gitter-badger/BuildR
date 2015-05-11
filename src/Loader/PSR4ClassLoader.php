@@ -13,7 +13,7 @@
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
  */
-class PSR4ClassLoader implements classLoaderInterface {
+class PSR4ClassLoader implements ClassLoaderInterface {
 
     const NAME = "PSR4ClassLoader";
 
@@ -100,7 +100,7 @@ class PSR4ClassLoader implements classLoaderInterface {
     /**
      * The loader unique name
      *
-     * @return \buildr\Loader\classLoaderInterface
+     * @return \buildr\Loader\ClassLoaderInterface
      */
     public function getName() {
         return self::NAME;

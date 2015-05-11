@@ -18,7 +18,7 @@ use buildr\tests\Buildr_TestCase as BuilderTestCase;
 class abstractLoaderTestCase extends BuilderTestCase {
 
     /**
-     * @type \buildr\Loader\classLoaderInterface
+     * @type \buildr\Loader\ClassLoaderInterface
      */
     protected $loaderClass;
 

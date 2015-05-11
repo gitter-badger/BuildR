@@ -2,6 +2,8 @@
 
 use buildr\Facade\Facade;
 
+// @codingStandardsIgnoreFile
+
 /**
  * Cache facade
  *

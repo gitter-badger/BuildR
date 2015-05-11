@@ -16,7 +16,7 @@
 class ClassLoader {
 
     /**
-     * @var \buildr\Loader\classLoaderInterface[]
+     * @var \buildr\Loader\ClassLoaderInterface[]
      */
     private $loaders = [];
 
@@ -27,14 +27,14 @@ class ClassLoader {
      */
     public static function loadAutoLoader() {
         //Include interface first All class depends on it
-        require_once __DIR__ . DIRECTORY_SEPARATOR . 'classLoaderInterface.php';
+        require_once __DIR__ . DIRECTORY_SEPARATOR . 'ClassLoaderInterface.php';
 
         $files = scandir(__DIR__, SCANDIR_SORT_DESCENDING);
         $unnedFiles = [
             '.',
             '..',
             'ClassLoader.php',
-            'classLoaderInterface.php'
+            'ClassLoaderInterface.php'
         ];
 
         foreach ($files as $k => $file) {
@@ -53,11 +53,11 @@ class ClassLoader {
      *
      * On register, this function class the loader register() method. It will allows to listen to loader registration
      *
-     * @param \buildr\Loader\classLoaderInterface $classLoader
+     * @param \buildr\Loader\ClassLoaderInterface $classLoader
      *
      * @return bool
      */
-    public function registerLoader(classLoaderInterface $classLoader) {
+    public function registerLoader(ClassLoaderInterface $classLoader) {
         $priority = $classLoader->getPriority();
 
         if(!isset($this->loaders[$priority])) {
@@ -70,13 +70,14 @@ class ClassLoader {
         $classLoader->setPriority($priority + 1);
         $this->registerLoader($classLoader);
 
-        trigger_error("Another class Loader is registered with priority {$priority}! Increasing priority by one, to find a new spot.", E_USER_NOTICE);
+        trigger_error("Another class Loader is registered with priority {$priority}!
+                        Increasing priority by one, to find a new spot.", E_USER_NOTICE);
     }
 
     /**
      * Return all currently registered laoder class
      *
-     * @return \buildr\Loader\classLoaderInterface[]
+     * @return \buildr\Loader\ClassLoaderInterface[]
      */
     public function getLoaders() {
         return $this->loaders;
@@ -87,7 +88,7 @@ class ClassLoader {
      *
      * @param int $priority
      *
-     * @return \buildr\Loader\classLoaderInterface
+     * @return \buildr\Loader\ClassLoaderInterface
      * @throws \InvalidArgumentException
      */
     public function getLoaderPriority($priority) {
@@ -104,7 +105,7 @@ class ClassLoader {
      *
      * @param string $loaderName
      *
-     * @return \buildr\Loader\classLoaderInterface[]
+     * @return \buildr\Loader\ClassLoaderInterface[]
      * @throws \InvalidArgumentException
      */
     public function getLoaderByName($loaderName) {

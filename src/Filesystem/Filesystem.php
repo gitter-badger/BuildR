@@ -25,7 +25,8 @@ class Filesystem {
      */
     public function __construct() {
         if((self::$absoluteBasePath = $this->detectBasePath()) === FALSE) {
-            throw new \RuntimeException('Unable to instantiate the Filesystem class, because the absolute path detection is failed!');
+            throw new \RuntimeException('Unable to instantiate the Filesystem class,
+                                        because the absolute path detection is failed!');
         };
     }
 
@@ -107,7 +108,8 @@ class Filesystem {
      * @return bool
      */
     public final function touch($location, $fileName) {
-        $fileLocation = $this->getProjectAbsoluteRoot() . $this->normalizeSlashes($location) . DIRECTORY_SEPARATOR . $fileName;
+        $fileLocation = $this->getProjectAbsoluteRoot() . $this->normalizeSlashes($location) .
+                        DIRECTORY_SEPARATOR . $fileName;
 
         return touch($fileLocation);
     }

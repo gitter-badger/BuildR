@@ -129,6 +129,26 @@
         <echo message="Finished checking for duplicated code" level="info"/>
     </target>
 
+    <!-- Coding standard checks -->
+    <target name="phpcs">
+        <echo message="Copying standard definiton to actual PHPCS install..." level="info"/>
+        <mkdir dir="${basedir}/vendor/squizlabs/php_codesniffer/CodeSniffer/Standards/BuildrStandard"/>
+
+        <copy todir="${basedir}/vendor/squizlabs/php_codesniffer/CodeSniffer/Standards/BuildrStandard">
+            <fileset dir="${basedir}/build/BuildrStandard"/>
+        </copy>
+
+        <echo message="Started Coding standard checks" level="info"/>
+
+        <exec executable="${toolsdir}phpcs">
+            <arg value="--report=checkstyle" />
+            <arg value="--report-file=${buildOutputPath}/logs/checkstyle.xml" />
+            <arg value="--standard=BuildrStandard"/>
+            <arg value="-p"/>
+            <arg path="${basedir}/src"/>
+        </exec>
+    </target>
+
     <!-- Software metrics -->
     <target name="pdepend">
         <exec executable="${toolsdir}pdepend">
