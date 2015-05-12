@@ -4,6 +4,7 @@ git:
 php:
   - 5.5
   - 5.6
+  - hhvm
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install ant
