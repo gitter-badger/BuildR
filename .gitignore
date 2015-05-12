@@ -7,3 +7,7 @@
 #Composer vendor folder and lock files
 vendor/
 composer.lock
+
+#Ant build process output files
+build/output/*
+

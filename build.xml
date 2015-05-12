@@ -16,6 +16,16 @@
     <!-- Where tools store output files -->
     <property name="buildOutputPath" value="${basedir}/build/output"/>
 
+    <!-- Detect OS family to call the proper executable -->
+    <condition property="binaryExtension" value=".bat">
+        <os family="windows"/>
+    </condition>
+
+    <condition property="buildOutputPath" value="">
+        <os family="unix"/>
+    </condition>
+
+    <!-- Start message -->
     <echo message="Started building ${ant.project.name}! Build ID on phabricator: ${buildId}" level="info"/>
 
     <!-- Target for travisCI builds -->
@@ -25,7 +35,7 @@
 
     <!-- Target for default build configuration -->
     <target name="build"
-            depends="clean,prepare,composer,lint,phpunit,phpcs,phpcpd,phploc,pdepend,documentation,artifact"
+            depends="clean,prepare,composer,lint,phpunit,phpcs,phpcpd,phploc,pdepend,documentation,artifact,changelogs"
             description=""/>
 
     <!-- Clean all previous build in workspace -->
@@ -72,7 +82,7 @@
 
         <echo message="Running the following sub-command: ${composer.command}" level="info"/>
 
-        <exec executable="composer">
+        <exec executable="composer${binaryExtension}">
             <arg value="${composer.command}"/>
             <arg value="--no-interaction"/>
             <arg value="--optimize-autoloader"/>
@@ -87,13 +97,13 @@
         <echo message="Run syntax checking on source and tests" level="info"/>
 
         <exec executable="bash" failonerror="true">
-            <arg value="-c" />
-            <arg value="find ./src -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l" />
+            <arg value="-c"/>
+            <arg value="find ./src -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l"/>
         </exec>
 
         <exec executable="bash" failonerror="true">
-            <arg value="-c" />
-            <arg value="find ./tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l" />
+            <arg value="-c"/>
+            <arg value="find ./tests -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l"/>
         </exec>
 
         <echo message="Finished PHP syntax checking" level="info"/>
@@ -106,7 +116,7 @@
 
         <echo message="Started unit testing using PHPUnit" level="info"/>
 
-        <exec executable="${toolsdir}phpunit" failonerror="true">
+        <exec executable="${toolsdir}phpunit${binaryExtension}" failonerror="true">
             <arg value="--configuration"/>
             <arg path="${basedir}/build/phpunit-ci.xml"/>
         </exec>
@@ -120,7 +130,7 @@
 
         <echo message="Started duplicated code finding" level="info"/>
 
-        <exec executable="${toolsdir}phpcpd">
+        <exec executable="${toolsdir}phpcpd${binaryExtension}">
             <arg value="--log-pmd"/>
             <arg path="${buildOutputPath}/logs/pmd-cpd.xml"/>
             <arg path="${basedir}/src"/>
@@ -140,9 +150,9 @@
 
         <echo message="Started Coding standard checks" level="info"/>
 
-        <exec executable="${toolsdir}phpcs">
-            <arg value="--report=checkstyle" />
-            <arg value="--report-file=${buildOutputPath}/logs/checkstyle.xml" />
+        <exec executable="${toolsdir}phpcs${binaryExtension}">
+            <arg value="--report=checkstyle"/>
+            <arg value="--report-file=${buildOutputPath}/logs/checkstyle.xml"/>
             <arg value="--standard=BuildrStandard"/>
             <arg value="-p"/>
             <arg path="${basedir}/src"/>
@@ -151,7 +161,7 @@
 
     <!-- Software metrics -->
     <target name="pdepend">
-        <exec executable="${toolsdir}pdepend">
+        <exec executable="${toolsdir}pdepend${binaryExtension}">
             <arg value="--jdepend-xml=${buildOutputPath}/pdepend/jdepend.xml"/>
             <arg value="--jdepend-chart=${buildOutputPath}/pdepend/dependencies.svg"/>
             <arg value="--overview-pyramid=${buildOutputPath}/pdepend/overview-pyramid.svg"/>
@@ -165,7 +175,7 @@
 
         <echo message="Started project size measurement" level="info"/>
 
-        <exec executable="${toolsdir}phploc">
+        <exec executable="${toolsdir}phploc${binaryExtension}">
             <arg value="--count-tests"/>
             <arg value="--log-csv"/>
             <arg path="${buildOutputPath}/logs/phploc.csv"/>
@@ -180,7 +190,7 @@
 
     <!-- Documentation generation -->
     <target name="documentation" description="Generate documentation for this build">
-        <exec executable="${toolsdir}apigen">
+        <exec executable="${toolsdir}apigen${binaryExtension}">
             <arg value="generate"/>
             <arg value="--source"/>
             <arg path="${basedir}/src/"/>
