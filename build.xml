@@ -21,7 +21,7 @@
         <os family="windows"/>
     </condition>
 
-    <condition property="buildOutputPath" value="">
+    <condition property="binaryExtension" value="">
         <os family="unix"/>
     </condition>
 
