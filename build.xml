@@ -35,7 +35,7 @@
 
     <!-- Target for default build configuration -->
     <target name="build"
-            depends="clean,prepare,composer,lint,phpunit,phpcs,phpcpd,phploc,pdepend,documentation,artifact"
+            depends="clean,prepare,composer,lint,phpunit,phpcs,phpcpd,phploc,pdepend,documentation,changelog,artifact"
             description=""/>
 
     <!-- Clean all previous build in workspace -->
@@ -61,6 +61,7 @@
         <echo message="Make sub directories for build" level="info"/>
 
         <mkdir dir="${buildOutputPath}/logs"/>
+        <mkdir dir="${buildOutputPath}/changelogs"/>
         <mkdir dir="${buildOutputPath}/coverage"/>
         <mkdir dir="${buildOutputPath}/pdepend"/>
         <mkdir dir="${buildOutputPath}/release"/>
@@ -122,6 +123,23 @@
         </exec>
 
         <echo message="Finished unit testing" level="info"/>
+    </target>
+
+    <!-- Changelog generation target -->
+    <target depends="prepare" name="changelog">
+        <echo message="Generating general changelog..." level="info"/>
+        <exec executable="bash" failonerror="true">
+            <arg value="-c"/>
+            <arg value="git log --pretty=format:'* %H: %s%n'"/>
+            <redirector output="${buildOutputPath}/changelogs/general"/>
+        </exec>
+
+        <echo message="Generating full changelog..." level="info"/>
+        <exec executable="bash" output="${buildOutputPath}/changelogs/full" failonerror="true">
+            <arg value="-c"/>
+            <arg value="git log --pretty=format:'Commit: %H%nAuthor: %an &#60;%ae&#62;%nDate: %ai%n%n%s%n%b----------------%n'"/>
+            <redirector output="${buildOutputPath}/changelogs/full"/>
+        </exec>
     </target>
 
     <!-- Duplicated code finding -->
