@@ -1,6 +1,6 @@
 <?php namespace buildr\ServiceProvider;
 
-use buildr\Registry\Registry;
+use buildr\Container\Facade\Buildr;
 
 /**
  * Service Provider
@@ -45,7 +45,7 @@ class ServiceProvider {
         $ObjectToRegister = $providerClass->register();
         $bindingName = $providerClass->getBindingName();
 
-        Registry::bindClass($bindingName, $ObjectToRegister);
+        Buildr::add($bindingName, $ObjectToRegister);
     }
 
     /**

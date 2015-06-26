@@ -1,7 +1,7 @@
 <?php namespace buildr\Startup\Initializer;
 
+use buildr\Container\Facade\Buildr;
 use buildr\Loader\classLoader;
-use buildr\Registry\Registry;
 use buildr\Startup\BuildrEnvironment;
 use Patchwork\Utf8\Bootup;
 
@@ -39,7 +39,7 @@ class WebInitializer extends BaseInitializer {
         $environment = BuildrEnvironment::getEnv();
 
         //Set up the environment in the registry
-        Registry::setVariable('buildr.environment.protected', $environment);
+        Buildr::add('property.environment', $environment);
 
         parent::initialize($basePath, $autoloader);
     }

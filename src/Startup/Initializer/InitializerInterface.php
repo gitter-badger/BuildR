@@ -27,4 +27,11 @@ interface InitializerInterface {
      */
     public function initialize($basePath, classLoader $autoloader);
 
+    /**
+     * Construct the DI container on initialization
+     *
+     * @return \buildr\Container\ContainerInterface
+     */
+    public function constructContainer();
+
 }

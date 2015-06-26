@@ -1,7 +1,7 @@
 <?php namespace buildr\Config\Source;
 
 use buildr\Config\Selector\ConfigSelector;
-use buildr\Registry\Registry;
+use buildr\Container\Facade\Buildr;
 
 /**
  * Abstract super class for cachable configuration sources
@@ -36,6 +36,6 @@ abstract class CachedConfigSource extends ConfigSource implements CachedConfigSo
      * @return \buildr\Cache\CacheDriverInterface
      */
     public function getCache() {
-        return Registry::getClass('cache');
+        return Buildr::get('cache');
     }
 }

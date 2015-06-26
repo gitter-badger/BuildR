@@ -1,5 +1,6 @@
 <?php namespace buildr\tests\serviceProvider;
 
+use buildr\Application\Application;
 use buildr\ServiceProvider\ServiceProvider;
 use buildr\tests\Buildr_TestCase as BuilderTestCase;
 
@@ -58,11 +59,10 @@ class serviceProviderTest extends BuilderTestCase {
 
         ServiceProvider::registerProvidersByArray($providers);
 
-        $registryReflector = new \ReflectionClass('\buildr\Registry\Registry');
-        $properties = $registryReflector->getStaticProperties();
+        $container = Application::getContainer();
 
-        $this->assertInstanceOf('\stdClass', $properties['classes']['dummyOne']);
-        $this->assertInstanceOf('\stdClass', $properties['classes']['dummyTwo']);
+        $this->assertInstanceOf('\stdClass', $container->get('dummyOne'));
+        $this->assertInstanceOf('\stdClass', $container->get('dummyTwo'));
     }
 
 }

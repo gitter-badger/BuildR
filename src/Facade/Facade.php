@@ -1,6 +1,6 @@
 <?php namespace buildr\Facade;
 
-use buildr\Registry\Registry;
+use buildr\Application\Application;
 
 /**
  * Abstract class for facades
@@ -25,8 +25,7 @@ abstract class Facade {
         $reflector = new \ReflectionClass(static::class);
 
         $bindingName = $reflector->getMethod('getBindingName')->invoke($reflector->newInstanceWithoutConstructor());
-
-        $class = Registry::getClass($bindingName);
+        $class = Application::getContainer()->get($bindingName);
 
         return call_user_func_array([
             $class,

@@ -1,6 +1,9 @@
 <?php namespace buildr\Startup\Initializer;
 
+use buildr\Application\Application;
 use buildr\Config\Config;
+use buildr\Container\Container;
+use buildr\Container\Repository\InMemoryServiceRepository;
 use buildr\Loader\classLoader;
 use buildr\ServiceProvider\ServiceProvider;
 
@@ -22,6 +25,13 @@ use buildr\ServiceProvider\ServiceProvider;
 class BaseInitializer implements InitializerInterface {
 
     /**
+     * Constructor
+     */
+    public function __construct() {
+        $this->constructContainer();
+    }
+
+    /**
      * Run the startup initialization process
      *
      * @param string $basePath
@@ -31,6 +41,17 @@ class BaseInitializer implements InitializerInterface {
      */
     public function initialize($basePath, classLoader $autoloader) {
         $this->registerServiceProviders();
+    }
+
+    /**
+     * @return \buildr\Container\Container
+     */
+    public function constructContainer() {
+        $containerRepository = new InMemoryServiceRepository();
+        $container = new Container($containerRepository);
+        $container->add('buildr', $container);
+
+        Application::setContainer($container);
     }
 
     /**
