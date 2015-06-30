@@ -1,7 +1,6 @@
 <?php namespace buildr\tests\container\repository; 
 
-use buildr\Registry\Exception\ProtectedVariableException;
-use \buildr\tests\Buildr_TestCase as BuildRTestCase;
+use buildr\tests\Buildr_TestCase as BuildRTestCase;
 use buildr\tests\container\fixture\dummyClass;
 
 /**

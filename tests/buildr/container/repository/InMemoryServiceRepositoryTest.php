@@ -1,4 +1,5 @@
 <?php namespace buildr\tests\container\repository;
+
 use buildr\Container\Repository\InMemoryServiceRepository;
 
 /**

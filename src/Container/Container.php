@@ -42,6 +42,8 @@ class Container implements ContainerInterface {
      * Constructor
      *
      * @param \buildr\Container\Repository\ServiceRepositoryInterface $repository
+     *
+     * @codeCoverageIgnore
      */
     public function __construct(ServiceRepositoryInterface $repository) {
         $this->repository = $repository;
@@ -54,6 +56,8 @@ class Container implements ContainerInterface {
      *
      * @return mixed
      * @throws \buildr\Container\Exception\UndefinedBindingException
+     *
+     * @codeCoverageIgnore
      */
     public function get($serviceId) {
         return $this->repository->get($serviceId);
@@ -67,6 +71,8 @@ class Container implements ContainerInterface {
      *
      * @return bool
      * @throws \buildr\Container\Exception\ServiceAlreadyRegisteredException
+     *
+     * @codeCoverageIgnore
      */
     public function add($serviceId, $service) {
         return $this->repository->add($serviceId, $service);
@@ -79,6 +85,8 @@ class Container implements ContainerInterface {
      * @param string $serviceId
      *
      * @return bool
+     *
+     * @codeCoverageIgnore
      */
     public function has($serviceId) {
         return $this->repository->has($serviceId);
@@ -91,6 +99,8 @@ class Container implements ContainerInterface {
      *
      * @return bool
      * @throws \buildr\Container\Exception\UndefinedBindingException
+     *
+     * @codeCoverageIgnore
      */
     public function remove($serviceId) {
         return $this->repository->remove($serviceId);
@@ -166,6 +176,8 @@ class Container implements ContainerInterface {
 
         //If we allow to use shared service, check that class is exist in service repository
         if(($shared === TRUE) && ($this->repository->has($service))) {
+            unset($this->serviceCreating[$service]);
+
             return $this->repository->get($service);
         }
 
@@ -173,6 +185,8 @@ class Container implements ContainerInterface {
 
         //This class didn't specify a constructor, so we create a new instance directly
         if($classConstructor === NULL) {
+            unset($this->serviceCreating[$service]);
+
             return new $service;
         }
 
@@ -183,7 +197,7 @@ class Container implements ContainerInterface {
             unset($this->serviceCreating[$service]);
             return $reflector->newInstanceArgs($resolvedDependencies);
         } catch(\Exception $e) {
-            throw new InstantiationException("Unable to instantiate class (" . $service . ")");
+            throw new InstantiationException("Unable to instantiate class (" . $service . ")! " . $e->getMessage());
         }
     }
 
@@ -208,7 +222,7 @@ class Container implements ContainerInterface {
 
             return $resolved;
         } catch(\Exception $e) {
-            throw new InstantiationException("Unable to instantiate class (" . $concrete . ")");
+            throw new InstantiationException($e->getMessage());
         }
     }
 
@@ -252,7 +266,7 @@ class Container implements ContainerInterface {
 
         foreach($dependencies as $dependency) {
             //Check if the current dependency is binded or not
-            $dependencyClass = $dependency->getClass()->getName();
+            $dependencyClass = $dependency->getClass();
 
             try {
                 if($dependencyClass === NULL) {
