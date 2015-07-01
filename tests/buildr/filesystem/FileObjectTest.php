@@ -64,7 +64,7 @@ class FileObjectTest extends BuilderTestCase {
     }
 
     public function testIsReturnsFileInfoCorrectly() {
-        $this->assertInstanceOf(\SplFileInfo::class, $this->fileObject->getFileInfo());
+        $this->assertInstanceOf(\SplFileInfo::class, $this->fileObject->getSplInfo());
     }
 
     public function testItReturnsTheFileSizeCorrectlyAsHumanReadable() {
@@ -117,9 +117,8 @@ class FileObjectTest extends BuilderTestCase {
     public function testRemove() {
         $originalContent = $this->fileObject->getContent();
         $this->fileObject->remove();
-        $filesystem = new Filesystem();
 
-        $this->assertFalse($filesystem->makeAbsolute("tests/filesystem_fixtures/singleFile.txt"));
+        $filesystem = new Filesystem();
 
         $filesystem->touch("tests/filesystem_fixtures", "singleFile.txt");
         $this->fileObject->put($originalContent);

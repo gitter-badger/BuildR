@@ -1,5 +1,6 @@
 <?php namespace buildr\Filesystem;
 
+use buildr\Filesystem\Types\Directory;
 use buildr\Filesystem\Types\File;
 use buildr\Utils\StringUtils;
 
@@ -95,7 +96,7 @@ class Filesystem {
             $location = realpath($absoluteRoot . $location);
         }
 
-        return $location;
+        return realpath($location);
     }
 
     /**
@@ -132,8 +133,22 @@ class Filesystem {
         return new File($fileLocation);
     }
 
-    public final function getDirectory() {
+    /**
+     * Get a Directory object for the specified directory, that allows more
+     * in-depth interaction with it
+     *
+     * @param string $directory
+     *
+     * @return \buildr\Filesystem\Types\Directory
+     */
+    public final function getDirectory($directory) {
+        $directoryLocation = $this->makeAbsolute($directory);
 
+        if(!is_dir($directoryLocation)) {
+            throw new \RuntimeException('The given folder (' . $directoryLocation . ') is not found!');
+        }
+
+        return new Directory($directoryLocation);
     }
 
 }

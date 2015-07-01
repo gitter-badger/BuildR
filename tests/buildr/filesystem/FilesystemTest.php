@@ -62,7 +62,7 @@ class FilesystemTest extends BuilderTestCase {
     }
 
     public function testItMakesAbsolutePathCorrectly() {
-        $alreadyAbsolutePath = $this->filesystem->getProjectAbsoluteRoot() . "home";
+        $alreadyAbsolutePath = $this->filesystem->getProjectAbsoluteRoot() . "src";
         $notAbsoluteLocation = "src" . DIRECTORY_SEPARATOR . "Startup";
 
         $this->assertEquals($alreadyAbsolutePath, $this->filesystem->makeAbsolute($alreadyAbsolutePath));

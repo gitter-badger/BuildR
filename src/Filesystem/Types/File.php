@@ -13,14 +13,15 @@
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
  */
-class File {
+class File extends FilesystemType {
 
     use PermissionsTrait;
+    use SizeFormattingTrait;
 
     /**
      * @type string
      */
-    private $fileLocation;
+    protected $absoluteLocation;
 
     /**
      * Constructor
@@ -28,7 +29,7 @@ class File {
      * @param string $fileLocation
      */
     public function __construct($fileLocation) {
-        $this->fileLocation = $fileLocation;
+        $this->absoluteLocation = $fileLocation;
     }
 
     /**
@@ -37,7 +38,7 @@ class File {
      * @return string
      */
     public final function getContent() {
-        return file_get_contents($this->fileLocation);
+        return file_get_contents($this->absoluteLocation);
     }
 
     /**
@@ -49,7 +50,7 @@ class File {
      * @return int
      */
     public final function put($content) {
-        return file_put_contents($this->fileLocation, $content);
+        return file_put_contents($this->absoluteLocation, $content);
     }
 
     /**
@@ -61,7 +62,7 @@ class File {
      * @return int
      */
     public final function append($content) {
-        return file_put_contents($this->fileLocation, $content, FILE_APPEND);
+        return file_put_contents($this->absoluteLocation, $content, FILE_APPEND);
     }
 
     /**
@@ -88,7 +89,7 @@ class File {
      * @return resource
      */
     public final function getResource($mode = "a+") {
-        return fopen($this->fileLocation, $mode);
+        return fopen($this->absoluteLocation, $mode);
     }
 
     /**
@@ -98,7 +99,7 @@ class File {
      * @return mixed
      */
     public final function getRequire() {
-        return require $this->fileLocation;
+        return require $this->absoluteLocation;
     }
 
     /**
@@ -108,16 +109,7 @@ class File {
      * @return mixed
      */
     public final function requireOnce() {
-        return require_once $this->fileLocation;
-    }
-
-    /**
-     * Returns the SplFileInfo object for this file
-     *
-     * @return \SplFileInfo
-     */
-    public final function getFileInfo() {
-        return new \SplFileInfo($this->fileLocation);
+        return require_once $this->absoluteLocation;
     }
 
     /**
@@ -130,27 +122,9 @@ class File {
      * @return string
      */
     public function getSize($humanReadable = TRUE, $precision = 2, $showUnits = TRUE) {
-        $size = filesize($this->fileLocation);
+        $size = filesize($this->absoluteLocation);
 
-        if($humanReadable === FALSE) {
-            return $size;
-        }
-
-        $sizeUnits = [
-            "B",
-            "kB",
-            "MB",
-            "GB",
-            "TB",
-            "PB"
-        ];
-        $factor = floor((strlen($size) - 1) / 3);
-
-        if($showUnits === TRUE) {
-            return sprintf("%.{$precision}f", $size / pow(1024, $factor)) . " " . $sizeUnits[$factor];
-        }
-
-        return sprintf("%.{$precision}f", $size / pow(1024, $factor));
+        return $this->formatSize($size, $humanReadable, $precision, $showUnits);
     }
 
     /**
@@ -168,7 +142,7 @@ class File {
      * @return bool
      */
     public final function remove() {
-        return unlink($this->fileLocation);
+        return unlink($this->absoluteLocation);
     }
 
     /**
@@ -179,10 +153,10 @@ class File {
      * @return bool
      */
     public final function move($absolutePath) {
-        $fileInfo = $this->getFileInfo();
+        $fileInfo = $this->getSplInfo();
         $newFile = $absolutePath . DIRECTORY_SEPARATOR . $fileInfo->getFilename();
 
-        return rename($this->fileLocation, $newFile);
+        return rename($this->absoluteLocation, $newFile);
     }
 
     /**
@@ -193,10 +167,10 @@ class File {
      * @return bool
      */
     public final function copy($absolutePath) {
-        $fileInfo = $this->getFileInfo();
+        $fileInfo = $this->getSplInfo();
         $newFile = $absolutePath . DIRECTORY_SEPARATOR . $fileInfo->getFilename();
 
-        return copy($this->fileLocation, $newFile);
+        return copy($this->absoluteLocation, $newFile);
     }
 
 }

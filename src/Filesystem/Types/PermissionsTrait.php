@@ -26,7 +26,7 @@ trait PermissionsTrait {
      * @return \buildr\Utils\System\Information\GroupInformation|int
      */
     public final function getGroup() {
-        $groupId = filegroup($this->fileLocation);
+        $groupId = filegroup($this->absoluteLocation);
 
         if($groupId !== FALSE) {
             try {
@@ -46,7 +46,7 @@ trait PermissionsTrait {
      * @return \buildr\Utils\System\Information\UserInformation|int
      */
     public function getOwner() {
-        $ownerId = fileowner($this->fileLocation);
+        $ownerId = fileowner($this->absoluteLocation);
 
         if($ownerId !== FALSE) {
             try {
