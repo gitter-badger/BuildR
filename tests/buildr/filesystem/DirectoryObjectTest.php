@@ -31,13 +31,6 @@ class DirectoryObjectTest extends BuilderTestCase {
         parent::setUp();
     }
 
-    public function testSummarizeSizeCorrectly() {
-        $this->assertEquals("10.04 kB", $this->directoryObject->getSize());
-        $this->assertEquals("10.04", $this->directoryObject->getSize(TRUE, 2, FALSE));
-        $this->assertEquals("10", $this->directoryObject->getSize(TRUE, 0, FALSE));
-        $this->assertEquals("10283", $this->directoryObject->getSize(FALSE));
-    }
-
     public function testItIteratesCorrectly() {
         $this->directoryObject->iterate(function(\SplFileInfo $info, $dept) {
             $this->assertInstanceOf(\SplFileInfo::class, $info);
