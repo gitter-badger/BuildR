@@ -1,5 +1,7 @@
 <?php namespace buildr\Cache\Item;
 
+use buildr\Cache\Item\CacheItemInterface;
+
 /**
  * Common cache item
  *

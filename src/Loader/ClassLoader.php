@@ -1,5 +1,7 @@
 <?php namespace buildr\Loader;
 
+use buildr\Loader\ClassLoaderInterface;
+
 /**
  * Class loader implementation with multiple type of loader support (PSR-4, ClassMap)
  *
@@ -70,7 +72,9 @@ class ClassLoader {
         $classLoader->setPriority($priority + 1);
         $this->registerLoader($classLoader);
 
-        trigger_error("Another class Loader is registered with priority {$priority}! Increasing priority by one, to find a new spot.", E_USER_NOTICE);
+        $errorMessage = "Another class Loader is registered with priority {$priority}! ";
+        $errorMessage .= "Increasing priority by one, to find a new spot.";
+        trigger_error($errorMessage, E_USER_NOTICE);
     }
 
     /**

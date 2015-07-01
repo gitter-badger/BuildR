@@ -1,5 +1,6 @@
 <?php namespace buildr\Logger\Formatter;
 
+use buildr\Logger\Formatter\FormatterInterface;
 use buildr\Logger\Entry\LogEntryInterface;
 
 /**

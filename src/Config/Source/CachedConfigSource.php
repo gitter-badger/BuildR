@@ -1,6 +1,8 @@
 <?php namespace buildr\Config\Source;
 
+use buildr\Application\Application;
 use buildr\Config\Selector\ConfigSelector;
+use buildr\Config\Source\CachedConfigSourceInterface;
 use buildr\Container\Facade\Buildr;
 
 /**
@@ -36,6 +38,6 @@ abstract class CachedConfigSource extends ConfigSource implements CachedConfigSo
      * @return \buildr\Cache\CacheDriverInterface
      */
     public function getCache() {
-        return Buildr::get('cache');
+        return Application::getContainer()->get('cache');
     }
 }

@@ -1,5 +1,6 @@
 <?php namespace buildr\Shell;
 
+use buildr\Shell\CommandInterface;
 use buildr\Shell\Collection\ArgumentCollection;
 use buildr\Shell\Collection\FlagCollection;
 use buildr\Shell\Collection\ParameterCollection;

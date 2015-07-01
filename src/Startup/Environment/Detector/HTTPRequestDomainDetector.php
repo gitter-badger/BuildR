@@ -1,5 +1,6 @@
 <?php namespace buildr\Startup\Environment\Detector;
 
+use buildr\Startup\Environment\Detector\DetectorInterface;
 use buildr\Config\Config;
 use buildr\Startup\BuildrEnvironment;
 

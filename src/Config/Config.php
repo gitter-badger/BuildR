@@ -3,6 +3,7 @@
 use buildr\Config\Exception\ConfigurationException;
 use buildr\Config\Selector\ConfigSelector;
 use buildr\Config\Source\ConfigSourceInterface;
+use buildr\Config\ConfigInterface;
 use InvalidArgumentException;
 
 /**

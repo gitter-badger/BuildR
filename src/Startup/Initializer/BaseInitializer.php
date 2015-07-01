@@ -1,5 +1,6 @@
 <?php namespace buildr\Startup\Initializer;
 
+use buildr\Startup\Initializer\InitializerInterface;
 use buildr\Application\Application;
 use buildr\Config\Config;
 use buildr\Container\Container;

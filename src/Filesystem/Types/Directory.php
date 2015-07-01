@@ -1,5 +1,8 @@
 <?php namespace buildr\Filesystem\Types;
 
+use buildr\Filesystem\Types\PermissionsTrait;
+use buildr\Filesystem\Types\SizeFormattingTrait;
+
 /**
  * Directory filesystem type
  *
@@ -105,7 +108,8 @@ class Directory extends FilesystemType {
      * @return \RecursiveIteratorIterator
      */
     private function getRecursiveIterator() {
-        return new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->absoluteLocation, \FilesystemIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST);
+        $directoryIterator = new \RecursiveDirectoryIterator($this->absoluteLocation, \FilesystemIterator::SKIP_DOTS);
+        return new \RecursiveIteratorIterator($directoryIterator, \RecursiveIteratorIterator::CHILD_FIRST);
     }
 
 }

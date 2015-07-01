@@ -59,7 +59,8 @@ class InMemoryServiceRepository implements ServiceRepositoryInterface {
      */
     public function add($serviceId, $service) {
         if($this->has($serviceId)) {
-            throw new ServiceAlreadyRegisteredException("The following serviceId (" . $serviceId . ") is already registered!");
+            $message = "The following serviceId (" . $serviceId . ") is already registered!";
+            throw new ServiceAlreadyRegisteredException($message);
         }
 
         $this->storage[$serviceId] = $service;

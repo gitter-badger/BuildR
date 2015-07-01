@@ -1,5 +1,8 @@
 <?php namespace buildr\Shell\Runner;
 
+use buildr\Shell\Runner\ReturnValueOutputInterface;
+use buildr\Shell\Runner\ExecutionOutputInterface;
+use buildr\Shell\Runner\RunnerInterface;
 use buildr\Shell\CommandInterface;
 
 /**

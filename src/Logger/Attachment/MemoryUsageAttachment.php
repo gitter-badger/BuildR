@@ -1,5 +1,7 @@
 <?php namespace buildr\Logger\Attachment;
 
+use buildr\Logger\Attachment\AttachmentInterface;
+
 /**
  * Memory usage attachment
  *

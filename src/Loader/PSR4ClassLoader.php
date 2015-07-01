@@ -1,5 +1,7 @@
 <?php namespace buildr\Loader;
 
+use buildr\Loader\ClassLoaderInterface;
+
 /**
  * PSR-4 compatible class loader implementation
  *

@@ -122,7 +122,7 @@ class Container implements ContainerInterface {
         $reflector = new \ReflectionClass($abstract);
 
         //Check that the provided abstract is abstract
-        if(!($reflector->isAbstract()) OR !($reflector->isInterface())) {
+        if(!($reflector->isAbstract()) || !($reflector->isInterface())) {
             throw new AbstractionException("Unable to bind not abstract class!");
         }
 
@@ -148,7 +148,8 @@ class Container implements ContainerInterface {
      */
     public function construct($service, $shared = FALSE) {
         if(isset($this->serviceCreating[$service])) {
-            $message = 'Circular dependency detected: ' . implode(' => ', array_keys($this->serviceCreating)) . " => " . (string) $service;
+            $message = 'Circular dependency detected: ';
+            $message .= implode(' => ', array_keys($this->serviceCreating)) . " => " . (string) $service;
             throw new CircularDependencyException($message);
         }
 

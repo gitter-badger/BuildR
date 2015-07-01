@@ -1,7 +1,9 @@
 <?php namespace buildr\Logger\Handler;
 
-use buildr\Logger\Entry\LogEntryInterface;
+use buildr\Logger\Handler\HandlerInterface;
+use buildr\Logger\Handler\FilterableHandlerTrait;
 use buildr\Logger\Formatter\FormatterTrait;
+use buildr\Logger\Entry\LogEntryInterface;
 
 /**
  * Write all log to the PHP STDOUT

@@ -1,5 +1,8 @@
 <?php namespace buildr\Filesystem\Types;
 
+use buildr\Filesystem\Types\PermissionsTrait;
+use buildr\Filesystem\Types\SizeFormattingTrait;
+
 /**
  * File type handler
  *

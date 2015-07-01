@@ -1,5 +1,7 @@
 <?php namespace buildr\Logger\Formatter;
 
+use buildr\Logger\Formatter\FormatterInterface;
+
 /**
  * Formatter trait
  *
