@@ -82,7 +82,7 @@ class stringUtilsTest extends BuildRTestCase {
     public function trimEndProvider() {
         $return = [];
 
-        for ($i = 1 ; $i <= 25 ; $i++) {
+        for ($i = 1 ; $i <= 5 ; $i++) {
             $word = $this->faker->word;
             $start = substr($word, -2);
             $p = substr($word, 0, -2);
@@ -106,7 +106,7 @@ class stringUtilsTest extends BuildRTestCase {
     public function trimBeginningProvider() {
         $return = [];
 
-        for ($i = 1 ; $i <= 25 ; $i++) {
+        for ($i = 1 ; $i <= 5 ; $i++) {
             $word = $this->faker->word;
             $start = substr($word, 0, 2);
             $p = substr($word, 2);
@@ -130,7 +130,7 @@ class stringUtilsTest extends BuildRTestCase {
     public function startWithProvider() {
         $return = [];
 
-        for ($i = 1 ; $i <= 25 ; $i++) {
+        for ($i = 1 ; $i <= 5 ; $i++) {
             $word = $this->faker->word;
             $start = substr($word, 0, 2);
 
@@ -146,7 +146,7 @@ class stringUtilsTest extends BuildRTestCase {
     public function endWithProvider() {
         $return = [];
 
-        for ($i = 1 ; $i <= 25 ; $i++) {
+        for ($i = 1 ; $i <= 5 ; $i++) {
             $word = $this->faker->word;
             $end = substr($word, -1, 2);
 
@@ -167,7 +167,7 @@ class stringUtilsTest extends BuildRTestCase {
     public function containsProvider() {
         $return = [];
 
-        for ($i = 1 ; $i <= 25 ; $i++) {
+        for ($i = 1 ; $i <= 5 ; $i++) {
             $word = $this->faker->word;
             $wordLen = strlen($word);
 
@@ -190,7 +190,7 @@ class stringUtilsTest extends BuildRTestCase {
     public function charAtProvider() {
         $return = [];
 
-        for ($i = 1 ; $i <= 25 ; $i++) {
+        for ($i = 1 ; $i <= 5 ; $i++) {
             $word = $this->faker->word;
             $wordLen = strlen($word);
             $position = rand(1, $wordLen);
