@@ -1,5 +1,6 @@
-<?php namespace buildr\http\Response\ContentType\Encoder;
+<?php namespace buildr\tests\http\Response\ContentType\Encoder;
 
+use buildr\Http\Response\ContentType\Encoder\JsonContentEncoder;
 use \buildr\tests\Buildr_TestCase as BuildRTestCase;
 
 /**
