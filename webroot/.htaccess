@@ -1,0 +1,9 @@
+# Tur on URL rewriting
+RewriteEngine On
+
+# Protect the existing files and folders beign rewrited
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Rewrite the request
+RewriteRule ^(.*)$ index.php [NC,L]

@@ -105,6 +105,21 @@ class Buildr_TestCase extends \PHPUnit_Framework_TestCase {
         return $reflector->getConstant($constantName);
     }
 
+    /**
+     * @param string $className
+     * @param string $methodName
+     *
+     * @return \Closure|Callable
+     */
+    protected function getClosureForMethod($className, $methodName) {
+        $classReflector = new \ReflectionClass($className);
+
+        $methodReflector = $classReflector->getMethod($methodName);
+        $methodReflector->setAccessible(TRUE);
+
+        return $methodReflector->getClosure($classReflector->newInstanceWithoutConstructor());
+    }
+
     protected function setUp() {
 
     }

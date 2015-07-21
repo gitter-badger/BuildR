@@ -27,7 +27,7 @@ abstract class BaseEnumeration {
     /**
      * @type string
      */
-    private $value;
+    protected $value;
 
     /**
      * Constructor

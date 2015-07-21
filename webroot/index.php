@@ -22,12 +22,33 @@ require_once $startupLocation;
  * Startup Initialization block
  */
 
-//Initialize the autoloader
+//Set the base path and initialize the auto-loading classes
 \buildr\Startup\BuildrStartup::setBasePath($basePath);
 \buildr\Startup\BuildrStartup::initializeAutoloading(TRUE);
 
-//Run the initializer
+//Using the WebInitializer class to initialize the framework
 $startup = new \buildr\Startup\BuildrStartup();
 $startup->setInitializer(new \buildr\Startup\Initializer\WebInitializer);
 
-echo 'Render Time: ' . substr(\buildr\Startup\BuildrStartup::getTimeSinceStartup() * 1000, 0, 4) . 'ms';
+//Create the request object
+$request = new \buildr\Http\Request\Request();
+$request->createFromGlobals($_SERVER, $_COOKIE, $_GET, $_POST, $_FILES);
+
+//Bind request to the container
+\buildr\Application\Application::getContainer()->add('request', $request);
+
+//Bind the response
+$rsp = new \buildr\Http\Response\Response();
+\buildr\Application\Application::getContainer()->add('response', $rsp);
+
+\buildr\Http\Response\Facade\Response::setContentType(new \buildr\Http\Response\ContentType\JsonContentType());
+\buildr\Http\Response\Facade\Response::setBody([
+    'globals' => $request->getAllGlobal(),
+    'headers' => $request->getAllHeaders(),
+    'query' => $request->getAllQueryParam(),
+    'post' => $request->getAllPostParam(),
+    'cookie' => $request->getAllCookie(),
+    'startupTime' => (float) substr(\buildr\Startup\BuildrStartup::getTimeSinceStartup() * 1000, 0, 4),
+]);
+
+echo \buildr\Http\Response\Facade\Response::send();
