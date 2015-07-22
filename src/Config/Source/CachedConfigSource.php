@@ -3,7 +3,6 @@
 use buildr\Application\Application;
 use buildr\Config\Selector\ConfigSelector;
 use buildr\Config\Source\CachedConfigSourceInterface;
-use buildr\Container\Facade\Buildr;
 
 /**
  * Abstract super class for cachable configuration sources

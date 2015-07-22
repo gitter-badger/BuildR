@@ -1,5 +1,7 @@
 <?php namespace buildr\Http\Response\ContentType\Encoder;
 
+use buildr\Http\Response\ContentType\Encoder\HttpContentEncoderInterface;
+
 /**
  * JSON content encoder
  *

@@ -1,7 +1,5 @@
 <?php namespace buildr\Http\Response\ContentType;
 
-use buildr\Http\Header\Writer\HeaderWriterInterface;
-
 /**
  * Interface for various content types
  *

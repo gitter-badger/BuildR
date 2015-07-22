@@ -2,6 +2,7 @@
 
 use buildr\Application\Application;
 use buildr\Http\Header\Writer\HtmlHeaderWriter;
+use buildr\Http\Response\ContentType\HttpContentTypeInterface;
 
 /**
  * HTML content type
