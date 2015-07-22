@@ -111,6 +111,15 @@ class ResponseTest extends BuildRTestCase {
         $this->assertEquals('custom/mime', $contentTypeText);
     }
 
+    public function testSettersAndGettersForHeaderWriteOut() {
+        //By default is FALSE
+        $this->assertFalse($this->response->isAllowingHeaderWriteOut());
+
+        //Set to TRUE
+        $this->response->setHeaderWriteOut(TRUE);
+        $this->assertTrue($this->response->isAllowingHeaderWriteOut());
+    }
+
     /**
      * @runInSeparateProcess
      */
@@ -155,8 +164,25 @@ class ResponseTest extends BuildRTestCase {
         $this->response->setContentType(new JsonContentType());
 
         $result = $this->response->send();
+        $resultRaw = json_decode($result, TRUE);
 
         $this->assertJson($result);
+        $this->assertFalse(isset($resultRaw['responseHeaders']));
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testItSendTheResponseCorrectlyWithAdditionalHeaderAndEncodingAndEnabledHeaderWriteOut() {
+        $this->response->setBody(['Hello' => 'World']);
+        $this->response->setContentType(new JsonContentType());
+        $this->response->setHeaderWriteOut(TRUE);
+
+        $result = $this->response->send();
+        $resultRaw = json_decode($result, TRUE);
+
+        $this->assertJson($result);
+        $this->assertTrue(isset($resultRaw['responseHeaders']));
     }
 
 }

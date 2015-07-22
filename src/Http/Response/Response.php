@@ -63,6 +63,11 @@ class Response {
     private $protocolVersion;
 
     /**
+     * @type bool
+     */
+    private $headerWriteOut = FALSE;
+
+    /**
      * Constructor
      *
      * @param \buildr\Http\Header\ResponseHeaderBag|NULL $headers
@@ -74,6 +79,27 @@ class Response {
         if($headers === NULL) {
             $this->header = new ResponseHeaderBag();
         }
+    }
+
+    /**
+     * Set the header write-out behaviour. If you set the Header write-out
+     * to TRUE, it means that returned headers will be prepended to response,
+     * if the corresponding content type returns the header.
+     *
+     * @param $value bool
+     */
+    public function setHeaderWriteOut($value) {
+        $this->headerWriteOut = $value;
+    }
+
+    /**
+     * Returns that the current response allow header
+     * write-out or not.
+     *
+     * @return bool
+     */
+    public function isAllowingHeaderWriteOut() {
+        return (bool) $this->headerWriteOut;
     }
 
     /**
@@ -143,7 +169,14 @@ class Response {
         //Add the content-type header to the bag
         $this->header->add('Content-Type', $this->contentTypeString);
 
-        return $this->contentType->getHeaderWriter()->write($this->header);
+        $headerResult = $this->contentType->getHeaderWriter()->write($this->header);
+
+        //If we not allowing header write-out always returns NULL to prevent it
+        if($this->isAllowingHeaderWriteOut() === FALSE) {
+            return NULL;
+        }
+
+        return $headerResult;
     }
 
     /**
