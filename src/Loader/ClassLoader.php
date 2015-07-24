@@ -30,22 +30,8 @@ class ClassLoader {
     public static function loadAutoLoader() {
         //Include interface first All class depends on it
         require_once __DIR__ . DIRECTORY_SEPARATOR . 'ClassLoaderInterface.php';
-
-        $files = scandir(__DIR__, SCANDIR_SORT_DESCENDING);
-        $unnedFiles = [
-            '.',
-            '..',
-            'ClassLoader.php',
-            'ClassLoaderInterface.php'
-        ];
-
-        foreach ($files as $k => $file) {
-            if(in_array($file, $unnedFiles)) {
-                continue;
-            }
-
-            require_once __DIR__ . DIRECTORY_SEPARATOR . $file;
-        }
+        require_once __DIR__ . DIRECTORY_SEPARATOR . 'ClassMapClassLoader.php';
+        require_once __DIR__ . DIRECTORY_SEPARATOR . 'PSR4ClassLoader.php';
     }
 
     /**

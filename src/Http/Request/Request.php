@@ -23,7 +23,7 @@ use buildr\Utils\StringUtils;
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
  */
-class Request {
+class Request implements RequestInterface {
 
     /**
      * @type array
@@ -77,6 +77,8 @@ class Request {
      * @param array $cookies
      * @param array $query
      * @param array $postFields
+     * @param array $files
+     * @param NULL|resource $stream
      */
     public function createFromGlobals($globals = [],
                                       $cookies = [],
@@ -91,7 +93,7 @@ class Request {
         $this->postFields = $postFields;
 
         $this->method = (isset($globals['REQUEST_METHOD'])) ?
-            new HttpRequestMethod(strtolower($globals['REQUEST_METHOD'])) :
+            new HttpRequestMethod(strtoupper($globals['REQUEST_METHOD'])) :
             HttpRequestMethod::GET();
 
         if($stream === NULL) {
@@ -366,6 +368,15 @@ class Request {
      */
     public function is(HttpRequestMethod $method) {
         return ($this->method->getValue() === $method->getValue());
+    }
+
+    /**
+     * Returns the current request method
+     *
+     * @return \buildr\Http\Request\Method\HttpRequestMethod
+     */
+    public function getMethod() {
+        return $this->method;
     }
 
     /**

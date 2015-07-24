@@ -4,7 +4,10 @@ use buildr\Http\Constants\HttpProtocolVersion;
 use buildr\Http\Header\HeaderBag;
 use buildr\Http\Header\ResponseHeaderBag;
 use buildr\Http\Constants\HttpResponseCode;
+use buildr\Http\Response\ContentType\Encoder\JsonContentEncoder;
+use buildr\Http\Response\ContentType\HtmlContentType;
 use buildr\Http\Response\ContentType\HttpContentTypeInterface;
+use buildr\Http\Response\ContentType\JsonContentType;
 use buildr\Http\Response\ContentType\PlaintextContentType;
 
 /**
@@ -20,7 +23,7 @@ use buildr\Http\Response\ContentType\PlaintextContentType;
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
  */
-class Response {
+class Response implements ResponseInterface {
 
     /**
      * @type mixed
@@ -274,6 +277,38 @@ class Response {
      */
     public function setContentTypeString($contentType) {
         $this->contentTypeString = $contentType;
+    }
+
+    /**
+     * Helper method to easily return HTML responses.
+     *
+     * @param string $body
+     *
+     * @return \buildr\Http\Response\ResponseInterface
+     *
+     * @codeCoverageIgnore
+     */
+    public function html($body) {
+        $this->setContentType(new HtmlContentType());
+        $this->setBody($body);
+
+        return $this;
+    }
+
+    /**
+     * Helper method to easily return JSON responses.
+     *
+     * @param array $body
+     *
+     * @return \buildr\Http\Response\ResponseInterface
+     *
+     * @codeCoverageIgnore
+     */
+    public function json($body) {
+        $this->setContentType(new JsonContentType());
+        $this->setBody($body);
+
+        return $this;
     }
 
 }

@@ -19,15 +19,15 @@ use buildr\Utils\Enum\BaseEnumeration;
  */
 class HttpRequestMethod extends BaseEnumeration {
 
-    const GET = 'get';
-    const POST = 'post';
-    const CONNECT = 'connect';
-    const DELETE = 'delete';
-    const HEAD = 'head';
-    const OPTIONS = 'options';
-    const PATCH = 'patch';
-    const PUT = 'put';
-    const TRACE = 'trace';
+    const GET = 'GET';
+    const POST = 'POST';
+    const CONNECT = 'CONNECT';
+    const DELETE = 'DELETE';
+    const HEAD = 'HEAD';
+    const OPTIONS = 'OPTIONS';
+    const PATCH = 'PATHC';
+    const PUT = 'PUT';
+    const TRACE = 'TRACE';
 
     /**
      * PHP magic method
