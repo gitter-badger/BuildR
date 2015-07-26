@@ -34,4 +34,13 @@ interface InitializerInterface {
      */
     public function constructContainer();
 
+    /**
+     * Add an additional provider that loaded during tha startup process
+     *
+     * @param string $providerClass
+     *
+     * @return \buildr\Startup\Initializer\InitializerInterface
+     */
+    public function addProvider($providerClass);
+
 }

@@ -23,6 +23,14 @@ interface ServiceProviderInterface {
     public function register();
 
     /**
+     * Return an array that contains interface bindings that
+     * registered along with the provider.
+     *
+     * @return NULL|array
+     */
+    public function provides();
+
+    /**
      * Returns the binding name in the registry
      *
      * @return string

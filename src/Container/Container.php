@@ -153,7 +153,7 @@ class Container implements ContainerInterface {
             throw new CircularDependencyException($message);
         }
 
-        $this->serviceCreating[$service] = TRUE;;
+        $this->serviceCreating[$service] = TRUE;
 
         $reflector = new \ReflectionClass($service);
 
@@ -171,6 +171,13 @@ class Container implements ContainerInterface {
             $binding = $this->bindings[$service];
             $service = $binding[0];
             $shared = $binding[1];
+
+            //We have a binding name (eg. a named service, try to get from the repository first)
+            if(($shared === TRUE) && ($this->repository->has($service))) {
+                unset($this->serviceCreating[$service]);
+
+                return $this->repository->get($service);
+            }
 
             $reflector = new \ReflectionClass($service);
         }

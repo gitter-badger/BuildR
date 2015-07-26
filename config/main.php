@@ -1,5 +1,10 @@
 <?php
 
+use buildr\Logger\LoggerServiceProvider;
+use buildr\Config\ConfigServiceProvider;
+use buildr\Filesystem\FilesystemServiceProvider;
+use buildr\Cache\CacheServiceProvider;
+
 /**
  * Main configuration file
  *
@@ -12,6 +17,15 @@
  * @link         https://github.com/Zolli/BuildR
  */
 return [
+
+    /**
+     * Application Configuration
+     */
+    'application' => [
+        'location' => '/application',
+        'namespaceName' => 'buildr\\Application\\'
+    ],
+
     /**
      * Startup configuration
      */
@@ -37,9 +51,10 @@ return [
      * Service Providers
      */
     'serviceProviders' => [
-        'buildr\Cache\CacheServiceProvider',
-        'buildr\Filesystem\FilesystemServiceProvider',
-        'buildr\Config\ConfigServiceProvider',
-        'buildr\Logger\LoggerServiceProvider',
+        CacheServiceProvider::class,
+        FilesystemServiceProvider::class,
+        ConfigServiceProvider::class,
+        LoggerServiceProvider::class,
     ],
+
 ];

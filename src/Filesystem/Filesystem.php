@@ -17,7 +17,7 @@ use buildr\Utils\StringUtils;
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
  */
-class Filesystem {
+class Filesystem implements FilesystemInterface {
 
     private static $absoluteBasePath;
 
@@ -31,6 +31,11 @@ class Filesystem {
         };
     }
 
+    /**
+     * Return the project absolute root path
+     *
+     * @return string
+     */
     public static final function getProjectAbsoluteRoot() {
         return self::$absoluteBasePath;
     }

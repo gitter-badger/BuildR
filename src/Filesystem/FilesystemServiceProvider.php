@@ -29,6 +29,18 @@ class FilesystemServiceProvider implements ServiceProviderInterface {
     }
 
     /**
+     * Return an array that contains interface bindings that
+     * registered along with the provider.
+     *
+     * @return NULL|array
+     */
+    public function provides() {
+        return [
+            FilesystemInterface::class,
+        ];
+    }
+
+    /**
      * Returns the binding name in the registry
      *
      * @return string

@@ -25,11 +25,26 @@ use buildr\ServiceProvider\ServiceProvider;
  */
 class BaseInitializer implements InitializerInterface {
 
+    private $additionalProviders = [];
+
     /**
      * Constructor
      */
     public function __construct() {
         $this->constructContainer();
+    }
+
+    /**
+     * Add an additional provider that loaded during tha startup process
+     *
+     * @param string $providerClass
+     *
+     * @return \buildr\Startup\Initializer\InitializerInterface
+     */
+    public function addProvider($providerClass) {
+        $this->additionalProviders[] = $providerClass;
+
+        return $this;
     }
 
     /**
@@ -60,6 +75,8 @@ class BaseInitializer implements InitializerInterface {
      */
     protected function registerServiceProviders() {
         $serviceProviders = Config::getProviderConfig();
+        $serviceProviders = array_merge($serviceProviders, $this->additionalProviders);
+
         ServiceProvider::registerProvidersByArray($serviceProviders);
     }
 }

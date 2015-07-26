@@ -3,7 +3,7 @@
 use buildr\Container\ContainerInterface;
 
 /**
- * 
+ * Main application constructor
  *
  * BuildR PHP Framework
  *
@@ -23,6 +23,58 @@ class Application {
      * @type \buildr\Container\ContainerInterface
      */
     private static $container;
+
+    /**
+     * @type string
+     */
+    private $appNamespacePrefix;
+
+    /**
+     * Run the application from the defined namespace root.
+     *
+     * @param string $namespace
+     *
+     * @return \buildr\Http\Response\ResponseInterface|NULL
+     */
+    public function run($namespace) {
+        $this->appNamespacePrefix = $namespace;
+
+        //Initialize the routing. In this phase run the loading of all defined routes
+        $router = $this->initializeRouting();
+
+        //Run the router loop
+        $router->run();
+
+        return $router->getResponse();
+    }
+
+    /**
+     * Run the router initialization, and execute
+     * the routing registration.
+     *
+     * @return \buildr\Router\RouterInterface
+     */
+    private function initializeRouting() {
+        $applicationRouterClass = $this->appNamespacePrefix . 'Core\Http\Routing';
+
+        try {
+            /**
+             * @var \buildr\Contract\Application\ApplicationRoutingContract $class
+             */
+            $routeRegistry = new $applicationRouterClass;
+        } catch(\Exception $e) {
+
+        }
+
+        /**
+         * @var \buildr\Router\RouterInterface $router;
+         */
+        $router = self::getContainer()->get('router');
+
+        $routeRegistry->register($router);
+
+        return $router;
+    }
 
     /**
      * Set the container instance on the application

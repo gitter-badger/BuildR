@@ -1,5 +1,6 @@
 <?php namespace buildr\ServiceProvider;
 
+use buildr\Application\Application;
 use buildr\Container\Facade\Buildr;
 
 /**
@@ -40,12 +41,19 @@ class ServiceProvider {
      * @param string $providerName
      */
     public static function registerByName($providerName) {
+        $container = Application::getContainer();
         $providerClass = self::checkProviderByName($providerName);
 
         $ObjectToRegister = $providerClass->register();
         $bindingName = $providerClass->getBindingName();
 
-        Buildr::add($bindingName, $ObjectToRegister);
+        $container->add($bindingName, $ObjectToRegister);
+
+        if(($providedInterfaces = $providerClass->provides()) !== NULL) {
+            foreach($providedInterfaces as $interfaceClass) {
+                $container->bind($interfaceClass, $bindingName, TRUE);
+            }
+        }
     }
 
     /**

@@ -1,19 +1,17 @@
-<?php namespace buildr\Logger;
+<?php namespace buildr\Router;
 
-use buildr\Logger\Attachment\MemoryUsageAttachment;
-use buildr\Logger\Formatter\LineFormatter;
-use buildr\Logger\Handler\StdOutHandler;
-use Psr\Log\LoggerInterface;
+use buildr\Application\Application;
+use buildr\Router\RouterInterface;
 use buildr\ServiceProvider\ServiceProviderInterface;
 
 /**
- * Service Provider for Logger
+ * Router Service Provider
  *
  * BuildR PHP Framework
  *
  * @author Zoltán Borsos <zolli07@gmail.com>
  * @package buildr
- * @subpackage Logger
+ * @subpackage Router
  *
  * @copyright    Copyright 2015, Zoltán Borsos.
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
@@ -21,7 +19,7 @@ use buildr\ServiceProvider\ServiceProviderInterface;
  *
  * @codeCoverageIgnore
  */
-class LoggerServiceProvider implements ServiceProviderInterface {
+class RouterServiceProvider implements ServiceProviderInterface {
 
     /**
      * Returns an object that be registered to registry
@@ -29,15 +27,9 @@ class LoggerServiceProvider implements ServiceProviderInterface {
      * @return Object
      */
     public function register() {
-        $logger = new Logger('buildrLogger');
+        $request = Application::getContainer()->get('request');
 
-        $stdOutHandler = new StdOutHandler();
-        $stdOutHandler->setFormatter(new LineFormatter());
-
-        $logger->pushHandler($stdOutHandler);
-        $logger->pushAttachment(new MemoryUsageAttachment());
-
-        return $logger;
+        return new Router($request);
     }
 
     /**
@@ -48,7 +40,7 @@ class LoggerServiceProvider implements ServiceProviderInterface {
      */
     public function provides() {
         return [
-            LoggerInterface::class,
+            RouterInterface::class,
         ];
     }
 
@@ -58,7 +50,7 @@ class LoggerServiceProvider implements ServiceProviderInterface {
      * @return string
      */
     public function getBindingName() {
-        return "logger";
+        return 'router';
     }
 
 }

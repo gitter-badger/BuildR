@@ -35,4 +35,14 @@ class dummyProviderOne implements ServiceProviderInterface {
         return "dummyOne";
     }
 
+    /**
+     * Return an array that contains interface bindings that
+     * registered along with the provider.
+     *
+     * @return NULL|array
+     */
+    public function provides() {
+        return NULL;
+    }
+
 }
