@@ -1,4 +1,4 @@
-# Tur on URL rewriting
+# Turn on URL rewriting
 RewriteEngine On
 
 # Protect the existing files and folders beign rewrited

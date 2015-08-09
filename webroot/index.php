@@ -35,6 +35,9 @@ $startup->setInitializer(new \buildr\Startup\Initializer\WebInitializer);
  * @var \buildr\Application\Application $app
  */
 $app = \buildr\Application\Application::getContainer()->get('application');
+$appConfig = \buildr\Config\Config::getMainConfig()['application'];
+
+$app->initialize($appConfig);
 $response = $app->run(APP_NS);
 
 if($response instanceof \buildr\Http\Response\ResponseInterface) {

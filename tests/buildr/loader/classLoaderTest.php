@@ -80,7 +80,7 @@ class classLoaderTest extends BuilderTestCase {
     public function testItReturnsTheProperLoaderByPriority() {
         $this->loader->registerLoader(new ClassMapClassLoader());
 
-        $returnedLoader = $this->loader->getLoaderPriority(2);
+        $returnedLoader = $this->loader->getLoaderPriority(10);
         $this->assertInstanceOf(ClassMapClassLoader::class, $returnedLoader);
     }
 
@@ -98,7 +98,7 @@ class classLoaderTest extends BuilderTestCase {
 
         set_error_handler(function ($errorNumber, $errorString) {
             $this->assertEquals(E_USER_NOTICE, $errorNumber);
-            $this->assertEquals("Another class Loader is registered with priority 2! Increasing priority by one, to find a new spot.", $errorString);
+            $this->assertEquals("Another class Loader is registered with priority 10! Increasing priority by one, to find a new spot.", $errorString);
         });
 
         $this->loader->registerLoader($classMapLoaderOne);
@@ -106,7 +106,7 @@ class classLoaderTest extends BuilderTestCase {
 
         restore_error_handler();
 
-        $this->assertEquals(3, $classMapLoaderTwo->getPriority());
+        $this->assertEquals(11, $classMapLoaderTwo->getPriority());
     }
 
 }

@@ -45,6 +45,11 @@ class abstractLoaderTestCase extends BuilderTestCase {
         $this->assertEquals($defaultValue, $this->loaderClass->getPriority());
     }
 
+    public function testItReturnsFalseWhenTheClassNotExist() {
+        $result = $this->loaderClass->load('classThatAbsolutelyTrulyNotExist');
+        $this->assertFalse($result);
+    }
+
     public function testItSetsPriorityProperly() {
         $wantedPriority = 100;
 

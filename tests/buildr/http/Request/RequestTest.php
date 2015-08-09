@@ -44,13 +44,6 @@ class RequestTest extends BuildRTestCase {
         parent::setUp();
     }
 
-    public function testItReturnsTheMethodCorrectly() {
-        $method = $this->request->getMethod();
-
-        $this->assertInstanceOf(HttpRequestMethod::class, $method);
-        $this->assertEquals('GET', $method->getValue());
-    }
-
     public function testPostParameters() {
         //All getters
         $this->assertCount(2, $this->request->getAllPostParam());

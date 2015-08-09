@@ -36,7 +36,9 @@ trait PermissionsTrait {
             }
         }
 
+        //@codeCoverageIgnoreStart
         return 0;
+        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -56,7 +58,9 @@ trait PermissionsTrait {
             }
         }
 
+        //@codeCoverageIgnoreStart
         return 0;
+        //@codeCoverageIgnoreEnd
     }
 
 }

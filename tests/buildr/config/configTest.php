@@ -97,9 +97,9 @@ class configTest extends BuildRTestCase {
     }
 
     public function testItReturnsFromAnySource() {
-        $result = ConfigFacade::getFormAnySource("main.cache.driver");
+        $result = ConfigFacade::getFromAnySource("main.cache.driver");
 
-        $this->assertNotNull($result);
+        $this->assertTrue(is_string($result));
     }
 
     public function testItReturnsFromMainSource() {
@@ -121,7 +121,7 @@ class configTest extends BuildRTestCase {
     }
 
     public function testItReturnsTheDefaultValueWhenNotFoundOnAnySource() {
-        $result = ConfigFacade::getFormAnySource("noFile.noKey", "defaultValue");
+        $result = ConfigFacade::getFromAnySource("noFile.noKey", "defaultValue");
 
         $this->assertEquals("defaultValue", $result);
     }

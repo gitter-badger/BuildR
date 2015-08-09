@@ -1,6 +1,6 @@
 <?php namespace buildr\Startup\Initializer;
 
-use \buildr\Config\Config;
+use buildr\Config\Config;
 use buildr\Container\Facade\Buildr;
 use buildr\Loader\classLoader;
 use buildr\Loader\PSR4ClassLoader;
@@ -37,8 +37,10 @@ class WebInitializer extends BaseInitializer {
      * @return bool
      */
     public function initialize($basePath, classLoader $autoloader) {
-        //Initialize Patchwork-UTF8 mbstring library
-        Bootup::initMbstring();
+        //Initialize Patchwork-UTF8 mbstring library if a common mbstring function does not exist
+        if(!function_exists('mb_substr')) {
+            Bootup::initMbstring();
+        }
 
         //Environment detection
         BuildrEnvironment::detectEnvironment();
@@ -46,21 +48,6 @@ class WebInitializer extends BaseInitializer {
 
         //Set up the environment in the registry
         Buildr::add('property.environment', $environment);
-
-        //Get the main application settings
-        $config = Config::getMainConfig();
-
-        //Get the class loader and register tha application namespace
-        /**
-         * @var \buildr\Loader\PSR4ClassLoader $loader
-         */
-        $loader = $autoloader->getLoaderByName(PSR4ClassLoader::NAME)[0];
-
-        $appAbsolute = realpath($basePath . $config['application']['location']) . DIRECTORY_SEPARATOR;
-        $loader->registerNamespace($config['application']['namespaceName'], $appAbsolute);
-
-        //Create a constant with application namespace prefix
-        define('APP_NS', $config['application']['namespaceName']);
 
         //Register additional providers, that exist only in web requests
         $this

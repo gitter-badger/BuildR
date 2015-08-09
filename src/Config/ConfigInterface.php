@@ -36,7 +36,7 @@ interface ConfigInterface {
      *
      * @return mixed
      */
-    public function getFormAnySource($selector, $defaultValue = NULL);
+    public function getFromAnySource($selector, $defaultValue = NULL);
 
     /**
      * Get a configuration value from a pre-defined source

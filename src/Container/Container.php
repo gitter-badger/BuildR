@@ -5,6 +5,7 @@ use buildr\Container\Exception\CircularDependencyException;
 use buildr\Container\Exception\InstantiationException;
 use buildr\Container\Exception\UndefinedBindingException;
 use buildr\Container\Repository\ServiceRepositoryInterface;
+use buildr\ServiceProvider\ServiceProvider;
 
 /**
  * Dependency injection container implementation
@@ -60,6 +61,11 @@ class Container implements ContainerInterface {
      * @codeCoverageIgnore
      */
     public function get($serviceId) {
+        //If the requested service is optional, and is not loaded, invoke the registration process
+        if(ServiceProvider::isOptionalService($serviceId) && !ServiceProvider::isOptionalServiceLoaded($serviceId)) {
+            ServiceProvider::loadOptionalService($serviceId);
+        }
+
         return $this->repository->get($serviceId);
     }
 

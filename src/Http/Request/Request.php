@@ -388,6 +388,10 @@ class Request implements RequestInterface {
      * @return array
      */
     private function collectHeaders($server) {
+        if(function_exists('getallheaders')) {
+            return getallheaders();
+        }
+
         $headers = [];
 
         foreach($server as $name => $value) {

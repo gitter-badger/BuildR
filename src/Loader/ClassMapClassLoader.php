@@ -22,7 +22,7 @@ class ClassMapClassLoader implements ClassLoaderInterface {
     /**
      * @type int
      */
-    private $priority = 2;
+    private $priority = 10;
 
     /**
      * @type array
@@ -86,7 +86,7 @@ class ClassMapClassLoader implements ClassLoaderInterface {
             throw new \InvalidArgumentException("The class map must be an array!");
         }
 
-        $this->registeredClassMap = $classMap;
+        $this->registeredClassMap = array_merge($this->registeredClassMap, $classMap);
     }
 
     /**

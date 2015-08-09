@@ -1,6 +1,8 @@
 <?php namespace buildr\Startup;
 
+use buildr\Loader\ClassLoader;
 use buildr\Loader\classMapClassLoader;
+use buildr\Loader\PSR4ClassLoader;
 use buildr\Startup\Exception\StartupException;
 use buildr\Utils\Reflection\ReflectionUtils;
 use Closure;
@@ -26,7 +28,7 @@ class BuildrStartup {
     private static $startupTime;
 
     /**
-     * @type \buildr\Loader\ClassLoader
+     * @type ClassLoader
      */
     private static $loader;
 
@@ -51,28 +53,20 @@ class BuildrStartup {
             throw new StartupException("You must set up the basePath before initializing!");
         }
 
-        $initializerClosure = $this->getClosureForInitializer($initializer);
-        call_user_func_array($initializerClosure, [
-            self::getBasePath(),
-            self::getAutoloader()
-        ]);
-    }
+        $basePath = self::getBasePath();
+        $autoloader = self::getAutoloader();
 
-    /**
-     * Get the closure for initializer class
-     *
-     * @param \Closure|\buildr\Startup\Initializer\InitializerInterface $initializer
-     *
-     * @return callable
-     *
-     * @codeCoverageIgnore
-     */
-    private function getClosureForInitializer($initializer) {
         if($initializer instanceof Closure) {
-            return $initializer;
+            call_user_func_array($initializer, [
+                $basePath,
+                $autoloader
+            ]);
+
+            return;
         }
 
-        return ReflectionUtils::getClosureForMethod(get_class($initializer), 'initialize');
+        $initializerClass = new $initializer();
+        $initializerClass->initialize($basePath, $autoloader);
     }
 
     /**
@@ -107,38 +101,6 @@ class BuildrStartup {
 
         $basePath = self::getBasePath();
 
-        //System-safe absolute path generation
-        $classLoaderLocation = [
-            $basePath,
-            'src',
-            'Loader',
-            'ClassLoader.php'
-        ];
-        $classLoaderLocation = implode(DIRECTORY_SEPARATOR, $classLoaderLocation);
-        $classLoaderLocation = realpath($classLoaderLocation);
-
-        //Load classLoader
-        require_once $classLoaderLocation;
-
-        //Initialize and set-up autoloading
-        \buildr\Loader\ClassLoader::loadAutoLoader();
-        self::$loader = new \buildr\Loader\ClassLoader();
-
-        //PSR4
-        $PSR4Loader = new \buildr\Loader\PSR4ClassLoader();
-        $sourceAbsolute = realpath($basePath . DIRECTORY_SEPARATOR . 'src') . DIRECTORY_SEPARATOR;
-        $PSR4Loader->registerNamespace('buildr\\', $sourceAbsolute);
-
-        //ClassMap
-        $classMapLoader = new classMapClassLoader();
-        $classMapLoader->registerFile(realpath($basePath . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Utils' .
-                                                DIRECTORY_SEPARATOR . 'Debug' . DIRECTORY_SEPARATOR .
-                                                'DebugHelper.php'));
-
-        self::$loader->registerLoader($PSR4Loader);
-        self::$loader->registerLoader($classMapLoader);
-        self::$loader->initialize();
-
         //If we need composer autoloader, try to include it
         if($withComposer === TRUE) {
             //Loading composer's autolaoder, we must to use it, because some package not provide proper autolaoder
@@ -155,12 +117,51 @@ class BuildrStartup {
                 require_once $composerLoaderLocation;
             }
         }
+
+        //System-safe absolute path generation
+        $classLoaderLocation = [
+            $basePath,
+            'src',
+            'Loader',
+            'ClassLoader.php'
+        ];
+        $classLoaderLocation = implode(DIRECTORY_SEPARATOR, $classLoaderLocation);
+        $classLoaderLocation = realpath($classLoaderLocation);
+
+        //Load classLoader
+        require_once $classLoaderLocation;
+
+        //Initialize and set-up autoloading
+        ClassLoader::loadAutoLoader();
+        self::$loader = new ClassLoader();
+
+        //Initialize PSr-4 auto-loading
+        $PSR4Loader = new PSR4ClassLoader();
+        $sourceAbsolute = realpath($basePath . DIRECTORY_SEPARATOR . 'src') . DIRECTORY_SEPARATOR;
+        $PSR4Loader->registerNamespace('buildr\\', $sourceAbsolute);
+
+        //Initialize ClassMap based class loading
+        $classMapLoader = new classMapClassLoader();
+        $classMapLoader->registerFile(realpath($basePath . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Utils' .
+                                                DIRECTORY_SEPARATOR . 'Debug' . DIRECTORY_SEPARATOR .
+                                                'DebugHelper.php'));
+
+        $classMapLocation = $basePath . DIRECTORY_SEPARATOR . 'classMap.php';
+
+        if(file_exists($classMapLocation)) {
+            $classMap = require $basePath . DIRECTORY_SEPARATOR . 'classMap.php';
+            $classMapLoader->registerClassMap($classMap);
+        }
+
+        self::$loader->registerLoader($PSR4Loader);
+        self::$loader->registerLoader($classMapLoader);
+        self::$loader->initialize();
     }
 
     /**
      * Returns the main instance of the autoloader
      *
-     * @return \buildr\Loader\ClassLoader
+     * @return ClassLoader
      */
     public static final function getAutoloader() {
         return self::$loader;

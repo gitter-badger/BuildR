@@ -1,6 +1,9 @@
 <?php namespace buildr\Application;
 
+use buildr\Config\Config;
 use buildr\Container\ContainerInterface;
+use buildr\Loader\PSR4ClassLoader;
+use buildr\Startup\BuildrStartup;
 
 /**
  * Main application constructor
@@ -14,8 +17,6 @@ use buildr\Container\ContainerInterface;
  * @copyright    Copyright 2015, Zoltán Borsos.
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
- *
- * @codeCoverageIgnore
  */
 class Application {
 
@@ -28,6 +29,27 @@ class Application {
      * @type string
      */
     private $appNamespacePrefix;
+
+    /**
+     * Initialize
+     */
+    public function initialize($config) {
+        //Get the autoloader and basePath
+        $autoloader = BuildrStartup::getAutoloader();
+        $basePath = BuildrStartup::getBasePath();
+
+        //Get the class loader and register tha application namespace
+        /**
+         * @var \buildr\Loader\PSR4ClassLoader $loader
+         */
+        $loader = $autoloader->getLoaderByName(PSR4ClassLoader::NAME)[0];
+
+        $appAbsolute = realpath($basePath . $config['location']) . DIRECTORY_SEPARATOR;
+        $loader->registerNamespace($config['namespaceName'], $appAbsolute);
+
+        //Create a constant with application namespace prefix
+        define('APP_NS', $config['namespaceName']);
+    }
 
     /**
      * Run the application from the defined namespace root.

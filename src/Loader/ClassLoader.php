@@ -51,6 +51,7 @@ class ClassLoader {
         if(!isset($this->loaders[$priority])) {
             $this->loaders[$priority] = $classLoader;
             $classLoader->register();
+            ksort($this->loaders);
 
             return TRUE;
         }
@@ -64,7 +65,7 @@ class ClassLoader {
     }
 
     /**
-     * Return all currently registered laoder class
+     * Return all currently registered loader class
      *
      * @return \buildr\Loader\ClassLoaderInterface[]
      */

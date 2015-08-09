@@ -39,11 +39,27 @@ class ClassMapClassLoaderTest extends abstractLoaderTestCase {
     }
 
     public function testItStoreRegisteredClassMapProperly() {
-        $this->loaderClass->registerClassMap(["my" => "map"]);
+        $this->loaderClass->registerClassMap(["className" => "classLocation"]);
         $value = $this->getPrivatePropertyFromClass(get_class($this->loaderClass), "registeredClassMap", $this->loaderClass);
 
         $this->assertCount(1, $value);
     }
+
+    public function testItStoreRegisteredClassMapProperlyWhenAddingNewOne() {
+        $this->loaderClass->registerClassMap(["className" => "classLocation"]);
+        $this->loaderClass->registerClassMap(["anotherClassName" => "anotherClassLocation"]);
+        $value = $this->getPrivatePropertyFromClass(get_class($this->loaderClass), "registeredClassMap", $this->loaderClass);
+
+        $this->assertCount(2, $value);
+    }
+
+    public function testItCanActuallyLoadFromClassMap() {
+        $this->loaderClass->registerClassMap(['MoreDummyClass' => realpath(__DIR__ . '/dummy/MoreDummyClass.php')]);
+        $this->loaderClass->load('MoreDummyClass');
+
+        $this->assertTrue(class_exists('MoreDummyClass'));
+    }
+
 
     public function testItStoreRegisteredFilesCorrectly() {
         $this->loaderClass->registerFile("myFile.php");

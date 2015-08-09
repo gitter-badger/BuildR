@@ -22,8 +22,8 @@ return [
      * Application Configuration
      */
     'application' => [
-        'location' => '/application',
-        'namespaceName' => 'buildr\\Application\\'
+        'location'          => '/application',
+        'namespaceName'     => 'buildr\\Application\\'
     ],
 
     /**
@@ -33,10 +33,9 @@ return [
         'detector' => 'buildr\Startup\Environment\Detector\HTTPRequestDomainDetector',
 
         'domains' => [
-            'testing' => ['test.domain'],
-            //Don't remove. Its used on unit testing
-            'production' => ['prod.domain'],
-            'development' => ['buildr.zolli.hu'],
+            'testing'       => ['test.domain'], //Don't remove. Its used on unit testing
+            'production'    => ['prod.domain'],
+            'development'   => ['buildr.zolli.hu'],
         ],
     ],
 
@@ -48,13 +47,26 @@ return [
     ],
 
     /**
-     * Service Providers
+     * Service Providers.
+     *
+     * There are two types of serviceProviders. The forced providers loaded
+     * during the boot phase and always available.
+     *
+     * The services that provider by optional providers should be always available
+     * but not loaded during the boot, only if try to use the corresponding Facade
+     * or try to take the named service out from the container.
      */
     'serviceProviders' => [
-        CacheServiceProvider::class,
-        FilesystemServiceProvider::class,
-        ConfigServiceProvider::class,
-        LoggerServiceProvider::class,
+        'forced' => [
+            //dummyServiceProvider::class
+        ],
+
+        'optional' => [
+            'cache'         => CacheServiceProvider::class,
+            'filesystem'    => FilesystemServiceProvider::class,
+            'config'        => ConfigServiceProvider::class,
+            'logger'        => LoggerServiceProvider::class,
+        ],
     ],
 
 ];

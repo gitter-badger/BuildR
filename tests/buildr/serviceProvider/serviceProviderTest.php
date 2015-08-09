@@ -51,6 +51,23 @@ class serviceProviderTest extends BuilderTestCase {
         $method->invokeArgs($classReflector->newInstanceWithoutConstructor(), ['\buildr\tests\serviceProvider\dummy\dummyProviderWithoutSubclass']);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage This method must take an array as argument!
+     */
+    public function testItThrowsExceptionWhenTryToRegisterOptionalProvidersByArrayWithNotArrayTypeParameter() {
+        ServiceProvider::addOptionalsByArray('InvalidValue');
+    }
+
+    /**
+     * @expectedException \LogicException
+     * @expectedExceptionMessage The service name (dummyProvider) is already taken by classFQCN
+     */
+    public function testItThrowsAnExceptionWhenTryToRegisterOptionalLoaderThatServiceNameIsOccupied() {
+        ServiceProvider::addOptionalProvider('dummyProvider', 'classFQCN');
+        ServiceProvider::addOptionalProvider('dummyProvider', 'anotherClassFQCN');
+    }
+
     public function testRegistration() {
         $providers = [
             '\buildr\tests\serviceProvider\dummy\dummyProviderOne',
@@ -63,6 +80,24 @@ class serviceProviderTest extends BuilderTestCase {
 
         $this->assertInstanceOf('\stdClass', $container->get('dummyOne'));
         $this->assertInstanceOf('\stdClass', $container->get('dummyTwo'));
+    }
+
+    public function testItCanAddOptionalProviders() {
+        ServiceProvider::addOptionalsByArray([
+            'dummyOne' => '',
+            'dummyTwo' => '',
+        ]);
+
+        $reflector = new \ReflectionClass(ServiceProvider::class);
+        $properties = $reflector->getStaticProperties();
+
+        $this->assertTrue(isset($properties['optionalServices']['dummyOne']));
+        $this->assertTrue(isset($properties['optionalServices']['dummyTwo']));
+    }
+
+    public function testItDetectsOptionalServicesCorrectly() {
+        $this->assertTrue(ServiceProvider::isOptionalService('dummyOne'));
+        $this->assertFalse(ServiceProvider::isOptionalService('notRegisteredOptionalService'));
     }
 
 }

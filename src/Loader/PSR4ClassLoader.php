@@ -24,7 +24,7 @@ class PSR4ClassLoader implements ClassLoaderInterface {
      *
      * @type int
      */
-    private $priority = 1;
+    private $priority = 20;
 
     /**
      * Holds all currently registered namespace and base location

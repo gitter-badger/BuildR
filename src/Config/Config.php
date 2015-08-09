@@ -65,13 +65,16 @@ class Config implements ConfigInterface {
      *
      * @return mixed
      */
-    public function getFormAnySource($selector, $defaultValue = NULL) {
+    public function getFromAnySource($selector, $defaultValue = NULL) {
         $selector = new ConfigSelector($selector);
 
         foreach ($this->sources as $source) {
             $result = $source->get($selector, $defaultValue);
 
-            return $result;
+            //If the returned result is not the default value returns the result
+            if($result != $defaultValue) {
+                return $result;
+            }
         }
 
         return $defaultValue;
