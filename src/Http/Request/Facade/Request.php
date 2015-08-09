@@ -2,6 +2,7 @@
 
 use buildr\Facade\Facade;
 
+// @codingStandardsIgnoreFile
 /**
  * Request facade
  *

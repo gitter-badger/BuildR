@@ -63,7 +63,8 @@ class GlobalsUriResolver {
      */
     private function getScheme() {
         if((isset($this->globals['HTTPS']) && $this->globals['HTTPS'] !== 'off')
-            || (isset($this->globals['HTTP_X_FORWAREDED_PROTO']) && $this->globals['HTTP_X_FORWAREDED_PROTO'] === 'https')) {
+            || (isset($this->globals['HTTP_X_FORWAREDED_PROTO'])
+            && $this->globals['HTTP_X_FORWAREDED_PROTO'] === 'https')) {
             return 'https';
         }
 
