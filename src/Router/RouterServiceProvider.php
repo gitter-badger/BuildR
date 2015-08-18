@@ -27,9 +27,7 @@ class RouterServiceProvider implements ServiceProviderInterface {
      * @return Object
      */
     public function register() {
-        $request = Application::getContainer()->get('request');
-
-        return new Router($request);
+        return new Router();
     }
 
     /**
@@ -39,9 +37,7 @@ class RouterServiceProvider implements ServiceProviderInterface {
      * @return NULL|array
      */
     public function provides() {
-        return [
-            RouterInterface::class,
-        ];
+        return NULL;
     }
 
     /**

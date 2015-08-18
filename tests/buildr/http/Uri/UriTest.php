@@ -168,7 +168,7 @@ class UriTest extends BuildRTestCase {
         $this->assertEquals('/hel%40%2B%25lo/wor%40d', $this->uriInstanceInvalidPort->getPath());
 
         $cloneEmptyPath = $this->uriInstanceInvalidPort->withPath('');
-        $this->assertEquals('', $cloneEmptyPath->getPath());
+        $this->assertEquals('/', $cloneEmptyPath->getPath());
 
         $cloneRootPath = $this->uriInstanceInvalidPort->withPath('/');
         $this->assertEquals('/', $cloneRootPath->getPath());

@@ -717,7 +717,7 @@ class Uri implements UriInterface {
             $pathItems[$key] = rawurlencode($value);
         }
 
-        return implode(self::PATH_SEPARATOR, $pathItems);
+        return self::PATH_SEPARATOR . implode(self::PATH_SEPARATOR, array_filter($pathItems));
     }
 
     /**

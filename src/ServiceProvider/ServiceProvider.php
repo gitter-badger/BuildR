@@ -73,12 +73,28 @@ class ServiceProvider {
     public static function addOptionalProvider($serviceName, $serviceClassName) {
         if(!isset(self::$optionalServices[$serviceName])) {
             self::$optionalServices[$serviceName] = $serviceClassName;
+            self::registerOptionalProviderBindings($serviceClassName);
 
             return TRUE;
         }
 
         $msg = 'The service name (' . $serviceName . ') is already taken by ' . self::$optionalServices[$serviceName];
         throw new \LogicException($msg);
+    }
+
+    public static function registerOptionalProviderBindings($serviceClassName) {
+        if(!class_exists($serviceClassName)) {
+            return;
+        }
+
+        $serviceClass = new $serviceClassName;
+        $container = Application::getContainer();
+
+        if(($providedInterfaces = $serviceClass->provides()) !== NULL) {
+            foreach($providedInterfaces as $interfaceClass) {
+                $container->bind($interfaceClass, $serviceClass->getBindingName(), TRUE);
+            }
+        }
     }
 
     /**

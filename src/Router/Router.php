@@ -1,7 +1,12 @@
 <?php namespace buildr\Router;
 
-use buildr\Application\Application;
-use buildr\Http\Request\RequestInterface;
+use buildr\Router\Generator\UrlGenerator;
+use buildr\Router\Map\RouteMap;
+use buildr\Router\Matcher\RouteMatcher;
+use buildr\Router\Route\Route;
+use buildr\Router\Rule\AllowRule;
+use buildr\Router\Rule\PathRule;
+use buildr\Router\Rule\RuleIterator;
 
 /**
  * Main request router
@@ -16,160 +21,215 @@ use buildr\Http\Request\RequestInterface;
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
  */
-class Router implements RouterInterface {
+class Router {
 
     /**
-     * @type \buildr\Http\Request\RequestInterface
+     * Router base path
+     *
+     * @type NULL|string
      */
-    private $request;
+    private $basePath;
+
+    /**
+     * @type callable
+     */
+    private $routeFactory;
+
+    /**
+     * @type callable
+     */
+    private $mapFactory;
+
+    /**
+     * @type callable
+     */
+    private $mapBuilder;
+
+    /**
+     * @type \buildr\Router\Rule\RuleIterator
+     */
+    private $ruleIterator;
+
+    /**
+     * @type \buildr\Router\Route\Route
+     */
+    private $route;
+
+    /**
+     * @type \buildr\Router\Map\RouteMap
+     */
+    private $map;
+
+    /**
+     * @type \buildr\Router\Matcher\RouteMatcher
+     */
+    private $matcher;
+
+    /**
+     * @type \buildr\Router\Generator\UrlGenerator
+     */
+    private $generator;
 
     /**
      * @type string
      */
-    private $baseRoute = '';
-
-    /**
-     * @type array
-     */
-    private $routes = [];
-
-    /**
-     * @type \buildr\Http\Response\ResponseInterface|NULL
-     */
-    private $response;
-
-    /**
-     * @type string|NULL
-     */
-    private $notFoundController;
+    private $failedHandler;
 
     /**
      * Constructor
-     *
-     * @param \buildr\Http\Request\RequestInterface $request
-     * @param string|NULL $notFoundController
      */
-    public function __construct(RequestInterface $request, $notFoundController = NULL) {
-        $this->request = $request;
-        $this->notFoundController = $notFoundController;
+    public function __construct() {
+        $self = $this;
+
+        $this->setRouteFactory(function() {
+            return new Route();
+        });
+
+        $this->setMapFactory(function() use ($self) {
+            return new RouteMap($self->getRoute());
+        });
+
+        $this->setMapBuilder(function(RouteMap $map) {
+
+        });
     }
 
     /**
-     * Register a new route in the router.
-     * One rout can listen for multiple request method. use | (pipe) character to
-     * separate the methods.
+     * Set tha route name that called when the route handling is not matched
      *
-     * @param string $methods
-     * @param string $pattern
-     * @param callable|string $callback
+     * @param string $name
      */
-    public function add($methods, $pattern, $callback) {
-        $pattern = $this->baseRoute . '/' . trim($pattern, '/');
-        $pattern = ($this->baseRoute) ? rtrim($pattern, '/') : $pattern;
+    public function setFailedHandlerName($name) {
+        $this->failedHandler = $name;
+    }
 
-        foreach(explode('|', $methods) as $method) {
-            $this->routes[$method][] = [
-                'pattern' => $pattern,
-                'callback' => $callback,
-            ];
+    /**
+     * Returns the route that set as handler when the matching is failed
+     *
+     * @return \buildr\Router\Route\Route
+     * @throws \buildr\Router\Exception\RouteNotFoundException
+     */
+    public function getFailedHandlerRoute() {
+        return $this->getMap()->getRoute($this->failedHandler);
+    }
+
+    /**
+     * Determines that the router has a failed route handler or not.
+     *
+     * @return bool
+     */
+    public function hasFailedHandler() {
+        return isset($this->failedHandler);
+    }
+
+    /**
+     * Set the router base path
+     *
+     * @param string|NULL $basePath
+     */
+    public function setBasePath($basePath) {
+        if(!empty($basePath)) {
+            $this->basePath = $basePath;
         }
     }
 
     /**
-     * Run the router loop
+     * Set the router route factory method
+     *
+     * @param callable $factory
      */
-    public function run() {
-        $handledCount = 0;
-        $currentMethod = $this->request->getMethod()->getValue();
-
-        if(isset($this->routes[$currentMethod])) {
-            $handledCount = $this->handle($this->routes[$currentMethod]);
-        }
-
-        //If the router match 0 URL it will try to execute the 404 controller
-        if($handledCount === 0 && $this->notFoundController !== NULL) {
-            $this->runCallback($this->notFoundController, []);
-        }
+    public function setRouteFactory(callable $factory) {
+        $this->routeFactory = $factory;
     }
 
     /**
-     * Return the response that returned from the given closure or controller class
-     * If the class not returns a response object this function will returns NULL.
+     * Set the router map factory method
      *
-     * @return \buildr\Http\Response\ResponseInterface|NULL
+     * @param callable $factory
      */
-    public function getResponse() {
-        return $this->response;
+    public function setMapFactory(callable $factory) {
+        $this->mapFactory = $factory;
     }
 
     /**
-     * Handle the matched route and execute the given callback
-     * or controller action
+     * Sets the map builder
      *
-     * @param array $routes
-     *
-     * @return int
+     * @param callable $builder
      */
-    private function handle($routes) {
-        $handledCount = 0;
+    public function setMapBuilder(callable $builder) {
+        $this->mapBuilder = $builder;
+    }
 
-        $uri = $this->getRelativeUri();
-
-        foreach($routes as $route) {
-            if (preg_match_all('#^' . $route['pattern'] . '$#', $uri, $matches, PREG_OFFSET_CAPTURE)) {
-                $matches = array_slice($matches, 1);
-
-                $parameters = array_map(function($match, $index) use($matches) {
-                    if (isset($matches[$index+1]) && isset($matches[$index+1][0]) && is_array($matches[$index+1][0])) {
-                        return trim(substr($match[0][0], 0, $matches[$index+1][0][1] - $match[0][1]), '/');
-                    } else {
-                        return (isset($match[0][0]) ? trim($match[0][0], '/') : null);
-                    }
-                }, $matches, array_keys($matches));
-
-                $this->runCallback($route['callback'], $parameters);
-
-                $handledCount++;
-
-                return $handledCount;
-
-                break;
-            }
+    /**
+     * Returns the route map
+     *
+     * @return \buildr\Router\Map\RouteMap
+     */
+    public function getMap() {
+        if(!$this->map) {
+            $this->map = call_user_func($this->mapFactory);
+            call_user_func($this->mapBuilder, $this->map);
         }
 
-        return 0;
+        return $this->map;
     }
 
     /**
-     * Run the given callback. Its be a closure or a controller and action is string format
-     * The controller action definition is the following:
+     * Get a shared route instance
      *
-     * fully\Qualified\Controller\Name::actionName
-     *
-     * @param callable|string $function
-     * @param array $parameters
+     * @return \buildr\Router\Route\Route
      */
-    private function runCallback($function, $parameters) {
-        if(is_string($function)) {
-            $callbackData = explode('::', $function);
-
-            $controller = Application::getContainer()->construct($callbackData[0]);
-            $function = [$controller, $callbackData[1]];
+    public function getRoute() {
+        if(!$this->route) {
+            $this->route = call_user_func($this->routeFactory);
         }
 
-        $this->response = call_user_func_array($function, $parameters);
+        return $this->route;
     }
 
     /**
-     * Returns the current request relative URI
+     * Returns a shared matcher
      *
-     * @return string
+     * @return \buildr\Router\Matcher\RouteMatcher
      */
-    private function getRelativeUri() {
-        $base = implode('/', array_slice(explode('/', $this->request->getGlobal('SCRIPT_NAME', '/index.php')), 0, -1)) . '/';
-        $uri = substr($this->request->getUri()->getPath(), strlen($base));
+    public function getMatcher() {
+        if(!$this->matcher) {
+            $this->matcher = new RouteMatcher(
+                $this->getMap(),
+                $this->getRuleIterator()
+            );
+        }
 
-        return '/' . trim($uri, '/');
+        return $this->matcher;
+    }
+
+    /**
+     * Returns a shared generator
+     *
+     * @return \buildr\Router\Generator\UrlGenerator
+     */
+    public function getGenerator() {
+        if(!$this->generator) {
+            $this->generator = new UrlGenerator($this->getMap(), $this->basePath);
+        }
+
+        return $this->generator;
+    }
+
+    /**
+     * Return a shared ruleIterator instance
+     *
+     * @return \buildr\Router\Rule\RuleIterator
+     */
+    public function getRuleIterator() {
+        if(!$this->ruleIterator) {
+            $this->ruleIterator = new RuleIterator([
+                new PathRule(),
+                new AllowRule(),
+            ]);
+        }
+
+        return $this->ruleIterator;
     }
 
 }

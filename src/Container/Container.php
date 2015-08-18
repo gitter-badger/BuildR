@@ -95,6 +95,10 @@ class Container implements ContainerInterface {
      * @codeCoverageIgnore
      */
     public function has($serviceId) {
+        if(ServiceProvider::isOptionalService($serviceId)) {
+            return TRUE;
+        }
+
         return $this->repository->has($serviceId);
     }
 
@@ -179,20 +183,20 @@ class Container implements ContainerInterface {
             $shared = $binding[1];
 
             //We have a binding name (eg. a named service, try to get from the repository first)
-            if(($shared === TRUE) && ($this->repository->has($service))) {
+            if(($shared === TRUE) && ($this->has($service))) {
                 unset($this->serviceCreating[$service]);
 
-                return $this->repository->get($service);
+                return $this->get($service);
             }
 
             $reflector = new \ReflectionClass($service);
         }
 
         //If we allow to use shared service, check that class is exist in service repository
-        if(($shared === TRUE) && ($this->repository->has($service))) {
+        if(($shared === TRUE) && ($this->has($service))) {
             unset($this->serviceCreating[$service]);
 
-            return $this->repository->get($service);
+            return $this->get($service);
         }
 
         $classConstructor = $reflector->getConstructor();
@@ -226,13 +230,13 @@ class Container implements ContainerInterface {
      * @throws \buildr\Container\Exception\InstantiationException
      */
     public function singleton($concrete) {
-        if($this->repository->has($concrete)) {
-            return $this->repository->get($concrete);
+        if($this->has($concrete)) {
+            return $this->get($concrete);
         }
 
         try {
             $resolved = $this->construct($concrete);
-            $this->repository->add($concrete, $resolved);
+            $this->add($concrete, $resolved);
 
             return $resolved;
         } catch(\Exception $e) {

@@ -1,6 +1,6 @@
 <?php namespace buildr\Contract\Application;
 
-use buildr\Router\RouterInterface;
+use buildr\Router\Router;
 
 /**
  * Contract for applications routing class
@@ -21,8 +21,8 @@ interface ApplicationRoutingContract {
      * This function is called during the initialization. Inside this
      * function you can register all the routes that you application need.
      *
-     * @param \buildr\Router\RouterInterface $router
+     * @param \buildr\Router\Router $router
      */
-    public function register(RouterInterface $router);
+    public function register(Router $router);
 
 }

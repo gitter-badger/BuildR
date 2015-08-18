@@ -71,6 +71,13 @@ class Request implements RequestInterface {
     private $isSecure = FALSE;
 
     /**
+     * Contains allowed overrides
+     *
+     * @type array
+     */
+    private $allowedMethodOverrides = [HttpRequestMethod::PUT, HttpRequestMethod::DELETE, HttpRequestMethod::PATCH];
+
+    /**
      * Create the request from the provided super-globals
      *
      * @param array $globals
@@ -91,10 +98,7 @@ class Request implements RequestInterface {
         $this->cookies = $cookies;
         $this->query = $query;
         $this->postFields = $postFields;
-
-        $this->method = (isset($globals['REQUEST_METHOD'])) ?
-            new HttpRequestMethod(strtoupper($globals['REQUEST_METHOD'])) :
-            HttpRequestMethod::GET();
+        $this->method = $this->getMethodByGlobals($globals);
 
         if($stream === NULL) {
             $this->inputStream = fopen('php://input', 'r');
@@ -105,6 +109,32 @@ class Request implements RequestInterface {
         if(isset($globals['REQUEST_SCHEME']) && $globals['REQUEST_SCHEME'] === 'https') {
             $this->isSecure = TRUE;
         }
+    }
+
+    /**
+     * Returns the current request HTTP method by globals. Supports method override
+     *
+     * @param array $globals
+     *
+     * @return \buildr\Http\Request\Method\HttpRequestMethod
+     */
+    private function getMethodByGlobals($globals) {
+        $requestMethod = HttpRequestMethod::GET();
+
+        if(isset($globals['REQUEST_METHOD'])) {
+            $requestMethod = new HttpRequestMethod(strtoupper($globals['REQUEST_METHOD']));
+
+            //Check for method override. If the header is present and the request original method is POST allow override
+            if($this->headers->has('X-Http-Method-Override') && ($requestMethod->getValue() == HttpRequestMethod::POST)) {
+                $overrideValue = strtoupper((string) $this->headers->get('X-Http-Method-Override'));
+
+                if(in_array($overrideValue, $this->allowedMethodOverrides)) {
+                    $requestMethod = new HttpRequestMethod($overrideValue);
+                }
+            }
+        }
+
+        return $requestMethod;
     }
 
     /**

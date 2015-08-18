@@ -1,6 +1,7 @@
 <?php namespace buildr\Application\Core\Controller;
 
 use buildr\Http\Request\RequestInterface;
+use buildr\Http\Response\ResponseInterface;
 
 /**
  * Base controller
@@ -19,8 +20,11 @@ class BaseController {
 
     protected $request;
 
-    public function __construct(RequestInterface $req) {
+    protected $response;
+
+    public function __construct(RequestInterface $req, ResponseInterface $rsp) {
         $this->request = $req;
+        $this->response = $rsp;
     }
 
 }

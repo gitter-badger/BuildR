@@ -1,8 +1,10 @@
 <?php namespace buildr\Application;
 
-use buildr\Config\Config;
 use buildr\Container\ContainerInterface;
+use buildr\Http\Uri\Uri;
 use buildr\Loader\PSR4ClassLoader;
+use buildr\Router\Route\Route;
+use buildr\Router\Router;
 use buildr\Startup\BuildrStartup;
 
 /**
@@ -20,6 +22,8 @@ use buildr\Startup\BuildrStartup;
  */
 class Application {
 
+    const FAIL_HANDLER_NAME = 'defaultFailHandler';
+
     /**
      * @type \buildr\Container\ContainerInterface
      */
@@ -29,6 +33,18 @@ class Application {
      * @type string
      */
     private $appNamespacePrefix;
+
+    /**
+     * @type \buildr\Http\Request\RequestInterface
+     */
+    private $request;
+
+    /**
+     * Constructor
+     */
+    public function __construct() {
+        $this->request = self::getContainer()->get('request');
+    }
 
     /**
      * Initialize
@@ -62,12 +78,45 @@ class Application {
         $this->appNamespacePrefix = $namespace;
 
         //Initialize the routing. In this phase run the loading of all defined routes
-        $router = $this->initializeRouting();
+        /** @type \buildr\Router\Router $router */
+        $router = $this->registerRoutes();
+        return $this->runRouteMatcher($router);
+    }
 
-        //Run the router loop
-        $router->run();
+    /**
+     * Matches the request to registered routes
+     *
+     * @param \buildr\Router\Router $router
+     *
+     * @return \buildr\Router\Route\Route|FALSE
+     */
+    private function runRouteMatcher(Router $router) {
+        $matcher = $router->getMatcher();
+        $route = $matcher->match($this->request);
 
-        return $router->getResponse();
+        if(!$route) {
+            $route = $this->getFailedHandler($router);
+        }
+
+        //In this phase we always have a proper Route object so try to call registered middlewares
+        if(!empty(($middlewares = $route->middlewares))) {
+            foreach($middlewares as $middleware) {
+                $this->callRouteMiddleware($middleware, $route, $this->request);
+            }
+        }
+
+        return $this->callRouteHandler($route);
+    }
+
+    private function callRouteMiddleware($middleware, $route, $request) {
+        if(is_string($middleware)) {
+            list($class, $method) = explode('::', $middleware);
+
+            $controller = self::getContainer()->construct($class);
+            $handler = [$controller, $method];
+        }
+
+        return call_user_func_array($middleware, [$request, $route]);
     }
 
     /**
@@ -76,26 +125,90 @@ class Application {
      *
      * @return \buildr\Router\RouterInterface
      */
-    private function initializeRouting() {
+    private function registerRoutes() {
         $applicationRouterClass = $this->appNamespacePrefix . 'Core\Http\Routing';
 
         try {
-            /**
-             * @var \buildr\Contract\Application\ApplicationRoutingContract $class
-             */
+            /** @type \buildr\Contract\Application\ApplicationRoutingContract $class */
             $routeRegistry = new $applicationRouterClass;
         } catch(\Exception $e) {
 
         }
 
-        /**
-         * @var \buildr\Router\RouterInterface $router;
-         */
+        /** @type \buildr\Router\Router $router; */
         $router = self::getContainer()->get('router');
+        $router->setBasePath($this->getBasePath());
 
         $routeRegistry->register($router);
 
         return $router;
+    }
+
+    /**
+     * Call the given route handler function
+     *
+     * @param \buildr\Router\Route\Route $route
+     *
+     * @return mixed
+     */
+    private function callRouteHandler(Route $route) {
+        $handler = $route->handler;
+
+        if(is_string($handler)) {
+            list($class, $method) = explode('::', $handler);
+
+            $controller = self::getContainer()->construct($class);
+            $handler = [$controller, $method];
+        }
+
+        return call_user_func_array($handler, [$route]);
+    }
+
+    /**
+     * Returns a route that can handle the failed routing
+     *
+     * @param \buildr\Router\Router $router
+     *
+     * @return \buildr\Router\Route\Route
+     */
+    private function getFailedHandler(Router $router) {
+        if($router->hasFailedHandler()) {
+            return $router->getFailedHandlerRoute();
+        }
+
+        /**
+         * Register a simple route that matches any request and return it as error handler
+         */
+        $map = $router->getMap();
+
+        $route = $map->any(self::FAIL_HANDLER_NAME, '/' . self::FAIL_HANDLER_NAME, function($route) use ($router) {
+            $failed = $router->getMatcher()->getFailedRoute();
+
+            echo $failed->failedRule;
+            exit;
+        });
+
+        return $route;
+    }
+
+    /**
+     * Returns the current runtime base path.
+     *
+     * @return string
+     */
+    public function getBasePath() {
+        /** @type \buildr\Http\Request\Request $request */
+        $request = self::$container->get('request');
+
+        $basePathParts = array_filter(explode(Uri::PATH_SEPARATOR, $request->getGlobal('SCRIPT_NAME')));
+
+        //If the array is contains only one element that means the request run from the base path
+        if(count($basePathParts) <= 1) {
+            return '';
+        }
+
+        array_pop($basePathParts);
+        return Uri::PATH_SEPARATOR . implode(Uri::PATH_SEPARATOR, $basePathParts);
     }
 
     /**
