@@ -33,17 +33,17 @@ class UrlGenerator {
 
     protected $basepath;
 
-    public function __construct(RouteMap $map, $basepath = null) {
+    public function __construct(RouteMap $map, $basepath = NULL) {
         $this->map = $map;
         $this->basepath = $basepath;
     }
 
     public function generate($name, $data = []) {
-        return $this->build($name, $data, false);
+        return $this->build($name, $data, FALSE);
     }
 
     public function generateRaw($name, $data = []) {
-        return $this->build($name, $data, true);
+        return $this->build($name, $data, TRUE);
     }
 
     protected function build($name, $data, $raw) {
@@ -76,7 +76,7 @@ class UrlGenerator {
         $this->url = '//' . $host . $this->url;
         $secure = $this->route->secure;
 
-        if($secure === null) {
+        if($secure === NULL) {
             return;
         }
 
@@ -133,7 +133,7 @@ class UrlGenerator {
             return $val;
         }
 
-        return is_scalar($val) ? rawurlencode($val) : null;
+        return is_scalar($val) ? rawurlencode($val) : NULL;
     }
 
 }

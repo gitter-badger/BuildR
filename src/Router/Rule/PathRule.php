@@ -1,6 +1,7 @@
 <?php namespace buildr\Router\Rule;
 
 use buildr\Http\Request\RequestInterface;
+use buildr\Router\Route\AttributeMatchingTrait;
 use buildr\Router\Route\Route;
 
 /**
@@ -24,6 +25,8 @@ class PathRule implements RuleInterface {
 
     protected $basePath;
 
+    use AttributeMatchingTrait;
+
     public function __construct($basePath = NULL) {
         $this->basePath = $basePath;
     }
@@ -40,7 +43,7 @@ class PathRule implements RuleInterface {
         $match = preg_match($this->buildRegex($route), $request->getUri()->getPath(), $matches);
 
         if(!$match) {
-            return false;
+            return FALSE;
         }
 
         $route->attributes($this->getAttributes($matches, $route->wildcard));
@@ -114,33 +117,6 @@ class PathRule implements RuleInterface {
         }
 
         return $head;
-    }
-
-    protected function setRegexAttributes() {
-        $find = '#{([a-z][a-zA-Z0-9_]*)}#';
-        $attributes = $this->route->attributes;
-        $newAttributes = [];
-        preg_match_all($find, $this->regex, $matches, PREG_SET_ORDER);
-
-        foreach($matches as $match) {
-            $name = $match[1];
-            $subpattern = $this->getSubpattern($name);
-            $this->regex = str_replace("{{$name}}", $subpattern, $this->regex);
-
-            if(!isset($attributes[$name])) {
-                $newAttributes[$name] = null;
-            }
-        }
-
-        $this->route->attributes($newAttributes);
-    }
-
-    protected function getSubpattern($name) {
-        if(isset($this->route->tokens[$name])) {
-            return "(?P<{$name}>{$this->route->tokens[$name]})";
-        }
-
-        return "(?P<{$name}>[^/]+)";
     }
 
     protected function setRegexWildcard() {

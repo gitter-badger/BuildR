@@ -27,13 +27,13 @@ class AcceptRule implements RuleInterface {
      */
     public function __invoke(RequestInterface $request, Route $route) {
         if(!$route->accepts) {
-            return true;
+            return TRUE;
         }
 
         $requestAccepts = $request->getHeader('Accept')->asString();
 
         if(!$requestAccepts) {
-            return true;
+            return TRUE;
         }
 
         return $this->matches($route->accepts, $requestAccepts);
@@ -54,16 +54,16 @@ class AcceptRule implements RuleInterface {
         $requestAccepts = implode(';', $requestAccepts);
 
         if($this->match('*/*', $requestAccepts)) {
-            return true;
+            return TRUE;
         }
 
         foreach ($routeAccepts as $type) {
             if($this->match($type, $requestAccepts)) {
-                return true;
+                return TRUE;
             }
         }
 
-        return false;
+        return FALSE;
     }
     /**
      *
@@ -84,14 +84,14 @@ class AcceptRule implements RuleInterface {
         $found = preg_match($regex, $header, $matches);
 
         if(!$found) {
-            return false;
+            return FALSE;
         }
 
         if(isset($matches[3])) {
             return $matches[3] !== '0.0';
         }
 
-        return true;
+        return TRUE;
     }
 
 }

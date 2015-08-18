@@ -125,7 +125,8 @@ class Request implements RequestInterface {
             $requestMethod = new HttpRequestMethod(strtoupper($globals['REQUEST_METHOD']));
 
             //Check for method override. If the header is present and the request original method is POST allow override
-            if($this->headers->has('X-Http-Method-Override') && ($requestMethod->getValue() == HttpRequestMethod::POST)) {
+            if($this->headers->has('X-Http-Method-Override')
+            && ($requestMethod->getValue() == HttpRequestMethod::POST)) {
                 $overrideValue = strtoupper((string) $this->headers->get('X-Http-Method-Override'));
 
                 if(in_array($overrideValue, $this->allowedMethodOverrides)) {

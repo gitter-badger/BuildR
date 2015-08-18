@@ -28,7 +28,7 @@ class AllowRule implements RuleInterface {
      */
     public function __invoke(RequestInterface $request, Route $route) {
         if (!$route->allows) {
-            return true;
+            return TRUE;
         }
 
         return in_array($request->getMethod()->getValue(), $route->allows);

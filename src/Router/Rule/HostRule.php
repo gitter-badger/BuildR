@@ -1,6 +1,7 @@
 <?php namespace buildr\Router\Rule;
 
 use buildr\Http\Request\RequestInterface;
+use buildr\Router\Route\AttributeMatchingTrait;
 use buildr\Router\Route\Route;
 
 /**
@@ -22,6 +23,8 @@ class HostRule implements RuleInterface {
 
     protected $regex;
 
+    use AttributeMatchingTrait;
+
     /**
      * Check if the Request matches the Route.
      *
@@ -32,7 +35,7 @@ class HostRule implements RuleInterface {
      */
     public function __invoke(RequestInterface $request, Route $route) {
         if (!$route->host) {
-            return true;
+            return TRUE;
         }
 
         $match = preg_match(
@@ -42,11 +45,11 @@ class HostRule implements RuleInterface {
         );
 
         if (!$match) {
-            return false;
+            return FALSE;
         }
 
         $route->attributes($this->getAttributes($matches));
-        return true;
+        return TRUE;
     }
 
     /**
@@ -85,50 +88,6 @@ class HostRule implements RuleInterface {
         $this->regex = '#^' . $this->regex . '$#';
 
         return $this->regex;
-    }
-    /**
-     *
-     * Expands attribute names in the regex to named subpatterns; adds default
-     * `null` values for attributes without defaults.
-     *
-     * @return null
-     *
-     */
-    protected function setRegexAttributes() {
-        $find = '#{([a-z][a-zA-Z0-9_]*)}#';
-        $attributes = $this->route->attributes;
-        $newAttributes = [];
-        preg_match_all($find, $this->regex, $matches, PREG_SET_ORDER);
-
-        foreach($matches as $match) {
-            $name = $match[1];
-            $subpattern = $this->getSubpattern($name);
-            $this->regex = str_replace("{{$name}}", $subpattern, $this->regex);
-
-            if(!isset($attributes[$name])) {
-                $newAttributes[$name] = null;
-            }
-        }
-
-        $this->route->attributes($newAttributes);
-    }
-    /**
-     *
-     * Returns a named subpattern for a attribute name.
-     *
-     * @param string $name The attribute name.
-     *
-     * @return string The named subpattern.
-     *
-     */
-    protected function getSubpattern($name) {
-        // is there a custom subpattern for the name?
-        if(isset($this->route->tokens[$name])) {
-            return "(?P<{$name}>{$this->route->tokens[$name]})";
-        }
-
-        // use a default subpattern, stop at first dot
-        return "(?P<{$name}>[^\.]+)";
     }
 
 }
