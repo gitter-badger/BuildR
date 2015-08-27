@@ -1,4 +1,4 @@
-<?php namespace buildr\Router\Route;
+<?php namespace buildr\Router\Rule;
 
 /**
  * Route attribute matching trait

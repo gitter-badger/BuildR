@@ -10,17 +10,18 @@
     <testsuites>
         <testsuite name="BuildR - Utils">
             <directory suffix="Test.php">../tests/buildr/utils</directory>
+            <directory suffix="Test.php">../tests/buildr/enumeration</directory>
+            <directory suffix="Test.php">../tests/buildr/reflection</directory>
         </testsuite>
         <testsuite name="BuildR - Main">
             <directory suffix="Test.php">../tests/buildr/http</directory>
             <directory suffix="Test.php">../tests/buildr/container</directory>
             <directory suffix="Test.php">../tests/buildr/startup</directory>
-            <directory suffix="Test.php">../tests/buildr/reflection</directory>
-            <directory suffix="Test.php">../tests/buildr/enumeration</directory>
-            <directory suffix="Test.php">../tests/buildr/config</directory>
+            <directory suffix="Test.php">../tests/buildr/application</directory>
             <directory suffix="Test.php">../tests/buildr/serviceProvider</directory>
             <directory suffix="Test.php">../tests/buildr/loader</directory>
             <directory suffix="Test.php">../tests/buildr/environment</directory>
+            <directory suffix="Test.php">../tests/buildr/config</directory>
             <directory suffix="Test.php">../tests/buildr/filesystem</directory>
             <directory suffix="Test.php">../tests/buildr/cache</directory>
             <directory suffix="Test.php">../tests/buildr/logger</directory>

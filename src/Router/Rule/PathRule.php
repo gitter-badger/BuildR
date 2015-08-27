@@ -1,7 +1,7 @@
 <?php namespace buildr\Router\Rule;
 
 use buildr\Http\Request\RequestInterface;
-use buildr\Router\Route\AttributeMatchingTrait;
+use buildr\Router\Rule\AttributeMatchingTrait;
 use buildr\Router\Route\Route;
 
 /**
@@ -51,6 +51,14 @@ class PathRule implements RuleInterface {
         return TRUE;
     }
 
+    /**
+     * Gets the attributes from the path
+     *
+     * @param array $matches The matches array
+     * @param string $wildcard The name of the wildcard attribute
+     *
+     * @return array
+     */
     protected function getAttributes($matches, $wildcard) {
         $attributes = [];
 
@@ -73,6 +81,13 @@ class PathRule implements RuleInterface {
         return $attributes;
     }
 
+    /**
+     * Builds the regular expression for the route path
+     *
+     * @param \buildr\Router\Route\Route $route
+     *
+     * @return string
+     */
     protected function buildRegex(Route $route) {
         $this->route = $route;
         $this->regex = $this->basePath . $this->route->path;
@@ -86,6 +101,9 @@ class PathRule implements RuleInterface {
         return $this->regex;
     }
 
+    /**
+     * Expands optional attributes in the regex from ``{/foo,bar,baz}` to `(/{foo}(/{bar}(/{baz})?)?)?`
+     */
     protected function setRegexOptionalAttributes() {
         preg_match('#{/([a-z][a-zA-Z0-9_,]*)}#', $this->regex, $matches);
 
@@ -95,6 +113,13 @@ class PathRule implements RuleInterface {
         }
     }
 
+    /**
+     * Gets the replacement for optional attributes in the regex
+     *
+     * @param array $list Optional attributes
+     *
+     * @return string
+     */
     protected function getRegexOptionalAttributesReplacement($list) {
         $list = explode(',', $list);
         $head = $this->getRegexOptionalAttributesReplacementHead($list);
@@ -108,6 +133,13 @@ class PathRule implements RuleInterface {
         return $head . $tail;
     }
 
+    /**
+     * Gets the leading portion of the optional attributes replacement
+     *
+     * @param array $list Optional attributes
+     *
+     * @return string
+     */
     protected function getRegexOptionalAttributesReplacementHead(&$list) {
         $head = '';
 
@@ -119,6 +151,9 @@ class PathRule implements RuleInterface {
         return $head;
     }
 
+    /**
+     * Adds a wildcard sub-pattern to the end of the regex
+     */
     protected function setRegexWildcard() {
         if(!$this->route->wildcard) {
             return;

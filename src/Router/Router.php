@@ -1,5 +1,6 @@
 <?php namespace buildr\Router;
 
+use buildr\Application\Application;
 use buildr\Router\Generator\UrlGenerator;
 use buildr\Router\Map\RouteMap;
 use buildr\Router\Matcher\RouteMatcher;
@@ -209,8 +210,10 @@ class Router {
      * @return \buildr\Router\Generator\UrlGenerator
      */
     public function getGenerator() {
+        $request = Application::getContainer()->get('request');
+
         if(!$this->generator) {
-            $this->generator = new UrlGenerator($this->getMap(), $this->basePath);
+            $this->generator = new UrlGenerator($request, $this->getMap(), $this->basePath);
         }
 
         return $this->generator;

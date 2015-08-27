@@ -1,7 +1,7 @@
 <?php namespace buildr\Router\Rule;
 
 use buildr\Http\Request\RequestInterface;
-use buildr\Router\Route\AttributeMatchingTrait;
+use buildr\Router\Rule\AttributeMatchingTrait;
 use buildr\Router\Route\Route;
 
 /**
@@ -19,8 +19,14 @@ use buildr\Router\Route\Route;
  */
 class HostRule implements RuleInterface {
 
+    /**
+     * @type \buildr\Router\Route\Route
+     */
     protected $route;
 
+    /**
+     * @type string
+     */
     protected $regex;
 
     use AttributeMatchingTrait;
@@ -53,13 +59,11 @@ class HostRule implements RuleInterface {
     }
 
     /**
+     * Gets the attributes out of the regex matches
      *
-     * Gets the attributes out of the regex matches.
-     *
-     * @param array $matches The regex matches.
+     * @param array $matches The regex matches
      *
      * @return array
-     *
      */
     protected function getAttributes($matches) {
         $attributes = [];
@@ -72,14 +76,13 @@ class HostRule implements RuleInterface {
 
         return $attributes;
     }
+
     /**
-     *
      * Builds the regular expression for the route host.
      *
-     * @param Route $route The Route.
+     * @param Route $route The Route
      *
      * @return string
-     *
      */
     protected function buildRegex(Route $route) {
         $this->route = $route;

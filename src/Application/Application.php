@@ -3,6 +3,7 @@
 use buildr\Container\ContainerInterface;
 use buildr\Http\Uri\Uri;
 use buildr\Loader\PSR4ClassLoader;
+use buildr\Router\Exception\RouteNotFoundException;
 use buildr\Router\Route\Route;
 use buildr\Router\Router;
 use buildr\Startup\BuildrStartup;
@@ -55,9 +56,7 @@ class Application {
         $basePath = BuildrStartup::getBasePath();
 
         //Get the class loader and register tha application namespace
-        /**
-         * @var \buildr\Loader\PSR4ClassLoader $loader
-         */
+        /** @var \buildr\Loader\PSR4ClassLoader $loader */
         $loader = $autoloader->getLoaderByName(PSR4ClassLoader::NAME)[0];
 
         $appAbsolute = realpath($basePath . $config['location']) . DIRECTORY_SEPARATOR;
@@ -73,6 +72,8 @@ class Application {
      * @param string $namespace
      *
      * @return \buildr\Http\Response\ResponseInterface|NULL
+     *
+     * @codeCoverageIgnore
      */
     public function run($namespace) {
         $this->appNamespacePrefix = $namespace;
@@ -108,15 +109,22 @@ class Application {
         return $this->callRouteHandler($route);
     }
 
+    /**
+     * Run the given route middleware
+     *
+     * @param callable|string $middleware
+     * @param \buildr\Router\Route\Route $route
+     * @param \buildr\Http\Request\RequestInterface $request
+     */
     private function callRouteMiddleware($middleware, $route, $request) {
         if(is_string($middleware)) {
             list($class, $method) = explode('::', $middleware);
 
             $controller = self::getContainer()->construct($class);
-            $handler = [$controller, $method];
+            $middleware = [$controller, $method];
         }
 
-        return call_user_func_array($middleware, [$request, $route]);
+        call_user_func_array($middleware, [$request, $route]);
     }
 
     /**
@@ -128,12 +136,8 @@ class Application {
     private function registerRoutes() {
         $applicationRouterClass = $this->appNamespacePrefix . 'Core\Http\Routing';
 
-        try {
-            /** @type \buildr\Contract\Application\ApplicationRoutingContract $class */
-            $routeRegistry = new $applicationRouterClass;
-        } catch(\Exception $e) {
-
-        }
+        /** @type \buildr\Contract\Application\ApplicationRoutingContract $routeRegistry */
+        $routeRegistry = new $applicationRouterClass;
 
         /** @type \buildr\Router\Router $router; */
         $router = self::getContainer()->get('router');
@@ -173,19 +177,33 @@ class Application {
      */
     private function getFailedHandler(Router $router) {
         if($router->hasFailedHandler()) {
-            return $router->getFailedHandlerRoute();
+            try {
+                return $router->getFailedHandlerRoute();
+            } catch(RouteNotFoundException $e) {
+                return $this->registerFallbackFailHandler($router);
+            }
         }
 
-        /**
-         * Register a simple route that matches any request and return it as error handler
-         */
+        return $this->registerFallbackFailHandler($router);
+    }
+
+    /**
+     * Register a simple route that matches any request and return it as error handler
+     *
+     * @param \buildr\Router\Router $router
+     *
+     * @return \buildr\Router\Route\Route
+     */
+    private function registerFallbackFailHandler(Router $router) {
         $map = $router->getMap();
 
         $route = $map->any(self::FAIL_HANDLER_NAME, '/' . self::FAIL_HANDLER_NAME, function($route) use ($router) {
+            //@codeCoverageIgnoreStart
             $failed = $router->getMatcher()->getFailedRoute();
 
             echo $failed->failedRule;
             exit;
+            //@codeCoverageIgnoreEnd
         });
 
         return $route;
@@ -196,11 +214,17 @@ class Application {
      *
      * @return string
      */
-    public function getBasePath() {
-        /** @type \buildr\Http\Request\Request $request */
-        $request = self::$container->get('request');
+    public function getBasePath($scriptName = NULL) {
+        //@codeCoverageIgnoreStart
+        if($scriptName === NULL) {
+            /** @type \buildr\Http\Request\Request $request */
+            $request = self::$container->get('request');
 
-        $basePathParts = array_filter(explode(Uri::PATH_SEPARATOR, $request->getGlobal('SCRIPT_NAME')));
+            $scriptName = $request->getGlobal('SCRIPT_NAME', '/index.php');
+        }
+        //@codeCoverageIgnoreEnd
+
+        $basePathParts = array_filter(explode(Uri::PATH_SEPARATOR, $scriptName));
 
         //If the array is contains only one element that means the request run from the base path
         if(count($basePathParts) <= 1) {

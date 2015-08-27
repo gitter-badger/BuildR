@@ -40,15 +40,12 @@ class AcceptRule implements RuleInterface {
     }
 
     /**
+     * Does what the route accepts match what the request accepts
      *
-     * Does what the route accepts match what the request accepts?
-     *
-     * @param array $routeAccepts What the route accepts.
-     *
-     * @param array $requestAccepts What the request accepts.
+     * @param array $routeAccepts What the route accepts
+     * @param array $requestAccepts What the request accepts
      *
      * @return bool
-     *
      */
     protected function matches($routeAccepts, $requestAccepts) {
         $requestAccepts = implode(';', $requestAccepts);
@@ -65,16 +62,14 @@ class AcceptRule implements RuleInterface {
 
         return FALSE;
     }
+
     /**
+     * Match the accept() value to the Accept header
      *
-     * Is the Accept header a match?
+     * @param string $type The Route accept type
+     * @param string $header The Request accept header
      *
-     * @param string $type The Route accept type.
-     *
-     * @param string $header The Request accept header.
-     *
-     * @return bool True on a match, false if not.
-     *
+     * @return bool True on a match, false if not
      */
     protected function match($type, $header) {
         list($type, $subtype) = explode('/', $type);
