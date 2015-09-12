@@ -3,6 +3,8 @@
 # BuildR
 ### PHP-based continuous integration server
 
+[![Join the chat at https://gitter.im/Zolli/BuildR](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Zolli/BuildR?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 BuildR is a highly experimental project, its not built top of any framework, it uses own framework with many-many cool things inside. When its finished, it be a modular, extendable CI server (like Jenkins).
 
 Here is the list for the feature plans
