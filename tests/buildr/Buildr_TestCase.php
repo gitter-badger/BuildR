@@ -120,6 +120,21 @@ class Buildr_TestCase extends \PHPUnit_Framework_TestCase {
         return $methodReflector->getClosure($classReflector->newInstanceWithoutConstructor());
     }
 
+    /**
+     * Set a private property on a given object
+     *
+     * @param $object
+     * @param $property
+     * @param $value
+     */
+    protected function setPropertyOnObject($object, $property, $value) {
+        $objectReflector = new \ReflectionObject($object);
+        $property = $objectReflector->getProperty($property);
+        $property->setAccessible(TRUE);
+
+        $property->setValue($object, $value);
+    }
+
     protected function setUp() {
 
     }

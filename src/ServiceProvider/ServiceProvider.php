@@ -40,9 +40,11 @@ class ServiceProvider {
             throw new \InvalidArgumentException("This method must take an array as argument!");
         }
 
+        //@codeCoverageIgnoreStart
         foreach ($providersArray as $providerClassName) {
             self::registerByName($providerClassName);
         }
+        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -57,9 +59,11 @@ class ServiceProvider {
             throw new \InvalidArgumentException('This method must take an array as argument!');
         }
 
+        //@codeCoverageIgnoreStart
         foreach($optionalProviders as $bindingName => $providerClass) {
             self::addOptionalProvider($bindingName, $providerClass);
         }
+        //@codeCoverageIgnoreEnd
     }
 
     /**
@@ -83,16 +87,12 @@ class ServiceProvider {
     }
 
     public static function registerOptionalProviderBindings($serviceClassName) {
-        if(!class_exists($serviceClassName)) {
-            return;
-        }
-
         $serviceClass = new $serviceClassName;
         $container = Application::getContainer();
 
         if(($providedInterfaces = $serviceClass->provides()) !== NULL) {
             foreach($providedInterfaces as $interfaceClass) {
-                $container->bind($interfaceClass, $serviceClass->getBindingName(), TRUE);
+                $container->alias($interfaceClass, $serviceClass->getBindingName());
             }
         }
     }
@@ -140,40 +140,11 @@ class ServiceProvider {
      * @param string $providerName The provider fully qualified class name
      */
     public static function registerByName($providerName) {
+        /** * @param \buildr\Container\Container $constainer */
         $container = Application::getContainer();
-        $providerClass = self::checkProviderByName($providerName);
+        $provider = new $providerName;
 
-        $ObjectToRegister = $providerClass->register();
-        $bindingName = $providerClass->getBindingName();
-
-        $container->add($bindingName, $ObjectToRegister);
-
-        if(($providedInterfaces = $providerClass->provides()) !== NULL) {
-            foreach($providedInterfaces as $interfaceClass) {
-                $container->bind($interfaceClass, $bindingName, TRUE);
-            }
-        }
-    }
-
-    /**
-     * Check provider by name and return the instated class
-     *
-     * @param string $providerName The provider fully qualified class name
-     *
-     * @return \buildr\ServiceProvider\ServiceProviderInterface
-     */
-    private static function checkProviderByName($providerName) {
-        if(!class_exists($providerName)) {
-            throw new \RuntimeException("The provider class ({$providerName}) not found!");
-        }
-
-        $providerClass = new $providerName;
-
-        if(!($providerClass instanceof ServiceProviderInterface)) {
-            throw new \RuntimeException("Provider ({$providerName}) must be implement ServiceProviderInterface!");
-        }
-
-        return $providerClass;
+        $container->register($provider);
     }
 
 }

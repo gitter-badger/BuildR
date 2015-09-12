@@ -1,9 +1,7 @@
 <?php namespace buildr\Startup\Initializer;
 
-use buildr\Config\Config;
-use buildr\Container\Facade\Buildr;
+use buildr\Application\Application;
 use buildr\Loader\classLoader;
-use buildr\Loader\PSR4ClassLoader;
 use buildr\Startup\BuildrEnvironment;
 use buildr\Http\Request\RequestServiceProvider;
 use buildr\Http\Response\ResponseServiceProvider;
@@ -45,9 +43,6 @@ class WebInitializer extends BaseInitializer {
         //Environment detection
         BuildrEnvironment::detectEnvironment();
         $environment = BuildrEnvironment::getEnv();
-
-        //Set up the environment in the registry
-        Buildr::add('property.environment', $environment);
 
         //Register additional providers, that exist only in web requests
         $this

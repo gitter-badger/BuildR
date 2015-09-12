@@ -63,9 +63,7 @@ class BaseInitializer implements InitializerInterface {
      * @return \buildr\Container\Container
      */
     public function constructContainer() {
-        $containerRepository = new InMemoryServiceRepository();
-        $container = new Container($containerRepository);
-        $container->add('buildr', $container);
+        $container = new Container();
 
         Application::setContainer($container);
     }

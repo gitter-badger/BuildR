@@ -2,6 +2,11 @@
 
 use buildr\Application\Application;
 use buildr\ServiceProvider\ServiceProvider;
+use buildr\ServiceProvider\ServiceProviderInterface;
+use buildr\Container\Alias\AliasResolver;
+use buildr\Container\Container;
+use buildr\tests\serviceProvider\dummy\dummyProviderOne;
+use buildr\tests\serviceProvider\dummy\dummyProviderTwo;
 use buildr\tests\Buildr_TestCase as BuilderTestCase;
 
 /**
@@ -19,85 +24,63 @@ use buildr\tests\Buildr_TestCase as BuilderTestCase;
  */
 class serviceProviderTest extends BuilderTestCase {
 
+    public function notArrayTypeInputProvider() {
+        return [
+            [NULL],
+            ['test'],
+            [4],
+            [0.14],
+            [FALSE],
+        ];
+    }
+
     /**
+     * @dataProvider notArrayTypeInputProvider
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage This method must take an array as argument!
      */
-    public function testItThrowExceptionOnMassRegistration() {
-        ServiceProvider::registerProvidersByArray("testClassName");
+    public function testItThrowsExceptionWhenTryRegisteringProvidersFromArrayButInputIsNotAnArray($input) {
+        ServiceProvider::registerProvidersByArray($input);
     }
 
     /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage The provider class (testProvider) not found!
-     */
-    public function testItThrowsExceptionOnUnknownProvider() {
-        $classReflector = new \ReflectionClass('\buildr\ServiceProvider\ServiceProvider');
-        $method = $classReflector->getMethod("checkProviderByName");
-        $method->setAccessible(TRUE);
-
-        $method->invokeArgs($classReflector->newInstanceWithoutConstructor(), ['testProvider']);
-    }
-
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Provider (\buildr\tests\serviceProvider\dummy\dummyProviderWithoutSubclass) must be implement ServiceProviderInterface!
-     */
-    public function testItThrowsExceptionWhenClassIsNotSubclass() {
-        $classReflector = new \ReflectionClass('\buildr\ServiceProvider\ServiceProvider');
-        $method = $classReflector->getMethod("checkProviderByName");
-        $method->setAccessible(TRUE);
-
-        $method->invokeArgs($classReflector->newInstanceWithoutConstructor(), ['\buildr\tests\serviceProvider\dummy\dummyProviderWithoutSubclass']);
-    }
-
-    /**
+     * @dataProvider notArrayTypeInputProvider
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage This method must take an array as argument!
      */
-    public function testItThrowsExceptionWhenTryToRegisterOptionalProvidersByArrayWithNotArrayTypeParameter() {
-        ServiceProvider::addOptionalsByArray('InvalidValue');
+    public function testItThrowsExceptionWhenTryRegisteringOptionalProvidersFromArrayButInputIsNotAnArray($input) {
+        ServiceProvider::addOptionalsByArray($input);
     }
 
     /**
      * @expectedException \LogicException
-     * @expectedExceptionMessage The service name (dummyProvider) is already taken by classFQCN
+     * @expectedExceptionMessage The service name (testProvider) is already taken by buildr\tests\serviceProvider\dummy\dummyProviderOne
      */
-    public function testItThrowsAnExceptionWhenTryToRegisterOptionalLoaderThatServiceNameIsOccupied() {
-        ServiceProvider::addOptionalProvider('dummyProvider', 'classFQCN');
-        ServiceProvider::addOptionalProvider('dummyProvider', 'anotherClassFQCN');
+    public function testItThrowsExceptionWhenOptionalServiceProviderNameIsAlreadyRegistered() {
+        ServiceProvider::addOptionalProvider('testProvider', dummyProviderOne::class);
+        ServiceProvider::addOptionalProvider('testProvider', dummyProviderOne::class);
     }
 
-    public function testRegistration() {
-        $providers = [
-            '\buildr\tests\serviceProvider\dummy\dummyProviderOne',
-            '\buildr\tests\serviceProvider\dummy\dummyProviderTwo'
-        ];
-
-        ServiceProvider::registerProvidersByArray($providers);
+    public function testItActuallyRegisterBindingsOfOptionalProviders() {
+        ServiceProvider::registerOptionalProviderBindings(dummyProviderTwo::class);
 
         $container = Application::getContainer();
+        $resolver = $this->getPrivatePropertyFromClass(Container::class, 'aliasResolver', $container);
+        $resolverContains = $this->getPrivatePropertyFromClass(AliasResolver::class, 'aliases', $resolver);
 
-        $this->assertInstanceOf('\stdClass', $container->get('dummyOne'));
-        $this->assertInstanceOf('\stdClass', $container->get('dummyTwo'));
+        $isRegistered = isset($resolverContains[ServiceProviderInterface::class]);
+        $this->assertTrue($isRegistered);
+
+        //Test it not registered in container
+        $this->assertFalse($container->has('dummyTwo'));
+        $this->assertFalse($container->has(dummyProviderTwo::class));
     }
 
-    public function testItCanAddOptionalProviders() {
-        ServiceProvider::addOptionalsByArray([
-            'dummyOne' => '',
-            'dummyTwo' => '',
-        ]);
+    public function testItStoreOptionalServices() {
+        ServiceProvider::addOptionalProvider('dummyTwo', dummyProviderTwo::class);
 
-        $reflector = new \ReflectionClass(ServiceProvider::class);
-        $properties = $reflector->getStaticProperties();
-
-        $this->assertTrue(isset($properties['optionalServices']['dummyOne']));
-        $this->assertTrue(isset($properties['optionalServices']['dummyTwo']));
-    }
-
-    public function testItDetectsOptionalServicesCorrectly() {
-        $this->assertTrue(ServiceProvider::isOptionalService('dummyOne'));
-        $this->assertFalse(ServiceProvider::isOptionalService('notRegisteredOptionalService'));
+        $this->assertTrue(ServiceProvider::isOptionalService('dummyTwo'));
+        $this->assertFalse(ServiceProvider::isOptionalServiceLoaded('dummyTwo'));
     }
 
 }

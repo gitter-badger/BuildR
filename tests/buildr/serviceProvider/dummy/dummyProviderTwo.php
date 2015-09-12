@@ -42,7 +42,9 @@ class dummyProviderTwo implements ServiceProviderInterface {
      * @return NULL|array
      */
     public function provides() {
-        return NULL;
+        return [
+            ServiceProviderInterface::class,
+        ];
     }
 
 }

@@ -1,5 +1,9 @@
 <?php namespace buildr\Container; 
 
+use buildr\ServiceProvider\ServiceProviderInterface;
+use Interop\Container\ContainerInterface as InteropContainerInterface;
+use \ArrayAccess;
+
 /**
  * Interface for Dependency injection container
  *
@@ -13,111 +17,147 @@
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
  */
-interface ContainerInterface {
+interface ContainerInterface extends InteropContainerInterface, ArrayAccess{
 
     /**
-     * Get the specified service out of the container
-     *
-     * @param string $serviceId
-     *
-     * @return mixed
-     * @throws \buildr\Container\Exception\UndefinedBindingException
-     */
-    public function get($serviceId);
-
-    /**
-     * Add a new service (concrete class) to the container
-     *
-     * @param string $serviceId
-     * @param object $service
-     *
-     * @return bool
-     * @throws \buildr\Container\Exception\ServiceAlreadyRegisteredException
-     */
-    public function add($serviceId, $service);
-
-    /**
-     * Determines that the given service id is
-     * set in the container
-     *
-     * @param string $serviceId
-     *
-     * @return bool
-     */
-    public function has($serviceId);
-
-    /**
-     * Remove the given service from repository
-     *
-     * @param string $serviceId
-     *
-     * @return bool
-     * @throws \buildr\Container\Exception\UndefinedBindingException
-     */
-    public function remove($serviceId);
-
-    /**
-     * Bind an interface to concrete implementation in container
-     * for future resolving
-     *
-     * @param string $abstract
-     * @param string $concrete
-     * @param bool $shared Allow to use shared resources?
-     *
-     * @return bool
-     * @throws \buildr\Container\Exception\AbstractionException
-     * @throws \ReflectionException
-     */
-    public function bind($abstract, $concrete, $shared = FALSE);
-
-    /**
-     * Try to resolve a class dependency thought the container and return to class instance
-     * If the $shared value is true, the container will user shared resources, that
-     * already exist in the repository
-     *
-     * @param string $service
-     * @param bool $shared
-     *
-     * @return object
-     * @throws \ReflectionException
-     * @throws \buildr\Container\Exception\UndefinedBindingException
-     * @throws \buildr\Container\Exception\AbstractionException
-     * @throws \buildr\Container\Exception\InstantiationException
-     */
-    public function construct($service, $shared = FALSE);
-
-    /**
-     * Try to return a single instance of the class, if is not already
-     * in the repository try to instantiate a new object and add the
-     * instance to the repository
+     * Return a new contextual builder to add a new binding
      *
      * @param string $concrete
      *
+     * @return \buildr\Container\ContextualBuilder
+     */
+    public function when($concrete);
+
+    /**
+     * Register a new instance to the container
+     *
+     * @param string $id Service name
+     * @param object $value Registered object
+     *
+     * @return \buildr\Container\ContainerInterface
+     * @throws \buildr\Container\Alias\CannotChangeException
+     */
+    public function instance($id, $value);
+
+    /**
+     * Register a new instance to the container as a closure
+     *
+     * @param string $id Service name
+     * @param \Closure $value closure to register
+     *
+     * @return \buildr\Container\ContainerInterface
+     * @throws \buildr\Container\Alias\CannotChangeException
+     */
+    public function closure($id, \Closure $value);
+
+    /**
+     * Bind an interface to its concrete implementation
+     *
+     * @param string $id ServiceName
+     * @param string $class The binded class name
+     *
+     * @return \buildr\Container\ContainerInterface
+     * @throws \buildr\Container\Alias\CannotChangeException
+     */
+    public function bind($id, $class);
+
+    /**
+     * Register a new alias for a class
+     *
+     * @param string $name The alias name
+     * @param string $origin The original service name
+     *
+     * @return \buildr\Container\ContainerInterface
+     */
+    public function alias($name, $origin);
+
+    /**
+     * Register a class that can be used in autowireing
+     *
+     * @param string $id Service name
+     * @param null|object $class
+     *
+     * @return \buildr\Container\ContainerInterface
+     */
+    public function wire($id, $class = NULL);
+
+    /**
+     * Freeze a service in the container, so that cant be changed or removed
+     *
+     * @param string $id Service or alias name
+     *
+     * @return \buildr\Container\ContainerInterface
+     */
+    public function freeze($id);
+
+    /**
+     * Destroy a service that registered in the container
+     *
+     * @param string $id ServiceName
+     *
+     * @throws \buildr\Container\Exception\CannotChangeException
+     */
+    public function destroy($id);
+
+    /**
+     * Allow to modify an object in the container. The given service is injected into a closure and
+     * tha closure must return the modified object
+     *
+     * @param string $id Service name
+     * @param \Closure $callback
+     *
+     * @return \buildr\Container\ContainerInterface
+     * @throws \buildr\Container\Exception\NotFoundException
+     */
+    public function extend($id, \Closure $callback);
+
+
+    /**
+     * Try to instantiate a new object from the given class and figure out
+     * all its dependency through PHP Reflection API
+     *
+     * @param string $class The class FQCN
+     * @param array $predefinedParameters Allows you to force constructor parameter
+     *
+     * <pre>
+     * The forced constructor parameters used primary, the order of parameter does not matter
+     * because its defined by variable name as the array element key.
+     *
+     * Example:
+     *
+     * public function __construct($nullParam, \Hello $world, $param = 'world', $anotherNullParam);
+     *
+     * In this example we want to force the 2 null parameter.
+     *
+     * Container::construct('Class', ['anotherNullParam' => 'string 2', 'nullParam' => 'string 1']);
+     *
+     * Of course, you can override parameter that can be resolved automatically, like $world
+     * </pre>
+     *
      * @return object
-     * @throws \buildr\Container\Exception\InstantiationException
      */
-    public function singleton($concrete);
+    public function construct($class, $predefinedParameters = []);
 
     /**
-     * Set a property in container
+     * Inject the class properties automatically that can by injected and the docComment
+     * contains the @Wire operator.
      *
-     * @param string $propertyName
-     * @param mixed $propertyValue
-     * @param bool $isProtected
+     * This method also takes default parameters, see Constainer::construct() method for example.
      *
-     * @return void
-     * @throw \buildr\Container\Exception\ProtectedPropertyException
+     * @param object $object
+     * @param array $predefinedParameters
+     *
+     * @throws \buildr\Container\Exception\NotFoundException
+     * @throws \buildr\Container\Exception\InjectionException
      */
-    public function setProperty($propertyName, $propertyValue, $isProtected = FALSE);
+    public function inject($object, $predefinedParameters = []);
 
     /**
-     * Get a property from container
+     * Register a service provider in container. When provider defined interface for class
+     * This alos registered as alias(es).
      *
-     * @param string $propertyName
-     * @param mixed $defaultValue
-     *
-     * @return mixed
+     * @param \buildr\ServiceProvider\ServiceProviderInterface $provider
      */
-    public function getProperty($propertyName, $defaultValue = NULL);
+    public function register(ServiceProviderInterface $provider) ;
 
 }

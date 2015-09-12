@@ -1,7 +1,10 @@
-<?php namespace buildr\Container\Exception; 
+<?php namespace buildr\Container\Exception;
+
+use Interop\Container\Exception\NotFoundException as InteropNotFoundExceptionInterface;
+use \Exception;
 
 /**
- * AbstractionException
+ * Container CannotChangeException
  *
  * BuildR PHP Framework
  *
@@ -13,6 +16,6 @@
  * @license      https://github.com/Zolli/BuildR/blob/master/LICENSE.md
  * @link         https://github.com/Zolli/BuildR
  */
-class AbstractionException extends \Exception {
+class NotFoundException extends Exception implements InteropNotFoundExceptionInterface {
 
 }

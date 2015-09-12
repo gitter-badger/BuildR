@@ -1,16 +1,21 @@
 <?php namespace buildr\tests\container;
 
 use buildr\Application\Application;
+use buildr\Container\Container;
+use buildr\Container\ContainerInterface;
 use buildr\tests\container\fixture\dummyClass;
 use buildr\tests\container\fixture\Car;
 use buildr\tests\container\fixture\SelfDependentEngine;
 use buildr\tests\container\fixture\RacingEngine;
 use buildr\tests\container\fixture\DieselEngine;
 use buildr\tests\container\fixture\ElectricEngine;
+use buildr\tests\container\fixture\WireCar;
+use buildr\tests\container\fixture\InjuredWireCar;
 use buildr\tests\container\fixture\AbstractEngine;
 use buildr\tests\container\fixture\ManualTransmission;
 use buildr\tests\container\fixture\EngineInterface;
 use buildr\tests\container\fixture\TransmissionInterface;
+use buildr\Container\ContextualBuilder;
 use buildr\tests\Buildr_TestCase as BuildRTestCase;
 
 /**
@@ -29,100 +34,247 @@ use buildr\tests\Buildr_TestCase as BuildRTestCase;
 class ContainerTest extends BuildRTestCase {
 
     /**
-     * @type \buildr\Container\Container
+     * @type \buildr\Container\ContainerInterface
      */
-    private $container;
+    protected $container;
 
-    protected function setUp() {
+    public function setUp() {
         $this->container = Application::getContainer();
-
-        parent::setUp();
     }
 
     /**
      * @expectedException \buildr\Container\Exception\InstantiationException
-     * @expectedExceptionMessage Unable to instantiate class (buildr\tests\container\fixture\SelfDependentEngine)! Circular dependency detected: buildr\tests\container\fixture\SelfDependentEngine => buildr\tests\container\fixture\SelfDependentEngine
+     * @expectedExceptionMessage Cant instantiate abstract classes! (buildr\tests\container\fixture\AbstractEngine)
      */
-    public function testItThrowsExceptionWhenDetectsCircularDependency() {
-        $this->container->construct(SelfDependentEngine::class);
+    public function testItThrowsExceptionWhenTryToInstantiateAnAbstractClass() {
+        $container = new Container();
+
+        $container->bind(EngineInterface::class, AbstractEngine::class);
+        $container->bind(TransmissionInterface::class, ManualTransmission::class);
+
+        $container->get(Car::class);
     }
 
     /**
-     * @expectedException \buildr\Container\Exception\AbstractionException
-     * @expectedExceptionMessage Unable to bind not abstract class!
+     * @expectedException \buildr\Container\Exception\NotFoundException
+     * @expectedExceptionMessage The entry (\Foo\Bar) is not bound, and cant create it automatically!
      */
-    public function testItThrowsExceptionWhenTryToBindConcreteClasses() {
-        $this->container->bind(RacingEngine::class, DieselEngine::class);
+    public function testItThrowsExceptionWhenTryingToGetClassThatNotExist() {
+        $container = new Container();
+
+        $container->get('\Foo\Bar');
     }
 
     /**
-     * @expectedException \buildr\Container\Exception\AbstractionException
-     * @expectedExceptionMessage Cant instantiate abstract classes!
+     * @expectedException \buildr\Container\Exception\NotFoundException
+     * @expectedExceptionMessage The following entry not bound to container: undefinedBinding
      */
-    public function testItThrowsExceptionWhenTryToResolveAnAbstractClass() {
-        $this->container->construct(AbstractEngine::class);
+    public function testExtendingThrowsExceptionWhenTheClassIsNotBinded() {
+        $container = new Container();
+
+        $container->extend('undefinedBinding', function(ContainerInterface $c) {});
     }
 
-    public function testCanResolveClassWithNoDependency() {
-        $class = $this->container->construct(dummyClass::class);
-        $class2 = $this->container->construct(dummyClass::class);
+    /**
+     * @expectedException \buildr\Container\Exception\InjectionException
+     * @expectedExceptionMessage Unable to automatically inject class property (buildr\tests\container\fixture\InjuredWireCar::engine). No value specified!
+     */
+    public function testInjectionThrowExceptionWhenNoCLassNameSpecified() {
+        $container = new Container();
 
-        //The two resolved object are separate instance
-        $this->assertFalse($class === $class2);
-
-        //Resolved the correct type
-        $this->assertInstanceOf(dummyClass::class, $class);
-        $this->assertInstanceOf(dummyClass::class, $class2);
+        $container->wire(InjuredWireCar::class);
+        $container[InjuredWireCar::class];
     }
 
-    public function testCanCreateSingletonInstances() {
-        $class = $this->container->singleton(dummyClass::class);
-        $class2 = $this->container->singleton(dummyClass::class);
+    public function testItInjectPropertiesFromPreDefinedArray() {
+        $container = new Container();
 
-        //The two resolved object are same instance
-        $this->assertTrue($class === $class2);
+        $injuredWireCar = new InjuredWireCar();
+        $container->inject($injuredWireCar, [
+            'engine' => (new RacingEngine()),
+        ]);
 
-        //Resolved the correct type
-        $this->assertInstanceOf(dummyClass::class, $class);
-        $this->assertInstanceOf(dummyClass::class, $class2);
+        $this->assertInstanceOf(RacingEngine::class, $injuredWireCar->engine);
     }
 
-    public function testCanResolveClassUsingSharedResources() {
-        //Binding a shared resource
-        $class = $this->container->singleton(dummyClass::class);
+    public function testItStoreOwnInstanceCorrectly() {
+        $container = new Container();
 
-        //Force container to use shared resources if available
-        $class2 = $this->container->construct(dummyClass::class, TRUE);
-
-        //The two resolved object are same instance
-        $this->assertTrue($class === $class2);
-
-        //Resolved the correct type
-        $this->assertInstanceOf(dummyClass::class, $class);
-        $this->assertInstanceOf(dummyClass::class, $class2);
+        $this->assertTrue(($container->get('container') instanceof ContainerInterface));
+        $this->assertTrue(($container->get(ContainerInterface::class) instanceof ContainerInterface));
     }
 
-    public function testCanResolveClassWithoutConstructor() {
-        $class = $this->container->construct(RacingEngine::class);
+    public function testClosureBinding() {
+        $container = new Container();
 
-        $this->assertInstanceOf(RacingEngine::class, $class);
+        $container->closure('testBinding', function(ContainerInterface $c) {
+             return new DieselEngine();
+        });
+
+        $result = $container->get('testBinding');
+
+        $this->assertInstanceOf(DieselEngine::class, $result);
+
+        //Returns the same instance
+        $anotherResult = $container['testBinding'];
+
+        $this->assertTrue($result === $anotherResult);
     }
 
-    public function testCanResolveClassWithConstructorDefaultValue() {
-        $class = $this->container->construct(DieselEngine::class);
+    public function testItStoreAndResolvesAliasesCorrectly() {
+        $container = new Container();
 
-        $this->assertInstanceOf(DieselEngine::class, $class);
-        $this->assertEquals('VrrRrrr', $class->getSound());
+        $container->alias('hello', 'world');
+        $resolver = $this->getPrivatePropertyFromClass(Container::class, 'aliasResolver', $container);
+
+        $origin = $resolver->getOrigin('hello');
+
+        $this->assertEquals('world', $origin);
+
+        //Test that returns the original input when is not an alias
+        $undefinedAliasResult = $resolver->getOrigin('helloWorld');
+        $this->assertEquals('helloWorld', $undefinedAliasResult);
     }
 
-    public function testItResolveClassWithInterfaceBindings() {
-        $this->container->bind(TransmissionInterface::class, ManualTransmission::class);
-        $this->container->bind(EngineInterface::class, ElectricEngine::class);
+    public function testAutoWireWorksCorrectly() {
+        $container = new Container();
 
-        $class = $this->container->construct(Car::class);
+        $container->bind(EngineInterface::class, DieselEngine::class);
+        $container->wire(WireCar::class);
 
-        $this->assertInstanceOf(Car::class, $class);
+        $result = $container[WireCar::class];
+
+        $this->assertInstanceOf(DieselEngine::class, $result->engine);
+        $this->assertInstanceOf(ManualTransmission::class, $result->transmission);
+        $this->assertInstanceOf(WireCar::class, $result);
     }
 
+    public function testItDestroysObjectsCorrectly() {
+        $container = new Container();
+
+        $container['test'] = new \stdClass();
+        $container['testUntouched'] = new \stdClass();
+
+        $container['test'];
+
+        $container->destroy('testUntouched');
+
+        $this->setExpectedException('\buildr\Container\Exception\CannotChangeException',
+            'Cannot destroy object that been frozen! (test)');
+
+        //Also tests offsetUnset() method
+        unset($container['test']);
+    }
+
+    public function testBindingExtension() {
+        $container = new Container();
+
+        //Instance extension
+
+        $container->bind(EngineInterface::class, DieselEngine::class);
+        $container->wire(WireCar::class);
+        $container[WireCar::class];
+
+        $container->extend(WireCar::class, function(WireCar $car) {
+            $car->engine = new RacingEngine();
+
+            return $car;
+        });
+
+        $car = $container[WireCar::class];
+
+        $this->assertInstanceOf(RacingEngine::class, $car->engine);
+
+        //Closure extension
+
+        $container->closure('engine', function(ContainerInterface $c) {
+            return new DieselEngine();
+        });
+
+        $container->extend('engine', function(DieselEngine $engine) {
+            $engine->sound = 'test';
+
+            return $engine;
+        });
+
+        $engine = $container['engine'];
+
+        $this->assertInstanceOf(DieselEngine::class, $engine);
+        $this->assertEquals('test', $engine->getSound());
+    }
+
+    public function testHasWorksCorrectly() {
+        $container = new Container();
+
+        $container['testBinding'] = new \stdClass();
+
+        $this->assertTrue($container->has('testBinding'));
+        $this->assertFalse(isset($container['undefinedBinding']));
+    }
+
+    public function testIfAnInstanceIsRegisteredAlwaysReturnTheSameInstance() {
+        $container = new Container();
+        $engine = new RacingEngine();
+
+        $container->instance('test', $engine);
+        $result = $container->get('test');
+
+        $this->assertInstanceOf(RacingEngine::class, $result);
+        $this->assertSame($engine, $result);
+        $this->assertTrue($engine === $result);
+    }
+
+    public function testItCreatesAndResolvesContextualBindingCorrectly() {
+        $container = new Container();
+        $binder = $container->when('Foo\Bar');
+
+        //Test that is returned the correct contextual binder class
+        $this->assertInstanceOf(ContextualBuilder::class, $binder);
+
+        $binder->needs('Foo\Bar\BarInterface')->give('Foo\Bar\BarImplementation');
+
+        $this->setPropertyOnObject($container, 'buildStack', ['Foo\Bar']);
+        $res = $this->invokePrivateMethod(get_class($container),
+            'getContextualConcrete',
+            ['Foo\Bar\BarInterface'],
+            $container);
+
+        //Test the actual contextual resolution
+        $this->assertEquals('Foo\Bar\BarImplementation', $res);
+    }
+
+    public function testGettingNotBoundedServices() {
+        $container = new Container();
+
+        $container->bind(Car::class);
+        $container->when(Car::class)->needs(TransmissionInterface::class)->give(ManualTransmission::class);
+        $container->bind(EngineInterface::class, RacingEngine::class);
+
+        $car = $container->get(Car::class);
+
+        $this->assertInstanceOf(Car::class, $car);
+        $this->assertInstanceOf(TransmissionInterface::class, $car->transmission);
+        $this->assertInstanceOf(EngineInterface::class, $car->engine);
+    }
+
+    public function testItResolvesTheMethodDependenciesFromGivenDefaultsAndNulls() {
+        $container = new Container();
+
+        $injuredWireCar = new InjuredWireCar();
+        $reflector = new \ReflectionObject($injuredWireCar);
+        $method = $reflector->getMethod('testMethod');
+
+        $result = $this->invokePrivateMethod(Container::class, 'resolveClassDependencies', [$method, [
+            'depOne' => 'hello',
+        ]], $container);
+
+        $expectedResult = [
+            'hello',
+            NULL,
+        ];
+
+        $this->assertCount(2, $result);
+        $this->assertEquals($expectedResult, $result);
+    }
 
 }
